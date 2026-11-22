@@ -44,6 +44,8 @@ button[aria-pressed="true"]{background:var(--bracket);border-color:var(--bracket
 .br path.hit{fill:none;stroke:transparent;stroke-width:16} .br.drag path.hit{cursor:grab}
 .br .hint{fill:var(--good);cursor:pointer;opacity:.85} .br .hint.off{display:none}
 .te{stroke:var(--bracket);stroke-width:2} .tv{fill:var(--panel);stroke:var(--ink);stroke-width:1.3} .tl{font:500 10px var(--mono);fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.gridwrap{display:flex;gap:1rem;flex-wrap:wrap;align-items:center} #cgrid{flex:0 1 260px;min-width:0} .gridnote{flex:1 1 220px;font-size:.92rem;color:var(--muted)}
+.gcell{fill:var(--bg);stroke:var(--line)} .gcell.on{fill:var(--bracket);stroke:var(--bracket)} .gtxt{font:500 10px var(--mono);fill:var(--muted);text-anchor:middle;dominant-baseline:central} .gtxt.on{fill:var(--panel)}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.4rem;max-height:236px;overflow-y:auto;padding:2px}
 .thumb{border:1px solid var(--line);border-radius:4px;background:var(--bg);padding:3px;cursor:pointer}
 .thumb[aria-pressed="true"]{background:var(--bg);border-color:var(--hot);box-shadow:0 0 0 1px var(--hot)}
@@ -94,11 +96,13 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
   <div class="bench">
     <div class="controls" id="ccontrols"></div>
     <div class="benchrow"><div class="rails" id="crails"></div><div class="shape" id="cshape"></div></div>
+    <div class="gridwrap"><div id="cgrid"></div><p class="gridnote">The same picture as a grid. Each bracket is one cell: its row is the left foot, its column is the right foot. A staircase is a path that only steps down or right.</p></div>
     <div class="say" id="csay"></div>
   </div>
   <div class="proof">
     <p><b>It is always a tree.</b> The kept feet only move inward, so the foot that steps always lands on a vertex no longer bracket has touched. Every bracket adds exactly one new vertex, so no loop can close.</p>
     <p><b>It is always a caterpillar, and every caterpillar appears.</b> The kept feet form a path, the spine. Every other vertex was touched once, by a bracket hanging off the spine, so it is a leaf. A run of “keep left” hangs that many leaves on one spine vertex, and switching sides moves to the next spine vertex, so any list of leaf counts along a spine can be dialled in. This is Rosa’s 1967 labeling of caterpillars.</p>
+    <p><b>Nothing else works this way.</b> Suppose every bracket jumps over one common point, and the brackets placed longest first each stand on exactly one used vertex. Then the placement is a staircase. Read the grid backwards from the end: when everything is placed, the used rows and columns fill a full rectangle, and the last cell must sit in its far corner because its length leaves no other place. Removing it leaves a full rectangle one row or one column smaller, and the argument repeats. So the cells form a path stepping down or right, which is a staircase. Any tree that is not a caterpillar therefore needs a bracket that does not jump the common point.</p>
     <p><b>Right slides reach all of them.</b> Sliding bracket k one step right turns “k keeps left, k−1 keeps right” into “k keeps right, k−1 keeps left”. Sliding bracket 1 right turns its “left” into “right”. So a “right” can be created at the shortest bracket and passed upward to any rail, one slide at a time, and every picture on the way is a staircase. Starting from the star (all “left”), every staircase is reached using right slides only.</p>
   </div>
 </section>
@@ -259,11 +263,18 @@ const star=n=>Array(n).fill(1);
   const n=9,d=[0,1,0,0,1,1,0,0];// d[k] for k=1..n-2 : 0 keep left foot, 1 keep right foot
   const B=Bench($('crails'),{onChange(s){drawTree($('cshape'),s.n,s.p,{labels:true})}});
   const cfg=()=>{const p=Array(n).fill(1);for(let k=n-2;k>=1;k--)p[k]=p[k+1]+d[k];return p};
+  function drawGrid(p){const host=$('cgrid');host.textContent='';const cells={};let A=1,Bm=0;
+    for(let k=1;k<n;k++){const a=p[k],b=n-(p[k]+k);cells[a+','+b]=k;A=Math.max(A,a);Bm=Math.max(Bm,b)}
+    const S=26,ox=30,oy=22,W=ox+(Bm+1)*S+6,H=oy+A*S+6,svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Grid of left feet against right feet'},host);
+    for(let b=0;b<=Bm;b++){const x=el('text',{class:'gtxt',x:ox+b*S+S/2,y:oy-10},svg);x.textContent=n-b}
+    for(let a=1;a<=A;a++){const y=el('text',{class:'gtxt',x:ox-12,y:oy+(a-1)*S+S/2},svg);y.textContent=a
+      for(let b=0;b<=Bm;b++){const k=cells[a+','+b];el('rect',{class:'gcell'+(k?' on':''),x:ox+b*S,y:oy+(a-1)*S,width:S-2,height:S-2,rx:2},svg);
+        if(k){const tx=el('text',{class:'gtxt on',x:ox+b*S+S/2-1,y:oy+(a-1)*S+S/2-1},svg);tx.textContent=k}}}}
   const box=$('ccontrols');const lab=document.createElement('span');lab.textContent='Bracket keeps its';box.appendChild(lab);
   const btn=[];for(let k=n-2;k>=1;k--){const b=document.createElement('button');b.id='cb'+k;btn[k]=b;box.appendChild(b);
     b.onclick=()=>{d[k]^=1;draw()}}
   function draw(){for(let k=1;k<=n-2;k++){btn[k].textContent=`${k}: ${d[k]?'right':'left'}`;btn[k].setAttribute('aria-pressed',d[k]?'true':'false')}
-    B.set(cfg());
+    B.set(cfg());drawGrid(cfg());
     $('csay').innerHTML=`Longest bracket first, each toggle sets which foot the next bracket shares with the one above it. <b>Always a caterpillar</b>: the shared feet make the spine and everything else is a leaf.`}
   B.build(n,cfg());draw();
 })();

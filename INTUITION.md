@@ -46,7 +46,8 @@ Plus a method: keep it visual, and keep to arguments a person can follow.
 | "Starfish and other trivial configurations are the starting point" | The star as the origin of every route; the right-slide conjecture (Conjecture A) | idea: author; statement and evidence: Claude |
 | Sliding from trivial shapes | Staircases = caterpillars, and right slides reach all of them (Theorems 2–3). The labeling itself is Rosa's, 1967 | Claude, restating a classical result |
 | "Shown logically to humans… visually" | The interactive bench in `web/`; proofs written to be watched | Claude, to the author's brief |
-| — (not in the original idea) | Growth placements and the growth conjecture (Conjecture B); anchors; the gluing lemma; the interval variant | Claude |
+| Sliding from trivial shapes | Theorem 9: growth plus "all brackets jump one point" forces a staircase (grid proof) | Claude |
+| — (not in the original idea) | Growth placements and the growth conjecture (Conjecture B); anchors; the gluing lemma; the interval variant; the root form (Theorem 7); clean cuts and gap splits (Lemma 8, §10) | Claude |
 
 ## A note on the name "starfish"
 

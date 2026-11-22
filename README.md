@@ -370,11 +370,32 @@ enables.
 The two classes overlap heavily but neither contains the other, so the
 gap-insertion closure is not the α-labelable trees under another name.
 
-**Observation (`n ≤ 14`).** The trees that have a placement which is both an
-α-placement and a growth placement are exactly the caterpillars (their number
-is `2^(n−4) + 2^⌊(n−4)/2⌋`, the caterpillar count). So outside caterpillars a
-growth placement must contain a bracket that does not jump over the common
-point: the growth property and the α property pull in different directions.
+**Theorem 9 (α and growth together force a staircase; proved).** If a
+placement is a growth placement and all its brackets jump over one common
+point, then it is a staircase. Hence a tree has such a placement if and only
+if it is a caterpillar.
+
+*Proof.* Let the common point separate left feet `1..A₀` from right feet. Give
+bracket `k` the cell `(a, β)` where `a` is its left foot and `β = n − (right
+foot)`, so `a ≥ 1`, `β ≥ 0`. A bracket of length `k` has `a + β = n − k`: the
+bracket placed at step `t = n − k` lies on anti-diagonal `t` (the top bracket
+is the cell `(1, 0)` at step 1). A row or column is *used* once a cell lies in
+it. The growth property says each new cell lies in exactly one used row or
+column and uses one new one. Claim: after every step `t` the used rows are
+`1..A` and the used columns are `0..B` for some `A + B = t`. This holds after
+the last step, when every label is used. If it holds after step `t`, the cell
+placed at step `t` satisfies `a ≤ A`, `β ≤ B` and `a + β = t = A + B`, so it is
+`(A, B)`, and the row or column it newly used is the last one; removing it
+leaves the same shape with `A` or `B` one smaller. By backward induction the
+claim holds throughout, and the cell at step `t+1` is `(A+1, B)` or
+`(A, B+1)`: bracket `k−1` keeps one foot of bracket `k` and moves the other
+one step inward. ∎
+
+Checked by brute force for `n ≤ 12` (`src/alphagrowth_check.py`): exactly
+`2^(n−2)` growth placements are α-placements, and all are staircases. So
+outside caterpillars every growth placement contains a bracket that does not
+jump the common point; the classical α-labeling toolkit cannot be combined
+with growth beyond caterpillars.
 
 ## 10. Vertex splitting: growth labelings of most trees can be built by local moves
 
@@ -420,16 +441,23 @@ thirds of all growth placements on 13 vertices arise this way (851,358 of
 1,275,368). So that spider is the only tree found whose growth placements
 are all "primitive".
 
-**A possible shape for a proof (speculative, nothing here is proved).**
-(1) Show that every tree outside an explicit sparse family of highly symmetric
-trees arises by a gap split from a smaller tree's growth placement, carrying
-enough information about available cuts through the induction. (2) Give
-explicit growth placements for the symmetric family. For spiders with all
-legs of length 2 and the centre as root, (2) amounts to splitting the labels
-`1..2d` into inner labels `I` and outer labels `O`, `|I| = |O| = d`, with a
-perfect matching between them whose differences are exactly the set `O` and
-each smaller than its inner label; a Skolem-sequence-type problem. Neither part has been done. Part (1) is where
-the difficulty of the Graceful Tree Conjecture sits in this formulation.
+**The exceptions are not one tidy family.** Add every growth placement of
+each unreached tree as a new starting point and continue
+(`derive2 N 3 prefix prim`). New unreached trees keep appearing: 1, 1, 1, 2,
+3, 7 of them for `n = 9..14`. They are spider-like or built from a few equal
+branches, but they do not form a single recognisable family, so "prove the
+generic case by splits and handle one explicit family separately" is not
+available in this simple form. An earlier version of this section suggested
+it was; that was too optimistic.
+
+**Growth placements and right slides are unrelated.** Most growth placements
+are *not* reachable from the star by legal right slides (31,774 of 40,220 at
+`n = 11`; `src/growreach.py`), so Conjecture B does not feed Conjecture A.
+
+**Where the difficulty sits.** An induction by gap splits must carry, for each
+tree, which cuts are available next to which vertices. One step back is
+almost always possible; no property found so far is both preserved by the
+step and strong enough to guarantee the next one.
 
 ## 11. Checking
 
