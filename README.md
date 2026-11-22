@@ -332,3 +332,23 @@ trees at `n = 7`, 93 of 106 at `n = 10` and 2,663 of 3,159 at `n = 14`
 length 2. The open problem in this form: find a property of growth labelings,
 stronger than having one clean cut, that is preserved by the insertion it
 enables.
+
+**How the reachable class compares with α-labelings.** A placement is an
+*α-placement* if all brackets jump over one common point (the classical
+α-labeling). For `n = 7..14` (`src/alpha.cpp`, `src/derive.cpp`):
+
+| n | trees | with an α-placement | reached by clean gap insertions | reached but no α-placement | α-placement but not reached |
+|---|---|---|---|---|---|
+| 9 | 47 | 42 | 43 | 2 | 1 |
+| 11 | 235 | 213 | 205 | 11 | 19 |
+| 13 | 1,301 | 1,219 | 1,112 | 43 | 150 |
+| 14 | 3,159 | 3,012 | 2,663 | 82 | 431 |
+
+The two classes overlap heavily but neither contains the other, so the
+gap-insertion closure is not the α-labelable trees under another name.
+
+**Observation (`n ≤ 14`).** The trees that have a placement which is both an
+α-placement and a growth placement are exactly the caterpillars (their number
+is `2^(n−4) + 2^⌊(n−4)/2⌋`, the caterpillar count). So outside caterpillars a
+growth placement must contain a bracket that does not jump over the common
+point: the growth property and the α property pull in different directions.
