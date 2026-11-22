@@ -11,3 +11,5 @@ src/spiders_fill.txt
 src/ordered
 src/growcount
 src/famcount
+src/cleancut
+src/derive

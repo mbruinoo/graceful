@@ -279,3 +279,56 @@ order of length. Gnang and Wass, *Growing Graceful and Harmonious Trees*
 gracefully labelled functional digraphs. Neither source states the growth
 property or Theorem 7. A targeted search for "edge labels decreasing away
 from a root" found nothing, which is still not proof of novelty.
+
+## 9. Clean cuts: an induction step that works almost always
+
+Fix a growth labeling with labels `1..n`. A leaf `ℓ` with label `L`, hung by an
+edge of length `j`, is **clean** if the other edges that jump over `L` (one
+end below `L`, one above) are exactly the edges longer than `j`.
+
+**Lemma 8 (clean-cut removal and insertion; proved).** If `ℓ` is clean, delete
+it and close the gap (labels above `L` drop by one). The result is a growth
+labeling of `T − ℓ`. Conversely, in a growth labeling on `n` vertices, if the
+edges jumping over a cut position are exactly the `c` longest, open a gap
+there: those edges lengthen by one, length `j = n − c` becomes free, and a new
+leaf with the gap's label may be hung by a bracket of length `j` on any vertex
+at distance `j` whose own edge towards the root is longer than `j` (or which
+is the root).
+
+*Proof.* Closing the gap shortens exactly the edges that jumped over `L`, i.e.
+those longer than `j`, by one, and leaves shorter edges alone; so lengths
+`1..j−1, j+1..n−1` become `1..n−2`, order of lengths is preserved, and hence
+so is "lengths decrease away from the root" (Theorem 7). Insertion is the
+inverse. ∎
+
+Lemma 6 is the special case where the cut is at the far left or far right
+(`c = 0`). The gap move is the one described on MathWorld (Pegg, Weisstein,
+2026) for graceful labelings in general; the content here is that it preserves
+the growth property exactly when the cut is clean.
+
+**How often is a leaf clean?** (`src/cleancut.cpp`, exhaustive.)
+
+| n | leaves over all trees | leaves clean in no growth labeling | trees with no clean leaf at all |
+|---|---|---|---|
+| 9 | 226 | 2 | 0 |
+| 10 | 556 | 5 | 1 |
+| 11 | 1,333 | 2 | 0 |
+| 12 | 3,365 | 3 | 0 |
+| 13 | 8,500 | 3 | 0 |
+| 14 | 22,007 | 4 | 0 |
+
+So for `n ≤ 14` every tree except one arises from a growth labeling of a
+smaller tree by one clean gap insertion. The exception is the spider with
+three legs of length 3 (`n = 10`): it has growth labelings, but none with a
+clean leaf.
+
+**Why this is still not a proof.** The step needs the smaller tree to have a
+growth labeling *with the right clean cut next to the right vertex*, and the
+labeling the step produces need not have the cuts required by the next step.
+Carrying only "is a growth labeling" forward is not enough: starting from a
+single edge and applying clean gap insertions repeatedly reaches 10 of 11
+trees at `n = 7`, 93 of 106 at `n = 10` and 2,663 of 3,159 at `n = 14`
+(`src/derive.cpp`); the first tree missed is the spider with three legs of
+length 2. The open problem in this form: find a property of growth labelings,
+stronger than having one clean cut, that is preserved by the insertion it
+enables.
