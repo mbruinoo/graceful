@@ -388,12 +388,22 @@ legs of length 3 (`n = 10`), and at `n = 11, 12` trees made of three or four
 long equal arms with a small decoration. They all have growth placements; the
 placements just do not arise from a smaller growth placement by one split.
 
+**One step back is almost always possible.** Drop the requirement that the
+smaller placement was itself built by splits: ask only whether a tree has
+*some* growth placement that comes from *some* growth placement of a smaller
+tree by one gap split (`derive2 N 3 prefix full`). For `n ≤ 13` this holds
+for every tree except one: the spider with three legs of length 3. About two
+thirds of all growth placements on 13 vertices arise this way (851,358 of
+1,275,368). So that spider is the only tree found whose growth placements
+are all "primitive".
+
 **A possible shape for a proof (speculative, nothing here is proved).**
 (1) Show that every tree outside an explicit sparse family of highly symmetric
 trees arises by a gap split from a smaller tree's growth placement, carrying
 enough information about available cuts through the induction. (2) Give
 explicit growth placements for the symmetric family. For spiders with all
-legs of length 2 and the centre as root, (2) amounts to pairing the labels
-`1..2d` into `d` pairs whose differences are exactly the smaller-side labels,
-a Skolem-sequence-type problem. Neither part has been done. Part (1) is where
+legs of length 2 and the centre as root, (2) amounts to splitting the labels
+`1..2d` into inner labels `I` and outer labels `O`, `|I| = |O| = d`, with a
+perfect matching between them whose differences are exactly the set `O` and
+each smaller than its inner label; a Skolem-sequence-type problem. Neither part has been done. Part (1) is where
 the difficulty of the Graceful Tree Conjecture sits in this formulation.

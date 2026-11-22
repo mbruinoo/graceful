@@ -3,7 +3,7 @@
 //   (leaf)      joined to one existing vertex, or
 //   (subdivide) placed in the middle of an existing edge {a,b}: that edge is replaced by {a,x} and {x,b}.
 // Keep the result if it is again a growth placement (lengths 1..n all different, longest-first connected).
-// mode 1 = leaf moves only, mode 2 = leaf + subdivide, mode 3 = any vertex split (reverse of contracting an edge).     Usage: derive2 N mode [dumpprefix]
+// mode 1 = leaf moves only, mode 2 = leaf + subdivide, mode 3 = any vertex split (reverse of contracting an edge).     Usage: derive2 N mode [dumpprefix [full]]   ('full': each level starts from ALL growth placements, i.e. one-step reach)
 #include <bits/stdc++.h>
 using namespace std;
 typedef vector<signed char> Cfg;
@@ -22,7 +22,9 @@ bool isGrowth(int n,const Cfg&p){ unsigned S=1u<<1|1u<<n; if(p[n-2]!=1) return f
   for(int k=n-2;k>=1;k--){ int a=p[k-1],b=a+k; bool x=S>>a&1,y=S>>b&1; if(x==y) return false; S|=1u<<a|1u<<b; } return true; }
 // edges (new labels) -> placement if lengths are 1..m all distinct
 bool toCfg(int n,const vector<pair<int,int>>&E,Cfg&q){ q.assign(n-1,0); for(auto e:E){ int a=min(e.first,e.second), k=abs(e.first-e.second); if(k<1||k>n-1||q[k-1]) return false; q[k-1]=a; } return true; }
-int main(int argc,char**argv){ int N=atoi(argv[1]), mode=atoi(argv[2]);
+void allGrowth(int n,int k,unsigned S,Cfg&p,set<Cfg>&out){ if(k==0){ out.insert(p); return; }
+  for(int q=1;q<=n-k;q++){ bool a=S>>q&1,b=S>>(q+k)&1; if(a==b) continue; p[k-1]=q; allGrowth(n,k-1,S|1u<<q|1u<<(q+k),p,out); } }
+int main(int argc,char**argv){ int N=atoi(argv[1]), mode=atoi(argv[2]); bool full=argc>4;
   set<Cfg> cur; cur.insert(Cfg{1});
   for(int n=2;n<N;n++){ set<Cfg> nxt; Cfg q;
     for(const Cfg&p:cur){
@@ -39,5 +41,6 @@ int main(int argc,char**argv){ int N=atoi(argv[1]), mode=atoi(argv[2]);
       } }
     cur.swap(nxt); set<string> sh; for(auto&p:cur) sh.insert(canon(n+1,p));
     printf("n=%d mode=%d reachable placements=%zu shapes=%zu\n",n+1,mode,cur.size(),sh.size()); fflush(stdout);
+    if(full){ cur.clear(); Cfg p(n); p[n-1]=1; allGrowth(n+1,n-1,1u<<1|1u<<(n+1),p,cur); printf("   (one-step mode: next level starts from all %zu growth placements)\n",cur.size()); }
     if(argc>3){ FILE*f=fopen((string(argv[3])+to_string(n+1)+".txt").c_str(),"w"); for(auto&s:sh) fprintf(f,"%s\n",s.c_str()); fclose(f); }
   } }
