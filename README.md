@@ -134,7 +134,8 @@ off, but the star's component always contains every shape.
 
 Growth placements, exhaustive over all trees (`src/growsolve.cpp`, trees from
 `networkx.nonisomorphic_trees`): **every tree on `n ≤ 23` vertices has
-one.** Every spider on `n ≤ 48` vertices has one too (section 8). Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
+one**, and every tree on `n ≤ 25` vertices by the stronger three-run check of
+section 11. Every spider on `n ≤ 48` vertices has one too (section 8). Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
 the path on 40, complete binary tree on 31, complete ternary on 40, spiders
 with 10 legs of length 3 and 7 legs of length 5 — all have one.
 
@@ -479,11 +480,13 @@ island between them, `R = 3` two islands.
 | trees without one, `n = 15` | 724 of 7,741 | 0 | 0 |
 | trees without one, `n = 16` | — | 2 of 19,320 | 0 |
 | trees without one, `n = 18` | — | 1 of 123,867 | 0 |
-| exhaustive range with none missing | `n ≤ 8` | `n ≤ 15` | `n ≤ 22` |
+| exhaustive range with none missing | `n ≤ 8` | `n ≤ 15` | `n ≤ 25` (104,636,890 trees at `n = 25`) |
 
 (`src/holes.cpp` enumerates placements; `src/runsolve.cpp` and
 `src/runsolve_gen.cpp` search tree by tree, the latter with a built-in tree
-generator, `src/treegen.h`, validated against the known numbers of trees.)
+generator, `src/treegen.h`, validated against the known numbers of trees. The
+two `R = 2` failures at `n = 16` were confirmed independently: the enumerator
+finds 19,318 of 19,320 shapes.)
 
 **Conjecture B3 (three-run growth conjecture).** Every tree has a growth
 placement in which the unused labels never form more than three runs.
