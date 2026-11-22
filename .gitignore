@@ -1,0 +1,8 @@
+src/slide
+src/growth
+src/growsolve
+src/growsolve_big
+src/growsolve_big.cpp
+src/__pycache__/
+src/out*.txt
+src/growth_*.txt
