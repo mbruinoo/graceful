@@ -15,3 +15,10 @@ src/cleancut
 src/derive
 src/alpha
 src/derive2
+src/holes
+src/runsolve
+src/runsolve_gen
+src/countgen
+src/trace
+src/r3_*.txt
+src/runs3_*.txt

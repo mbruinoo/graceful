@@ -9,4 +9,6 @@ elif f=="C": s="("+hub(m)*3+")"                     # centre with three hubs of 
 elif f=="D": s="("+("("+hub(m)+")")*3+")"           # centre, three paths of length 2 ending in hubs             n=3m+7
 elif f=="S": s="("+path(m)*3+")"                    # spider with three legs of length m                          n=3m+1
 elif f=="S4": s="("+path(m)*4+")"
+elif f[0]=="D" and f[1:].isdigit(): s="("+("("+hub(m)+")")*int(f[1:])+")"      # Dk: centre, k paths of length 2 ending in hubs of m leaves
+elif f[0]=="S" and f[1:].isdigit(): s="("+path(m)*int(f[1:])+")"              # Sk: spider with k legs of length m
 print(s)

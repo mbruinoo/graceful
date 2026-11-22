@@ -459,7 +459,56 @@ tree, which cuts are available next to which vertices. One step back is
 almost always possible; no property found so far is both preserved by the
 step and strong enough to guarantee the next one.
 
-## 11. Checking
+## 11. Blocks and holes: how little freedom a growth placement needs
+
+Watch the set of unused labels while brackets are placed longest first
+(`src/trace.cpp` prints it; the page shows it as a "tape"). Typically a block
+of used labels grows in from each end and a few holes are left behind and
+filled late by short brackets. Call a maximal interval of unused labels a
+*run*. A growth placement is an **`R`-run growth placement** if the unused
+labels never form more than `R` runs. `R = 1` is the interval variant of
+section 7: used labels are a left block and a right block. `R = 2` allows one
+island between them, `R = 3` two islands.
+
+| | `R = 1` | `R = 2` | `R = 3` |
+|---|---|---|---|
+| first tree with no such placement | spider `S(2,2,2,2)`, `n = 9` | two trees at `n = 16` | none found |
+| trees without one, `n = 15` | 724 of 7,741 | 0 | 0 |
+| trees without one, `n = 16` | — | 2 of 19,320 | 0 |
+| trees without one, `n = 18` | — | 1 of 123,867 | 0 |
+| exhaustive range with none missing | `n ≤ 8` | `n ≤ 15` | `n ≤ 22` |
+
+(`src/holes.cpp` enumerates placements; `src/runsolve.cpp` and
+`src/runsolve_gen.cpp` search tree by tree, the latter with a built-in tree
+generator, `src/treegen.h`, validated against the known numbers of trees.)
+
+**Conjecture B3 (three-run growth conjecture).** Every tree has a growth
+placement in which the unused labels never form more than three runs.
+B3 implies B, which implies GTC.
+
+Evidence beyond the exhaustive range: 300 uniformly random trees at each of
+`n = 30, 40, 50, 60`; and the symmetric families that defeat `R = 2` (three to
+eight equal branches, hubs of odd size, equal-leg spiders), followed to 53
+vertices, where three runs were always enough and sometimes necessary.
+
+**Why this matters.** The state of a three-run build is at most four blocks of
+used labels, i.e. a handful of integers, and each step has a bounded number of
+choices (the new label must extend a block or start an island). That is the
+smallest search space found so far that still seems to contain every tree, and
+the search is fast: all 2,144,505 trees on 21 vertices in about two minutes on
+one core.
+
+**Caution, from this project's own history.** The two-run version looked
+universal through `n = 15` (7,741 trees) and then failed for 2 trees in 19,320
+at `n = 16`. All its known failures are trees with three or more equal
+branches. A three-run failure could be waiting in the same way at a size not
+yet reached.
+
+**Parity in the failures.** In the family "centre, three arms of length 2,
+each ending in a hub of `m` leaves", one run suffices when `m` is even and
+three are needed when `m` is odd (`m = 2..8`). Unexplained.
+
+## 12. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
 independent pass that tested each one by brute force from the definitions in
