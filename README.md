@@ -352,3 +352,48 @@ gap-insertion closure is not the α-labelable trees under another name.
 is `2^(n−4) + 2^⌊(n−4)/2⌋`, the caterpillar count). So outside caterpillars a
 growth placement must contain a bracket that does not jump over the common
 point: the growth property and the α property pull in different directions.
+
+## 10. Vertex splitting: growth labelings of most trees can be built by local moves
+
+A leaf can only be added through a gap by a clean-cut insertion (if any other
+set of edges jumps over the gap, two lengths collide). To go further, allow
+the new vertex to be more than a leaf.
+
+**Gap split move.** In a growth placement on `n` vertices, open a gap at `L`
+(labels `≥ L` move up by one; brackets jumping over the gap lengthen by one).
+Put a new vertex `x` at label `L`, join it to an existing vertex `y`, and move
+any chosen subset of `y`'s other edges from `y` to `x`. Keep the result if it
+is a growth placement. Moving no edge is the leaf insertion of Lemma 8;
+moving one edge places `x` in the middle of an edge. Read backwards the move
+is: contract an edge, then close the gap. Every tree on `n+1` vertices
+contracts to trees on `n`, so in principle this move can reach anything.
+
+**What it reaches, starting from a single edge** (`src/derive2.cpp`):
+
+| n | trees | leaf insertions only | + put `x` in the middle of an edge | any split |
+|---|---|---|---|---|
+| 7 | 11 | 10 | 11 | 11 |
+| 8 | 23 | 21 | 23 | 23 |
+| 9 | 47 | 43 | 46 | 46 |
+| 10 | 106 | 93 | 105 | 105 |
+| 11 | 235 | 205 | 232 | 233 |
+| 12 | 551 | 474 | 539 | 544 |
+| 13 | 1,301 | 1,112 | 1,274 | 1,283 |
+
+With splits the number of reachable placements grows by a factor of about 3.5
+per vertex, faster than the number of trees (about 2.96), so counting no
+longer rules out reaching everything. The trees missed are few and of one
+kind: the spider with four legs of length 2 (`n = 9`), the spider with three
+legs of length 3 (`n = 10`), and at `n = 11, 12` trees made of three or four
+long equal arms with a small decoration. They all have growth placements; the
+placements just do not arise from a smaller growth placement by one split.
+
+**A possible shape for a proof (speculative, nothing here is proved).**
+(1) Show that every tree outside an explicit sparse family of highly symmetric
+trees arises by a gap split from a smaller tree's growth placement, carrying
+enough information about available cuts through the induction. (2) Give
+explicit growth placements for the symmetric family. For spiders with all
+legs of length 2 and the centre as root, (2) amounts to pairing the labels
+`1..2d` into `d` pairs whose differences are exactly the smaller-side labels,
+a Skolem-sequence-type problem. Neither part has been done. Part (1) is where
+the difficulty of the Graceful Tree Conjecture sits in this formulation.
