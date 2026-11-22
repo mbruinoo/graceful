@@ -122,7 +122,7 @@ off, but the star's component always contains every shape.
 
 Growth placements, exhaustive over all trees (`src/growsolve.cpp`, trees from
 `networkx.nonisomorphic_trees`): **every tree on `n ≤ 23` vertices has
-one.** Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
+one.** Every spider on `n ≤ 48` vertices has one too (section 8). Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
 the path on 40, complete binary tree on 31, complete ternary on 40, spiders
 with 10 legs of length 3 and 7 legs of length 5 — all have one.
 
@@ -226,3 +226,56 @@ induction. It does not: one tree on 10 vertices and one on 12 have no anchor
 leaf.
 
 **Observation.** Every vertex of degree ≥ 4 is an anchor (`n ≤ 14`).
+
+## 8. A cleaner statement of the growth property, and a counterexample hunt
+
+**Theorem 7 (heap form; proved).** A graceful labeling of a tree is a growth
+placement if and only if, rooting the tree at the vertex labelled 1, edge
+lengths strictly decrease along every path away from the root. (The same
+holds rooting at the vertex labelled `n`.)
+
+*Proof.* In a growth placement the brackets of length `≥ k` form a subtree
+containing the top bracket `{1, n}`, so each vertex's edge towards the root
+was placed before any edge below it, i.e. is longer. Conversely, if lengths
+decrease away from the root then the set of edges of length `≥ k` is closed
+under moving towards the root, hence connected. ∎
+
+**Corollary (signed-sum form).** Write labels as `0..m`, `m = n−1`. Conjecture
+B says: every tree has a root, a bijection `w` from non-root vertices to
+`{1..m}` with `w(child) < w(parent)`, and signs `ε`, such that the signed
+sums `Σ ε(u) w(u)` along root paths take each value `0, 1, …, m` exactly once.
+The sum set obeys `Σ(X) = {0} ⊔ ⊔_children (ε_i a_i + Σ(C_i))`, so the
+conjecture is a statement about tiling an interval by translates of the sum
+sets of subtrees. An *anchor* is exactly a vertex that can serve as the root.
+
+**Rigid build orders fail.** Requiring the build order to be a depth-first
+walk fails for 1 of 47 trees at `n = 9` and 896 of 3,159 at `n = 14`;
+breadth-first fails from `n = 7` (`src/ordered.cpp`). The freedom to
+interleave branches is essential.
+
+**Where a counterexample would be.** The number of growth placements per tree
+has median 56, 110, 258, 572, 1260 for `n = 10..14`, but a few trees have very
+few (`src/growcount.cpp`, `src/scarce.py`). The scarcest overall are
+caterpillars (safe by Theorem 2). The scarcest non-caterpillars fall in a
+handful of families (`src/hardfam.py`): a centre carrying one hub of leaves
+and two legs of length 2 (12–24 placements for `n = 10..14`); three equal hubs
+around a centre; spiders with three equal legs. Each family was pushed to
+52–56 vertices and a growth placement was found every time.
+
+**Spiders.** Every spider on `n ≤ 48` vertices has a growth placement
+(exhaustive over all leg-length partitions; 124,730 spiders at `n = 48`;
+`src/spiders.py`). Solutions with the centre as root are few and show no
+uniform pattern (`src/spiderview.py`), so this is evidence, not a
+construction. Gracefulness of all spiders is open.
+
+**Related recent work.** MathWorld's *Graceful Tree Conjecture* entry
+describes a different leaf-by-leaf strategy (E. Pegg Jr. and E. Weisstein,
+August 2026): open a gap in the label sequence and attach a new leaf to the
+root with the gap's label; reported to work for every rooted tree through 22
+vertices, and stated there not to be a proof. That move re-labels the tree at
+each step; a growth placement is a single labeling whose edges peel off in
+order of length. Gnang and Wass, *Growing Graceful and Harmonious Trees*
+(arXiv:1808.05551), despite the title, concerns determinantal enumeration of
+gracefully labelled functional digraphs. Neither source states the growth
+property or Theorem 7. A targeted search for "edge labels decreasing away
+from a root" found nothing, which is still not proof of novelty.

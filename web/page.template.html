@@ -128,6 +128,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
   <p>The staircase proof worked because each new bracket touched exactly one new vertex. Keep that property and drop the rest: place brackets n−1, n−2, …, 1 in order, anywhere on their rails, so that each one stands with one foot on a vertex already used and the other on a fresh vertex. Call this a growth placement. It is a tree for the same reason a staircase is.</p>
   <p><b>Growth conjecture.</b> Every tree has a growth placement. Read backwards: every tree has a graceful labeling in which edge 1 is a leaf edge, and after removing it edge 2 is a leaf edge, and so on up to n−1.</p>
   <p>This asks for much more than gracefulness, yet it holds for every tree with at most <span class="nmaxgrow">23</span> vertices, checked exhaustively, and for every larger random or structured tree tried, up to 50 vertices. The “Grow longest-first” view in the atlas shows one for each tree.</p>
+  <p><b>The same thing, said with a root.</b> Hold the tree by the vertex labelled 1. A graceful labeling is a growth placement exactly when edge lengths get strictly shorter along every path away from that root. So the conjecture reads: every tree can be gracefully labelled so that its edge lengths run downhill from one vertex.</p>
   <div class="proof">
     <p><b>Why it is interesting.</b> It turns the conjecture into a statement about building a tree leaf by leaf, which is the shape induction wants. At each moment the state is small: which numbers are used, and which vertices still have unbuilt branches. For the first half of the build the used numbers sit in two blocks at the ends of the line and every bracket jumps from one block to the other.</p>
     <p><b>What is proved about it.</b> Caterpillars have growth placements (the staircases). If a tree has a growth placement, so does the tree with one more leaf attached to either foot of its longest bracket: shift everything one place and add the new longest bracket on top.</p>
@@ -144,6 +145,8 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     <li>From 7 vertices on, one-step slides do not connect all graceful trees. Small islands split off. The star’s island holds 95–97% of placements and contains every tree shape.</li>
     <li>No graceful tree is frozen: in every case checked, at least one bracket can slide one step.</li>
     <li>If a bracket may jump any distance along its rail, all graceful trees on up to <span class="nmaxslide">14</span> vertices form a single island.</li>
+    <li>Every spider (a star with lengthened arms) on up to 48 vertices has a growth placement. Whether all spiders are graceful is itself an open problem.</li>
+    <li>The trees with the fewest growth placements, other than caterpillars, were followed out to 52–56 vertices. None failed.</li>
     <li>Slides that also keep the growth property are too rigid: from the star they reach exactly 5·2<sup>n−5</sup>−1 placements for 5 ≤ n ≤ 11 and miss some trees from 9 vertices on.</li>
   </ul>
 </section>

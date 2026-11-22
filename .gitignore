@@ -8,3 +8,6 @@ src/growth_*.txt
 src/anchors
 src/interval
 src/spiders_fill.txt
+src/ordered
+src/growcount
+src/famcount
