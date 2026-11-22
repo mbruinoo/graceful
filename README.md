@@ -67,6 +67,9 @@ index per slide. Build the target pattern from the largest index down. ∎
 **Lemma 4 (all right-slide routes have the same length).** Any route of right
 slides from the star to a placement `p` has length `Σ (p_k − 1)`.
 
+*Proof.* Each right slide raises `Σ p_k` by exactly 1, and the star has
+`Σ p_k = n − 1`. ∎
+
 **Definition (growth placement).** A placement is a *growth placement* if, for
 every `k`, brackets `n−1, n−2, …, k` form a connected tree; equivalently each
 bracket, taken longest first, has exactly one foot on a vertex already used.
@@ -79,12 +82,18 @@ Theorem 2).
 
 **Lemma 6 (leaf extension).** If a tree `T` has a growth placement, and `v` is
 either foot of its longest bracket, then `T` plus a new leaf at `v` has a
-growth placement. The same holds for "reachable from the star by right slides".
+growth placement. The same holds with "has a growth placement" replaced by
+"is drawn by a placement reachable from the star by legal right slides".
 
 *Proof.* For the vertex labelled `n`: shift all labels up by one and add the
 new longest bracket `{1, n+1}`. For the vertex labelled 1: keep all labels and
 add `{1, n+1}`. In both cases the old brackets never touch the new vertex, so
-the growth order, and any sequence of legal slides, carries over. ∎
+the growth order carries over, and so does any sequence of legal slides once
+the starting placement is reached. For the vertex labelled 1 the starting
+placement is the star itself. For the vertex labelled `n` it is "bracket `n`
+at position 1, every shorter bracket at position 2", which is reached from
+the star on `n+1` vertices by sliding brackets `1, 2, …, n−1` right once each
+in that order (a staircase at every step, Theorem 3). ∎
 
 ## 3. Conjectures
 
@@ -96,7 +105,7 @@ slides.
 
 **Conjecture B (growth conjecture).** Every tree has a growth placement.
 
-**Observation C.** Every tree placement admits at least one legal slide
+**Observation C.** For `n ≥ 3`, every tree placement admits at least one legal slide
 (checked `n ≤ 14`).
 
 **Observation D.** If a bracket may jump to any position on its rail in one
@@ -130,8 +139,9 @@ Number of growth placements for `n = 4..13`:
 4, 12, 32, 116, 412, 1764, 7888, 40220, 214600, 1275368.
 
 Negative result: slides that also preserve the growth property are too rigid.
-From the star they reach exactly `5·2^(n−5) − 1` placements (`5 ≤ n ≤ 11`) and
-miss some shapes from `n = 9` on (`src/growslide.py`).
+Growth-preserving right slides from the star reach exactly `5·2^(n−4) − 1`
+placements (`5 ≤ n ≤ 11`) and miss some shapes from `n = 9` on; allowing left
+slides as well does not fix this (`src/growslide.py`).
 
 ## 5. Relation to known work, and caveats
 
@@ -139,8 +149,8 @@ miss some shapes from `n = 9` on (`src/growslide.py`).
   result in bracket language.
 * The *transfer* technique of Hrnčiar and Haviar (all trees of diameter ≤ 5
   are graceful) moves leaves between vertices of a labelled star. In this
-  model a transfer is a pair of brackets reflected together, i.e. a compound
-  slide.
+  model a transfer looks like a pair of brackets reflected together, i.e. a
+  compound slide (an informal remark, not worked out here).
 * A brief literature search did not find the slide graph of graceful
   labelings, Conjecture A, or the growth property / Conjecture B. That search
   was not exhaustive. Treat novelty as unverified until checked against
@@ -160,6 +170,8 @@ pip install networkx
 python3 gentrees.py 16 | ./growsolve 16                  # growth placement for every tree
 python3 growslide.py                                     # growth-preserving slides
 python3 export_atlas.py && python3 ../web/build.py       # rebuild the interactive page
+g++ -O2 -o growsolve_big growsolve_big.cpp
+python3 spiders.py 48 | ./growsolve_big 48 20000         # every spider on 48 vertices
 ```
 
 ## 7. Trying to prove Conjecture B by induction (what was tried, where it breaks)
@@ -172,7 +184,7 @@ close.
 **What does go through: gluing at the top (proved).** Let `O` be a tree with a
 growth placement on labels `1..r+1` in which every bracket joins a label
 `≤ a+1` to a label `> a+1`, and let `x` be the vertex labelled `a+1`. Let `T'`
-have a growth placement on `m` vertices with `y` labelled 1 (or `m`). Then the
+have a growth placement on `m` vertices with `y` labelled 1 (or `m`; in that case reflect `T'` first). Then the
 tree obtained by identifying `x` with `y` has a growth placement: keep `O`'s
 low labels, raise its high labels by `m−1`, and drop `T'` into the gap
 `a+1..a+m`. `O`'s lengths become `n−1..m`, `T'` keeps `m−1..1`, and the build
@@ -190,9 +202,10 @@ placement (`src/anchors.cpp`, exhaustive):
 | 12 | 6,612 | 37 | 525 / 551 |
 | 14 | 44,226 | 84 | 3,092 / 3,159 |
 
-Almost every vertex is an anchor (99.8% at `n = 14`), every tree has one, and
-non-anchors have degree ≤ 3. But they exist (the three middle vertices of the
-path on 7 vertices are the smallest clean example), and they follow no pattern
+For all `n ≤ 14`: almost every vertex is an anchor (99.8% at `n = 14`), every
+tree has one, and non-anchors have degree ≤ 3. But they exist (the smallest is
+at `n = 6`; the simplest to state are the three middle vertices of the path on
+7 vertices), and they follow no pattern
 found so far, so "every vertex is an anchor" cannot be the induction
 hypothesis. Lemma 6 alone only ever produces anchors at the two ends of the
 top bracket, which regenerates exactly the caterpillars.
@@ -202,8 +215,9 @@ interval `(a, b)` throughout. Then the state is just `(a, b)` and each new leaf
 has four options: label `a+1` hung on `b` or on its mirror `2a+2−b`; label
 `b−1` hung on `a` or on its mirror `2b−2−a`. This covers every tree on ≤ 8
 vertices and 91% at 15, but misses the spider with four legs of length 2 at
-`n = 9`, and must fail for most large trees by counting: such placements grow
-by a factor ≈ 2.5 per vertex, trees by ≈ 2.96 (`src/interval.cpp`,
+`n = 9`, and should fail for most large trees if the observed growth rate
+persists: such placements grow by a factor ≈ 2.5 per vertex in the data (the
+provable bound is only 4), trees by ≈ 2.96 (`src/interval.cpp`,
 `src/classify.py`).
 
 **Where that leaves the induction.** The missing ingredient is a lemma that
@@ -215,15 +229,16 @@ here creates them.
 is an anchor of `T` if and only if `v` is an anchor of `T − ℓ`. (If `ℓ` has
 label 1 its only bracket is the top one, `{1, n}`, and everything else is a
 growth placement of `T − ℓ` on `2..n` with `v` at the top label; conversely
-Lemma 6.) The counts confirm it: non-anchor leaves at `n` equal all
-non-anchors at `n−1` for every `n ≤ 14`. So every exception traces back to a
+Lemma 6.) The counts agree: the kinds of non-anchor leaf at `n` (vertices
+up to symmetry of the tree) are as many as the kinds of non-anchor at `n−1`,
+for every `n ≤ 14`. So every exception traces back to a
 *primitive* internal non-anchor; there are 1, 2, 2, 4, 4, 5, 14, 18, 24 kinds
 of those for `n = 6..14`, almost all of degree 2, with no rule found.
 
 **"Label 1 on a leaf" fails.** One might hope every tree has a growth
 placement with label 1 on a leaf, which would make the leaf rule a complete
-induction. It does not: one tree on 10 vertices and one on 12 have no anchor
-leaf.
+induction. It does not: among `n ≤ 14`, one tree on 10 vertices and one on 12
+have no anchor leaf (and one more appears at `n = 15`).
 
 **Observation.** Every vertex of degree ≥ 4 is an anchor (`n ≤ 14`).
 
@@ -291,20 +306,28 @@ it and close the gap (labels above `L` drop by one). The result is a growth
 labeling of `T − ℓ`. Conversely, in a growth labeling on `n` vertices, if the
 edges jumping over a cut position are exactly the `c` longest, open a gap
 there: those edges lengthen by one, length `j = n − c` becomes free, and a new
-leaf with the gap's label may be hung by a bracket of length `j` on any vertex
-at distance `j` whose own edge towards the root is longer than `j` (or which
-is the root).
+leaf with the gap's label may be hung by a bracket of length `j` on a vertex
+`u` at distance `j` from the gap, provided `u` is the root or `u`'s edge
+towards the root is one of the `c` edges that jump the cut. Here the root is
+the vertex labelled 1, or the vertex labelled `n` if the cut is at the far
+left. Given a clean cut, this condition on `u` is necessary and sufficient
+for the result to be a growth labeling.
 
 *Proof.* Closing the gap shortens exactly the edges that jumped over `L`, i.e.
 those longer than `j`, by one, and leaves shorter edges alone; so lengths
 `1..j−1, j+1..n−1` become `1..n−2`, order of lengths is preserved, and hence
-so is "lengths decrease away from the root" (Theorem 7). Insertion is the
-inverse. ∎
+so is "lengths decrease away from the root" (Theorem 7; root at the vertex
+labelled 1, or at the vertex labelled `n` when `L = 1` and the deleted leaf
+was the old root). Insertion is the inverse, and by Theorem 7 the new leaf's
+edge, of length `j`, must be shorter than its parent's edge towards the root,
+which after opening the gap means that edge is one of the lengthened ones. ∎
 
 Lemma 6 is the special case where the cut is at the far left or far right
 (`c = 0`). The gap move is the one described on MathWorld (Pegg, Weisstein,
-2026) for graceful labelings in general; the content here is that it preserves
-the growth property exactly when the cut is clean.
+2026) for graceful labelings in general; the content here is that a leaf can be
+added this way only at a clean cut (otherwise two lengths collide and the
+labeling is not even graceful), and that it then preserves the growth
+property exactly when the new leaf's parent satisfies the condition above.
 
 **How often is a leaf clean?** (`src/cleancut.cpp`, exhaustive.)
 
@@ -407,3 +430,14 @@ legs of length 2 and the centre as root, (2) amounts to splitting the labels
 perfect matching between them whose differences are exactly the set `O` and
 each smaller than its inner label; a Skolem-sequence-type problem. Neither part has been done. Part (1) is where
 the difficulty of the Graceful Tree Conjecture sits in this formulation.
+
+## 11. Checking
+
+The statements marked proved in sections 2 and 7–9 were re-checked by an
+independent pass that tested each one by brute force from the definitions in
+section 1 (all placements up to `n = 8..10`, every tree and leaf up to
+`n = 12` for the leaf rule). It found no false theorem; it found a wrong
+exponent, an under-specified condition in Lemma 8, a false summary sentence
+and several unbounded claims, all corrected in this version. The exhaustive
+runs for `n ≥ 14` rest on the programs in `src/` alone and have not been
+independently re-implemented.
