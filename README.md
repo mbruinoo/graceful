@@ -116,7 +116,7 @@ For `n ≤ 6` the slide graph is connected. From `n = 7` small components split
 off, but the star's component always contains every shape.
 
 Growth placements, exhaustive over all trees (`src/growsolve.cpp`, trees from
-`networkx.nonisomorphic_trees`): **every tree on `n ≤ 21` vertices has
+`networkx.nonisomorphic_trees`): **every tree on `n ≤ 22` vertices has
 one.** Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
 the path on 40, complete binary tree on 31, complete ternary on 40, spiders
 with 10 legs of length 3 and 7 legs of length 5 — all have one.
