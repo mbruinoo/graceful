@@ -92,10 +92,10 @@ slides.
 **Conjecture B (growth conjecture).** Every tree has a growth placement.
 
 **Observation C.** Every tree placement admits at least one legal slide
-(checked `n ≤ 13`).
+(checked `n ≤ 14`).
 
 **Observation D.** If a bracket may jump to any position on its rail in one
-move, all tree placements form one connected component (checked `n ≤ 13`).
+move, all tree placements form one connected component (checked `n ≤ 14`).
 
 ## 4. Evidence
 
@@ -110,12 +110,13 @@ Exhaustive over all tree placements (`src/slide.cpp`):
 | 11 | 235 | 155,632 | 1,013 | 147,342 | 235 |
 | 12 | 551 | 1,112,032 | 4,987 | 1,067,746 | 551 |
 | 13 | 1,301 | 8,733,628 | 34,181 | 8,433,246 | 1,301 |
+| 14 | 3,159 | 73,547,332 | 216,791 | 71,562,128 | 3,159 |
 
 For `n ≤ 6` the slide graph is connected. From `n = 7` small components split
 off, but the star's component always contains every shape.
 
 Growth placements, exhaustive over all trees (`src/growsolve.cpp`, trees from
-`networkx.nonisomorphic_trees`): **every tree on `n ≤ 20` vertices has
+`networkx.nonisomorphic_trees`): **every tree on `n ≤ 21` vertices has
 one.** Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
 the path on 40, complete binary tree on 31, complete ternary on 40, spiders
 with 10 legs of length 3 and 7 legs of length 5 — all have one.

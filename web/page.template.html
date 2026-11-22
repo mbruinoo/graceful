@@ -106,7 +106,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
 <section>
   <div class="head"><h2>Atlas of slides</h2><span class="status open">Conjecture</span></div>
   <p><b>Right-slide conjecture.</b> Every tree can be reached from the star by sliding brackets one step to the right, one at a time, with a tree at every step. Since every picture on the bench is graceful, this would imply the Graceful Tree Conjecture.</p>
-  <p>It holds for all trees with at most <span class="nmaxslide">13</span> vertices. Pick a tree and watch the shortest route, or switch to the growth view described in the next section.</p>
+  <p>It holds for all trees with at most <span class="nmaxslide">14</span> vertices. Pick a tree and watch the shortest route, or switch to the growth view described in the next section.</p>
   <div class="bench">
     <div class="controls">
       <label for="an">Vertices</label><select id="an"></select>
@@ -127,7 +127,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
   <div class="head"><h2>Growing longest-first</h2><span class="status open">Conjecture</span></div>
   <p>The staircase proof worked because each new bracket touched exactly one new vertex. Keep that property and drop the rest: place brackets n−1, n−2, …, 1 in order, anywhere on their rails, so that each one stands with one foot on a vertex already used and the other on a fresh vertex. Call this a growth placement. It is a tree for the same reason a staircase is.</p>
   <p><b>Growth conjecture.</b> Every tree has a growth placement. Read backwards: every tree has a graceful labeling in which edge 1 is a leaf edge, and after removing it edge 2 is a leaf edge, and so on up to n−1.</p>
-  <p>This asks for much more than gracefulness, yet it holds for every tree with at most <span class="nmaxgrow">22</span> vertices, checked exhaustively, and for every larger random or structured tree tried, up to 50 vertices. The “Grow longest-first” view in the atlas shows one for each tree.</p>
+  <p>This asks for much more than gracefulness, yet it holds for every tree with at most <span class="nmaxgrow">21</span> vertices, checked exhaustively, and for every larger random or structured tree tried, up to 50 vertices. The “Grow longest-first” view in the atlas shows one for each tree.</p>
   <div class="proof">
     <p><b>Why it is interesting.</b> It turns the conjecture into a statement about building a tree leaf by leaf, which is the shape induction wants. At each moment the state is small: which numbers are used, and which vertices still have unbuilt branches. For the first half of the build the used numbers sit in two blocks at the ends of the line and every bracket jumps from one block to the other.</p>
     <p><b>What is proved about it.</b> Caterpillars have growth placements (the staircases). If a tree has a growth placement, so does the tree with one more leaf attached to either foot of its longest bracket: shift everything one place and add the new longest bracket on top.</p>
@@ -141,9 +141,9 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     <tbody id="evid"></tbody>
   </table></div>
   <ul>
-    <li>From 7 vertices on, one-step slides do not connect all graceful trees. Small islands split off. The star’s island holds about 95% of placements and contains every tree shape.</li>
+    <li>From 7 vertices on, one-step slides do not connect all graceful trees. Small islands split off. The star’s island holds 95–97% of placements and contains every tree shape.</li>
     <li>No graceful tree is frozen: in every case checked, at least one bracket can slide one step.</li>
-    <li>If a bracket may jump any distance along its rail, all graceful trees on up to <span class="nmaxslide">13</span> vertices form a single island.</li>
+    <li>If a bracket may jump any distance along its rail, all graceful trees on up to <span class="nmaxslide">14</span> vertices form a single island.</li>
     <li>Slides that also keep the growth property are too rigid: from the star they reach exactly 5·2<sup>n−5</sup>−1 placements for 5 ≤ n ≤ 11 and miss some trees from 9 vertices on.</li>
   </ul>
 </section>
