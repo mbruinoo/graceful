@@ -6,3 +6,5 @@ src/growsolve_big.cpp
 src/__pycache__/
 src/out*.txt
 src/growth_*.txt
+src/anchors
+src/interval

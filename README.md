@@ -156,3 +156,52 @@ python3 gentrees.py 16 | ./growsolve 16                  # growth placement for 
 python3 growslide.py                                     # growth-preserving slides
 python3 export_atlas.py && python3 ../web/build.py       # rebuild the interactive page
 ```
+
+## 7. Trying to prove Conjecture B by induction (what was tried, where it breaks)
+
+**The naive step fails.** Deleting the last-placed leaf of a growth placement
+leaves `n−1` vertices on `n−1` of the `n` labels with lengths `2..n−1`. That is
+not a growth placement of a smaller tree, so "remove a leaf, recurse" does not
+close.
+
+**What does go through: gluing at the top (proved).** Let `O` be a tree with a
+growth placement on labels `1..r+1` in which every bracket joins a label
+`≤ a+1` to a label `> a+1`, and let `x` be the vertex labelled `a+1`. Let `T'`
+have a growth placement on `m` vertices with `y` labelled 1 (or `m`). Then the
+tree obtained by identifying `x` with `y` has a growth placement: keep `O`'s
+low labels, raise its high labels by `m−1`, and drop `T'` into the gap
+`a+1..a+m`. `O`'s lengths become `n−1..m`, `T'` keeps `m−1..1`, and the build
+order is `O` first, then `T'`. Lemma 6 is the case `O = K_2`. This is the
+classical "α-labeling ⊕ graceful labeling" composition; the point is that it
+preserves growth.
+
+So induction needs **anchors**: vertices that can carry label 1 in some growth
+placement (`src/anchors.cpp`, exhaustive):
+
+| n | vertices over all trees | non-anchors | trees with every vertex an anchor |
+|---|---|---|---|
+| 8 | 184 | 6 | 18 / 23 |
+| 10 | 1,060 | 19 | 95 / 106 |
+| 12 | 6,612 | 37 | 525 / 551 |
+| 14 | 44,226 | 84 | 3,092 / 3,159 |
+
+Almost every vertex is an anchor (99.8% at `n = 14`), every tree has one, and
+non-anchors have degree ≤ 3. But they exist (the three middle vertices of the
+path on 7 vertices are the smallest clean example), and they follow no pattern
+found so far, so "every vertex is an anchor" cannot be the induction
+hypothesis. Lemma 6 alone only ever produces anchors at the two ends of the
+top bracket, which regenerates exactly the caterpillars.
+
+**A small-state variant fails.** Require the unused labels to form a single
+interval `(a, b)` throughout. Then the state is just `(a, b)` and each new leaf
+has four options: label `a+1` hung on `b` or on its mirror `2a+2−b`; label
+`b−1` hung on `a` or on its mirror `2b−2−a`. This covers every tree on ≤ 8
+vertices and 91% at 15, but misses the spider with four legs of length 2 at
+`n = 9`, and must fail for most large trees by counting: such placements grow
+by a factor ≈ 2.5 per vertex, trees by ≈ 2.96 (`src/interval.cpp`,
+`src/classify.py`).
+
+**Where that leaves the induction.** The missing ingredient is a lemma that
+produces anchors at *internal* vertices of a tree from growth placements of
+smaller trees. The data says such anchors nearly always exist; nothing proved
+here creates them.
