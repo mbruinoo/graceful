@@ -7,6 +7,11 @@ Graceful Tree Conjecture and survive an exhaustive computer search.
 
 Interactive version (drag the brackets, watch the proofs): `web/index.html`.
 
+The bracket-and-slide picture is the repository author's; see `INTUITION.md`
+for the original idea in their words and a table of who contributed what.
+The formalisation, proofs, searches and conjectures were produced by Claude
+(Anthropic's AI model) under the author's direction.
+
 ## 1. The model
 
 Put vertices `1, 2, …, n` on a line. For each length `k = 1, …, n−1` there is
@@ -205,3 +210,19 @@ by a factor ≈ 2.5 per vertex, trees by ≈ 2.96 (`src/interval.cpp`,
 produces anchors at *internal* vertices of a tree from growth placements of
 smaller trees. The data says such anchors nearly always exist; nothing proved
 here creates them.
+
+**Leaf rule (proved).** Let `ℓ` be a leaf of `T` with neighbour `v`. Then `ℓ`
+is an anchor of `T` if and only if `v` is an anchor of `T − ℓ`. (If `ℓ` has
+label 1 its only bracket is the top one, `{1, n}`, and everything else is a
+growth placement of `T − ℓ` on `2..n` with `v` at the top label; conversely
+Lemma 6.) The counts confirm it: non-anchor leaves at `n` equal all
+non-anchors at `n−1` for every `n ≤ 14`. So every exception traces back to a
+*primitive* internal non-anchor; there are 1, 2, 2, 4, 4, 5, 14, 18, 24 kinds
+of those for `n = 6..14`, almost all of degree 2, with no rule found.
+
+**"Label 1 on a leaf" fails.** One might hope every tree has a growth
+placement with label 1 on a leaf, which would make the leaf rule a complete
+induction. It does not: one tree on 10 vertices and one on 12 have no anchor
+leaf.
+
+**Observation.** Every vertex of degree ≥ 4 is an anchor (`n ≤ 14`).
