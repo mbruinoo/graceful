@@ -23,6 +23,9 @@ rail; a bracket moves only along its rail.
 * Every placement is a graceful labeling of the graph it draws: the vertex
   labels are `1..n` and the edge lengths are `1..n−1`, each once.
 * A **tree placement** is one whose `n−1` brackets form a tree.
+  Most placements are not: brackets can close a cycle and leave a vertex
+  out (for `n = 4`: `{1,4}`, `{1,3}`, `{3,4}` is a triangle missing vertex 2).
+  A *rail* is only the track of positions available to one bracket.
 * The **Graceful Tree Conjecture (GTC)** says: every tree shape on `n`
   vertices is drawn by at least one tree placement.
 * The **star** is the placement `p_k = 1` for all `k` (centre at vertex 1).
