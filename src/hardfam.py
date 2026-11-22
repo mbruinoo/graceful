@@ -1,6 +1,7 @@
 # Families of non-caterpillar trees with few growth placements.  Usage: hardfam.py family param  -> paren string
 import sys
 f,m=sys.argv[1],int(sys.argv[2])
+s=None
 hub=lambda k:"("+"()"*k+")"
 path=lambda k:"("*k+")"*k            # path with k vertices hanging down
 if f=="A": s="("+hub(m)+"(())(()))"                 # centre with: a hub of m leaves, two legs of length 2      n=m+6
@@ -11,4 +12,8 @@ elif f=="S": s="("+path(m)*3+")"                    # spider with three legs of 
 elif f=="S4": s="("+path(m)*4+")"
 elif f[0]=="D" and f[1:].isdigit(): s="("+("("+hub(m)+")")*int(f[1:])+")"      # Dk: centre, k paths of length 2 ending in hubs of m leaves
 elif f[0]=="S" and f[1:].isdigit(): s="("+path(m)*int(f[1:])+")"              # Sk: spider with k legs of length m
+if f=="sym":                                          # spherically symmetric tree: every vertex at depth i has d_i children
+    ds=list(map(int,sys.argv[2:]))
+    def build(i): return "("+ (build(i+1)*ds[i] if i<len(ds) else "") +")"
+    s=build(0)
 print(s)

@@ -149,19 +149,69 @@ slides as well does not fix this (`src/growslide.py`).
 
 ## 5. Relation to known work, and caveats
 
-* Caterpillars being graceful is Rosa's original result; Theorem 2 is that
-  result in bracket language.
-* The *transfer* technique of Hrnčiar and Haviar (all trees of diameter ≤ 5
-  are graceful) moves leaves between vertices of a labelled star. In this
-  model a transfer looks like a pair of brackets reflected together, i.e. a
-  compound slide (an informal remark, not worked out here).
-* A brief literature search did not find the slide graph of graceful
-  labelings, Conjecture A, or the growth property / Conjecture B. That search
-  was not exhaustive. Treat novelty as unverified until checked against
-  Gallian's *Dynamic Survey of Graph Labeling* by someone who knows the area.
-* Graceful labelings are abundant for small trees, so strong statements can
-  hold for all small cases and still be false. GTC itself is verified to 35
-  vertices (Fang, 2010) and remains open.
+A literature pass (Gallian's survey, 28th ed. 2025, sections on graceful trees
+and α-labelings read in full; Fang's paper read in full; others by abstract or
+partial text) found the following. Items marked † were not read directly.
+
+**The model is known.** Choosing one position for each length is Sheppard's
+"labelling sequence" (1976†), which gives the `(n−1)!` count; as a picture it
+is the *graceful chessboard* of Haviar and Ivaška (2015†): one dot on each
+diagonal of the adjacency matrix. The bracket-and-rail drawing is the same
+object. What was not found in the literature: slides as moves, the slide
+graph and its islands, and Conjecture A.
+
+**The growth order is known as a search order.** Fang's computer verification
+of GTC for `n ≤ 35` (*A computational approach to the graceful tree
+conjecture*, arXiv:1003.3045, 2010; derandomising Horton's 2003 thesis†) uses
+a backtracking search that puts label 0 on the root (the centre of the tree)
+and assigns edge labels `n−1` down to `1`, each to an unlabelled vertex whose
+parent is already labelled. Every labeling that search outputs is a growth
+placement with the centre as anchor. So:
+
+* `src/growsolve.cpp` is a re-discovery of that search (with the anchor left
+  free instead of fixed at the centre).
+* Fang's table is evidence for Conjecture B far beyond this repository's
+  range: the search succeeded, within a backtrack cap, for 104,635,672 of
+  104,636,890 trees at `n = 25` and 2,262,333,140,305 of 2,262,366,343,746 at
+  `n = 35` — more than 99.998% at every size from 20 to 35. The rest were
+  finished by a different (tabu) search and are not known to have or lack a
+  growth placement. Some trees genuinely have none anchored at the centre
+  (section 7: the middle of the path on 7 vertices is not an anchor), which
+  matches Fang's remark that fixing the root at 0 "misses a lot of potential
+  solutions".
+* What was not found: the growth property stated as a property of labelings
+  or as a conjecture; Theorem 7; clean cuts and gap splits; Theorem 9; the
+  `R`-run refinement and Conjecture B3.
+
+**Nearby notions.** Which vertex can carry label 0 ("0-rotatable",
+"0-centred", "0-ubiquitously graceful": Van Bussel 2004; Anick 2016; Luiz,
+Campos, Richter 2020) is the anchor question without the growth condition; Van
+Bussel shows some diameter-4 trees cannot have the centre at 0. Anick's study
+found that the trees with fewest graceful labelings fall in two caterpillar
+families, consistent with section 8. Dumitru and Nacu (arXiv:2607.12597, 2026)
+use a largest-difference-first search for spiders and state that it is not
+proved to succeed.
+
+**Classical results used.** Caterpillars: Rosa 1967 (Theorem 2 is that result
+in bracket language). Transfers: Hrnčiar and Haviar 2001, all trees of
+diameter ≤ 5 are graceful; here a transfer looks like a pair of brackets
+reflected together (an informal remark, not worked out). The composition
+behind the gluing statement of section 7: Stanton–Zarnke, Koh–Rogers–Tan†.
+
+**State of the conjecture (2026).** Open. Verified for `n ≤ 35` (Fang).
+Spiders: graceful with at most 5 legs (Huang–Kotzig–Rosa; Panpa et al.
+2025†), with leg lengths differing by at most 1 (Bahls–Lake–Wertheim 2010),
+and some further families; open in general. Lobsters (Bermond's conjecture):
+open. Asymptotically, every large tree has a labeling using labels up to
+`(1+γ)n` when the maximum degree is `O(n/log n)` (Adamaszek, Allen, Grosu,
+Hladký 2020) and gracesize at least `(1−ε)n` (Letzter, Pokrovskiy, Williams,
+arXiv:2511.11331). Those proofs embed randomly and do not place edge labels
+in a prescribed order, so they do not obviously adapt to growth.
+
+**Caveats.** This search was done by an AI system in a few hours and is
+not a substitute for an expert's reading. Graceful labelings are abundant for
+small trees, so strong statements can hold for all small cases and still be
+false.
 
 ## 6. Reproducing
 
@@ -293,11 +343,8 @@ August 2026): open a gap in the label sequence and attach a new leaf to the
 root with the gap's label; reported to work for every rooted tree through 22
 vertices, and stated there not to be a proof. That move re-labels the tree at
 each step; a growth placement is a single labeling whose edges peel off in
-order of length. Gnang and Wass, *Growing Graceful and Harmonious Trees*
-(arXiv:1808.05551), despite the title, concerns determinantal enumeration of
-gracefully labelled functional digraphs. Neither source states the growth
-property or Theorem 7. A targeted search for "edge labels decreasing away
-from a root" found nothing, which is still not proof of novelty.
+order of length. See section 5 for Fang's search, which already builds
+labelings in growth order, and for what was and was not found on Theorem 7.
 
 ## 9. Clean cuts: an induction step that works almost always
 

@@ -41,7 +41,7 @@ Plus a method: keep it visual, and keep to arguments a person can follow.
 
 | Original piece | What was built on it | Who |
 |---|---|---|
-| The line and the brackets | The exact model: placement `(p_1..p_{n−1})`, one rail per length, `(n−1)!` placements, each one a graceful labeling (README §1) | formalised by Claude |
+| The line and the brackets | The exact model: placement `(p_1..p_{n−1})`, one rail per length, `(n−1)!` placements, each one a graceful labeling (README §1) | formalised by Claude; known in print as Sheppard's sequences / graceful chessboards |
 | "Basic sliding rules" | The slide rule (Lemma 1); the slide graph; its islands; right slides (README §2, §4) | Claude |
 | "Starfish and other trivial configurations are the starting point" | The star as the origin of every route; the right-slide conjecture (Conjecture A) | idea: author; statement and evidence: Claude |
 | Sliding from trivial shapes | Staircases = caterpillars, and right slides reach all of them (Theorems 2–3). The labeling itself is Rosa's, 1967 | Claude, restating a classical result |
@@ -54,6 +54,20 @@ Plus a method: keep it visual, and keep to arguments a person can follow.
 In the literature a star with its arms lengthened is a **spider**. Spiders are
 not known to be graceful in general, so the author's starting shapes are an
 open problem in their own right, not a trivial case.
+
+## What turned out to be known already
+
+A literature pass after the first rounds (README §5) found that two pieces
+exist in print under other names. The author arrived at the first
+independently; Claude re-derived the second without knowing of it.
+
+* The line-and-brackets picture is the "labelling sequence" of Sheppard
+  (1976) and the "graceful chessboard" of Haviar and Ivaška (2015).
+* Placing edge labels longest first, each on a vertex whose parent is already
+  labelled, is the backtracking order of Horton (2003) and Fang (2010).
+
+Sliding as a move between placements, and everything in README §7–11 that is
+marked proved or conjectured, was not found.
 
 ## Attribution in short
 
