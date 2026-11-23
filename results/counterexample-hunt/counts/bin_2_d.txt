@@ -1,0 +1,5 @@
+bin(2,1) n=7 count=6 nodes=54 hits=0 t=0.0s non_anchors=0/7 orbits[deg x size: placements with it at label 1]: [2 x1: 2] [3 x2: 3] [1 x4: 1]
+bin(2,2) n=15 count=370 nodes=13856 hits=274 t=0.1s non_anchors=0/15 orbits[deg x size: placements with it at label 1]: [2 x1: 118] [3 x2: 158] [3 x4: 67] [1 x8: 27]
+bin(2,3) n=31 count=ABORTED(budget) nodes=40000001 t=37.9s
+bin(2,4) n=63 count=ABORTED(budget) nodes=40000001 t=37.5s
+# stopped after 2 trees over budget in a row

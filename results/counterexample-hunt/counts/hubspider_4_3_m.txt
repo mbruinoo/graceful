@@ -1,0 +1,6 @@
+hubspider(4,3,1) n=17 count=1434 nodes=48766 hits=1349 t=0.2s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [4 x1: 468] [2 x4: 656] [2 x4: 243] [2 x4: 61] [1 x4: 6]
+hubspider(4,3,2) n=21 count=12918 nodes=720622 hits=21388 t=1.4s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 3917] [2 x4: 5718] [2 x4: 2376] [3 x4: 741] [1 x8: 166]
+hubspider(4,3,3) n=25 count=116530 nodes=9109003 hits=377636 t=8.5s non_anchors=0/25 orbits[deg x size: placements with it at label 1]: [4 x1: 33511] [2 x4: 48153] [2 x4: 21809] [4 x4: 10112] [1 x12: 2945]
+hubspider(4,3,4) n=29 count=ABORTED(budget) nodes=40000001 t=36.3s
+hubspider(4,3,5) n=33 count=ABORTED(budget) nodes=40000001 t=35.5s
+# stopped after 2 trees over budget in a row
