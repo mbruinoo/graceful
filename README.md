@@ -590,11 +590,20 @@ be filled at any time. B4 implies B3.
 | rule | first failure | exhaustive range with no failure |
 |---|---|---|
 | one run, at most one single skipped cell | 1 tree at `n = 13` | `n ≤ 12` |
-| one run, at most two single skipped cells (B4) | none found | `n ≤ 20` |
+| one run, two skipped cells, both on the same side of the run | 1 tree at `n = 15` | `n ≤ 14` |
+| one run, at most one skipped cell on each side of the run | 2 trees at `n = 18` | `n ≤ 17` |
+| one run, at most two single skipped cells (B4) | none found | `n ≤ 21` |
 | at most three runs of any sizes (B3) | none found | `n ≤ 25` |
 
-(`./holes n R HS` enumerates; `./runsolve_gen n 3 part parts 1` searches tree
-by tree. The two agree at `n = 15`.)
+(`./holes n R HS SIDE` enumerates; `./runsolve_gen n 3 part parts 1 SIDE`
+searches tree by tree. The two agree at `n = 13` and `n = 15`.) B4 also holds
+for 200 uniformly random trees at each of `n = 40` and `n = 60`
+(`src/runsolve128.cpp`).
+
+Every tightening tried so far has failed eventually, at a larger size the
+tighter it was not. B4 and B3 should be read with that in mind: the honest
+alternative hypothesis is that the number of skipped cells needed grows
+slowly with `n` and two is simply enough for the sizes reached.
 
 In a B4 build each step has at most six candidate cells (either end of the
 main run, one cell in from either end, or a skipped cell) and two possible
