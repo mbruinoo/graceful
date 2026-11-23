@@ -3,3 +3,5 @@ hubleaflegs(2,4,4) n=19 count=51064 nodes=2697529 hits=129455 t=0.8s non_anchors
 hubleaflegs(3,4,4) n=20 count=171122 nodes=10230178 hits=535712 t=3.1s non_anchors=0/20 orbits[deg x size: placements with it at label 1]: [7 x1: 62731] [1 x3: 18022] [2 x4: 62072] [2 x4: 21791] [2 x4: 5467] [1 x4: 1039]
 hubleaflegs(4,4,4) n=21 count=468952 nodes=32827449 hits=1293454 t=9.4s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [8 x1: 178627] [1 x4: 62731] [2 x4: 159197] [2 x4: 53409] [2 x4: 12548] [1 x4: 2440]
 hubleaflegs(5,4,4) n=22 count=ABORTED(budget) nodes=40000001 t=11.5s
+hubleaflegs(6,4,4) n=23 count=ABORTED(budget) nodes=40000001 t=12.0s
+# stopped after 2 trees over budget in a row
