@@ -16,7 +16,7 @@ README. All programs are in `src/`; all numbers below come from the commands in 
 | exact count along one-parameter families | 67 families (two of them generated twice under different names) and a list of spherically symmetric trees; members counted up to `n = 70` where the counter could reach (section 3) | every family grows; the slowest grows linearly (270 placements at `n = 70`) |
 | one giant hub on every small core | all 270 cores on 6..10 vertices, hub of 20 and of 40 leaves | of the 155 cores counted at both sizes, none has fewer placements with the larger hub (section 4) |
 | existence, complete deterministic search | 92,409 structured trees with `26 ≤ n ≤ 70` in 8 classes (section 6) | a growth placement was found and verified for every one; none unresolved |
-| Conjecture B3 at `n = 26` | **incomplete**: 16 of 64 pieces finished, 69,948,368 of the 279,793,450 trees on 26 vertices | in the finished pieces: 0 trees without a three-run growth placement, 0 unresolved. **Not an exhaustive check of n = 26.** |
+| Conjecture B3 at `n = 26` | all 279,793,450 trees on 26 vertices | **Observation (`n = 26`)**: 0 trees without a three-run growth placement, 0 unresolved |
 
 ## 2. Programs and how far they can be trusted
 
@@ -263,7 +263,7 @@ second-program confirmation of a non-existence claim was needed.
 
 ## 7. Conjecture B3 at n = 26
 
-**Not finished.** The run was split into 64 pieces (piece `i` takes the trees whose index in the generator's order is `i` mod 64) so that it can be resumed. When this report was written 16 pieces had finished: 69,948,368 of the 279,793,450 trees on 26 vertices (25%), with 0 trees lacking a three-run growth placement and 0 unresolved (`b3_n26_pieces.txt`). The whole run needs roughly 25 core-hours; the same four cores were shared with the searches above. **This does not extend the exhaustive range of Conjecture B3, which stays `n ≤ 25`.** It is a systematic sample of every 64th tree, for 16 offsets. `./hunt_b3.sh 26 64 4` skips finished pieces and completes the rest.
+`./runsolve_gen 26 3`, run as 64 pieces: all pieces finished, 279,793,450 trees, 0 with no three-run growth placement, 0 unresolved. With the README's range this makes B3 an Observation for `n ≤ 26`, resting on `runsolve_gen.cpp` alone (the tree total equals the known number of trees on 26 vertices). Since every three-run growth placement is a growth placement, Conjecture B is likewise an Observation for `n ≤ 26`. `README.md` and `web/evidence.json` still say 25; they were deliberately not edited in this task.
 
 ## 8. Reproducing
 

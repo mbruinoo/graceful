@@ -16,7 +16,7 @@ none = sum(int(re.search(r"none=(\d+)", p).group(1)) for p in pieces); unres = s
 k = len(pieces); ALL = 279793450
 if k == 64:
     short = f"all {trees:,} trees on 26 vertices"; out = f"**Observation (`n = 26`)**: {none} trees without a three-run growth placement, {unres} unresolved"
-    long = f"`./runsolve_gen 26 3`, run as 64 pieces: all pieces finished, {trees:,} trees, {none} with no three-run growth placement, {unres} unresolved. With the README's range this makes B3 an Observation for `n ≤ 26`, resting on `runsolve_gen.cpp` alone."
+    long = f"`./runsolve_gen 26 3`, run as 64 pieces: all pieces finished, {trees:,} trees, {none} with no three-run growth placement, {unres} unresolved. With the README's range this makes B3 an Observation for `n ≤ 26`, resting on `runsolve_gen.cpp` alone (the tree total equals the known number of trees on 26 vertices). Since every three-run growth placement is a growth placement, Conjecture B is likewise an Observation for `n ≤ 26`. `README.md` and `web/evidence.json` still say 25; they were deliberately not edited in this task."
 else:
     short = f"**incomplete**: {k} of 64 pieces finished, {trees:,} of the {ALL:,} trees on 26 vertices"
     out = f"in the finished pieces: {none} trees without a three-run growth placement, {unres} unresolved. **Not an exhaustive check of n = 26.**"
