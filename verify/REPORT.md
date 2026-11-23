@@ -62,7 +62,7 @@ fast certificate check used for `n ≥ 23` agrees with the definitional one on
 | 21 | 2,144,505 | = | 2,144,505 | all | yes |
 | 22 | 5,623,756 | = | 5,623,756 | all | yes |
 | 23 | 14,828,074 | = | 14,828,074 | all (`growsolve`, `n ≤ 23`) | yes |
-| 24 | 39,299,897 | = | N24_OK | all (via three runs, `n ≤ 25`) | N24_AGREE |
+| 24 | 39,299,897 | = | 39,299,897 | all (via three runs, `n ≤ 25`) | yes |
 | 25 | 104,636,890 | = | N25_OK | all (via three runs, `n ≤ 25`) | N25_AGREE |
 
 Number of growth placements for `n = 4..13` (README §4): mine
