@@ -11,7 +11,8 @@
 //   gsearch enum N R B         enumerate every growth placement on N labels within (R,B); per shape:
 //                              "T <paren code> <count> <min max-runs> <min skips or 255>", and
 //                              "A <paren code>" for every rooted shape seen with the root at label 1
-//   gsearch spider N free|zig  every spider with >= 3 legs on N vertices, centre at label 0:
+//   gsearch spider N free|zig|level|first   every spider with >= 3 legs on N vertices, centre at label 0
+//                              (level, first: the two dealing orders of the README section 13 table):
 //                              "legs | OK leg labels ; ..." or "legs | NONE"
 //
 // Cell-driven search: at the step that places bracket k the program walks over the *unused cells* x
@@ -590,6 +591,7 @@ struct Deal {
     m: usize,
     legs: Vec<usize>,
     zig: bool,
+    rule: u8, // 0 free order; 1 level by level; 2 first number of every leg first
     tip: Vec<usize>,
     done: Vec<usize>,
     lastup: Vec<bool>,
@@ -605,9 +607,21 @@ impl Deal {
         }
         self.nodes += 1;
         let k = self.legs.len();
+        let mut lowest = usize::MAX; // fewest numbers received among unfinished legs
+        for i in 0..k {
+            if self.done[i] < self.legs[i] {
+                lowest = lowest.min(self.done[i]);
+            }
+        }
         for i in 0..k {
             if self.done[i] == self.legs[i] {
                 continue;
+            }
+            if self.rule == 1 && self.done[i] != lowest {
+                continue; // every leg gets its j-th number before any gets its (j+1)-th
+            }
+            if self.rule == 2 && self.done[i] > 0 && lowest == 0 {
+                continue; // the first number of every leg comes first
             }
             // an untouched leg equal in length to an earlier untouched leg is the same choice
             if self.done[i] == 0 && i > 0 && self.legs[i - 1] == self.legs[i] && self.done[i - 1] == 0 {
@@ -660,10 +674,10 @@ fn partitions(m: usize, maxpart: usize, cur: &mut Vec<usize>, out: &mut Vec<Vec<
     }
 }
 
-fn spider_line(legs: &Vec<usize>, zig: bool) -> String {
+fn spider_line(legs: &Vec<usize>, zig: bool, rule: u8) -> String {
     let m: usize = legs.iter().sum();
     let k = legs.len();
-    let mut d = Deal { m, legs: legs.clone(), zig, tip: vec![0; k], done: vec![0; k], lastup: vec![false; k], used: 1, path: vec![Vec::new(); k], nodes: 0 };
+    let mut d = Deal { m, legs: legs.clone(), zig, rule, tip: vec![0; k], done: vec![0; k], lastup: vec![false; k], used: 1, path: vec![Vec::new(); k], nodes: 0 };
     let head = legs.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(" ");
     if d.rec(m) {
         let body = d.path.iter().map(|p| p.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(",")).collect::<Vec<_>>().join(" ; ");
@@ -673,7 +687,7 @@ fn spider_line(legs: &Vec<usize>, zig: bool) -> String {
     }
 }
 
-fn run_spiders(n: usize, zig: bool, threads: usize) {
+fn run_spiders(n: usize, zig: bool, rule: u8, threads: usize) {
     let mut parts = Vec::new();
     partitions(n - 1, n - 1, &mut Vec::new(), &mut parts);
     let parts = Arc::new(parts);
@@ -689,7 +703,7 @@ fn run_spiders(n: usize, zig: bool, threads: usize) {
                 if i >= parts.len() {
                     break;
                 }
-                res.push((i, spider_line(&parts[i], zig)));
+                res.push((i, spider_line(&parts[i], zig, rule)));
             }
             res
         }));
@@ -714,7 +728,7 @@ fn main() {
         "minruns" => run_stream("minruns", 0, 0, threads),
         "anchors" => run_stream("anchors", 0, 0, threads),
         "enum" => run_enum(a[2].parse().unwrap(), inf(&a[3]), inf(&a[4]), threads),
-        "spider" => run_spiders(a[2].parse().unwrap(), a[3] == "zig", threads),
+        "spider" => run_spiders(a[2].parse().unwrap(), a[3] == "zig", match a[3].as_str() { "level" => 1, "first" => 2, _ => 0 }, threads),
         _ => eprintln!("unknown mode"),
     }
 }

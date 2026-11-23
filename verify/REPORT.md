@@ -12,8 +12,8 @@ and `src/treegen.h` was not read. Trees come from
 **One descriptive sentence of the README is wrong** (§4.1 below): README §11
 says of the two-run rule that "all its known failures are trees with three or
 more equal branches"; one of the two 16-vertex failures has only two equal
-branches and a longer third one. Four further remarks that are not
-discrepancies are in §4.2–4.5.
+branches and a longer third one. A second, looser phrase (§13) is noted in
+§4.6. Four further remarks that are not discrepancies are in §4.2–4.5.
 
 Status words follow `CLAUDE.md`: everything below is an **Observation** with
 the stated bound, unless it says otherwise.
@@ -181,6 +181,16 @@ equal-leg spiders (`k` legs of length `L`) agrees in all 28 entries with
 `n ≤ 40` (`results/log_extras.txt`); the two entries with `n = 41, 49` were not
 run.
 
+Two rows of the §13 table "what does not work" (free deals with a restricted
+order; `results/log_spider_rules.txt`; failures by the searcher only, the
+deals found are re-checked as valid deals but not as obeying the order):
+
+| rule | README | mine | agree? |
+|---|---|---|---|
+| level by level | fails for 3 of 11 spiders at `n = 8`, 129 of 288 at `n = 18` | 3 of 11; 129 of 288 | yes |
+| first number of every leg first, then free | fails for 3 of 11 at `n = 8`, 26 of 480 at `n = 20` | 3 of 11; 26 of 480 | yes |
+| … "the failures have many legs of length 1" | — | not for all of them, see §4.6 | partly |
+
 ### (e) Anchors (README §7) and the slide graph (README §4)
 
 Anchors, by two methods (full enumeration of growth placements; per-vertex
@@ -236,7 +246,7 @@ ending in hubs of `m` leaves": 1 run for `m = 2, 4, 6, 8`, 3 runs for
 * The two "side" rows of the §11 rule table (skipped cells on the same side /
   one per side). They depend on which run is called the main run; I did not
   implement them.
-* §13 "what does not work" table; spherically symmetric trees on 40, 63, 94
+* The other three rows of the §13 "what does not work" table; spherically symmetric trees on 40, 63, 94
   vertices; equal-leg spiders on 41 and 49 vertices; spiders beyond the sizes
   listed above.
 * Observations C and D beyond `n = 12`; slide table for `n = 13, 14`.
@@ -311,6 +321,17 @@ smallest is `S(2,2,1)` on 6 vertices (also a caterpillar, so it has a
 staircase). The README's description ("three-legged spiders with a leg of
 length 1 and certain other two legs") covers it.
 
+### 4.6 "The failures have many legs of length 1" (README §13 table)
+
+For the rule "first number of every leg first, then free" the README adds
+that "the failures have many legs of length 1". Of my 26 failures at `n = 20`
+(the count agrees), 5 have no leg of length 1 at all — `S(15,2,2)`,
+`S(5,2,2,2,2,2,2,2)`, `S(4,3,2,2,2,2,2,2)`, `S(3,3,3,2,2,2,2,2)`,
+`S(3,2,2,2,2,2,2,2,2)` — and 3 more have exactly one. "Many legs of length 1
+or 2" fits all but `S(15,2,2)`. A loose phrase rather than a wrong number;
+these failures rest on my searcher alone, and I assume from the matching
+counts that my reading of the rule is the README's.
+
 ## 5. Reproducing
 
 ```sh
@@ -355,6 +376,7 @@ for n in 16 20 24; do python3 spider_trees.py $n > out/sp_$n.txt; ./rs/gsearch m
   python3 check_cert.py $n out/sp_$n.txt out/sp_minskip_$n.txt; done
 python3 zig_negatives.py                                                     # second search for the zigzag failures
 python3 extras.py 300
+for a in "8 level" "18 level" "8 first" "20 first"; do ./rs/gsearch spider $a | grep -c NONE; done   # section 13 table
 ```
 
 `THREADS=k` sets the number of threads of `gsearch` (default 4). The summary
