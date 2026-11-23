@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one reading column; each idea is a short text block followed by a full-width "bench" (rails + brackets) you can operate. */
+/* Layout: one reading column that builds a single idea per section; each section is a few sentences, then one figure to operate. Asides fold away. */
 :root{
   --bg:#f3f5f8; --panel:#ffffff; --ink:#18212f; --muted:#5b6678; --line:#d5dbe5; --rail:#e3e8ef;
   --bracket:#1f5fd6; --hot:#d97a00; --bad:#cc2a5a; --good:#0b7f63; --fresh:#9aa5b6;
@@ -16,25 +16,20 @@
   --bracket:#6ea3ff; --hot:#ffb347; --bad:#ff6b93; --good:#4fd1ae; --fresh:#5d6a7d; color-scheme:dark }
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-block:2.5rem 4rem;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-main{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2.75rem}
+main{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:3.25rem}
 section{display:flex;flex-direction:column;gap:1rem;min-width:0}
-h1{font:700 clamp(2.2rem,6vw,3.4rem)/1.02 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
-h2{font:700 1.55rem/1.15 var(--display);margin:0;text-wrap:balance}
-h3{font:600 1rem/1.3 var(--body);margin:0}
-p{margin:0;max-width:66ch} .lede{font-size:1.15rem;color:var(--muted)}
-.tag{font:500 .72rem/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.status{font:500 .72rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:.35em .6em;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
-.status.proved{color:var(--good)} .status.open{color:var(--hot)}
-.head{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+h1{font:700 clamp(2.4rem,7vw,3.6rem)/1 var(--display);margin:0;letter-spacing:-.02em}
+h2{font:700 1.5rem/1.2 var(--display);margin:0;text-wrap:balance}
+p{margin:0;max-width:64ch} .lede{font-size:1.2rem;color:var(--muted)}
 .bench{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1rem;display:flex;flex-direction:column;gap:.75rem;min-width:0}
-.benchrow{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start}
-.benchrow>.rails{flex:3 1 380px;min-width:0;overflow-x:auto} .benchrow>.shape{flex:1 1 180px;min-width:0}
+.benchrow{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.benchrow>.rails{flex:3 1 340px;min-width:0;overflow-x:auto} .benchrow>.shape{flex:1 1 170px;min-width:0;max-width:260px}
 .bench svg{display:block;width:100%;height:auto;touch-action:pan-y}
-.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.92rem}
 button,select{font:500 .9rem var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.4em .75em;cursor:pointer}
-button:hover{border-color:var(--bracket)} button:focus-visible,select:focus-visible,.thumb:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+button:hover{border-color:var(--bracket)} button:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
 button[aria-pressed="true"]{background:var(--bracket);border-color:var(--bracket);color:var(--panel)}
-.say{font:.92rem/1.45 var(--body);color:var(--muted);min-height:2.9em} .say b{color:var(--ink);font-weight:600}
+.say{font:.95rem/1.45 var(--body);color:var(--muted);min-height:2.9em} .say b{color:var(--ink);font-weight:600}
 .say .ok{color:var(--good);font-weight:600} .say .no{color:var(--bad);font-weight:600}
 .rail{stroke:var(--rail);stroke-width:1} .raillab{font:10px var(--mono);fill:var(--muted)}
 .vtx{fill:var(--panel);stroke:var(--ink);stroke-width:1.5} .vtx.fresh{stroke:var(--fresh);stroke-dasharray:2 2}
@@ -44,131 +39,153 @@ button[aria-pressed="true"]{background:var(--bracket);border-color:var(--bracket
 .br path.hit{fill:none;stroke:transparent;stroke-width:16} .br.drag path.hit{cursor:grab}
 .br .hint{fill:var(--good);cursor:pointer;opacity:.85} .br .hint.off{display:none}
 .te{stroke:var(--bracket);stroke-width:2} .tv{fill:var(--panel);stroke:var(--ink);stroke-width:1.3} .tl{font:500 10px var(--mono);fill:var(--ink);text-anchor:middle;dominant-baseline:central}
-.gridwrap{display:flex;gap:1rem;flex-wrap:wrap;align-items:center} #cgrid{flex:0 1 260px;min-width:0} .gridnote{flex:1 1 220px;font-size:.92rem;color:var(--muted)}
-#atape{flex:0 1 240px;min-width:0} .tcell{fill:var(--bg);stroke:var(--line);stroke-width:.6} .tcell.on{fill:var(--bracket);stroke:var(--bracket)} .tcell.new{fill:var(--hot);stroke:var(--hot)} .tcell.later{opacity:.25}
+.elab{font:600 11px var(--mono);fill:var(--hot);text-anchor:middle;dominant-baseline:central;paint-order:stroke;stroke:var(--panel);stroke-width:5px}
+.aside{display:flex;gap:1rem;flex-wrap:wrap;align-items:center} .aside>.fig{flex:0 1 240px;min-width:0} .aside>p{flex:1 1 220px;font-size:.92rem;color:var(--muted)}
+.tcell{fill:var(--bg);stroke:var(--line);stroke-width:.6} .tcell.on{fill:var(--bracket);stroke:var(--bracket)} .tcell.new{fill:var(--hot);stroke:var(--hot)} .tcell.later{opacity:.25}
 .gcell{fill:var(--bg);stroke:var(--line)} .gcell.on{fill:var(--bracket);stroke:var(--bracket)} .gtxt{font:500 10px var(--mono);fill:var(--muted);text-anchor:middle;dominant-baseline:central} .gtxt.on{fill:var(--panel)}
-.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.4rem;max-height:236px;overflow-y:auto;padding:2px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:.4rem;max-height:168px;overflow-y:auto;padding:2px}
 .thumb{border:1px solid var(--line);border-radius:4px;background:var(--bg);padding:3px;cursor:pointer}
 .thumb[aria-pressed="true"]{background:var(--bg);border-color:var(--hot);box-shadow:0 0 0 1px var(--hot)}
 .thumb .tv{r:2.4;stroke-width:1} .thumb .te{stroke-width:1.4}
-.proof{border-left:2px solid var(--line);padding-left:1rem;color:var(--muted);display:flex;flex-direction:column;gap:.6rem} .proof b{color:var(--ink)}
-.tablewrap{overflow-x:auto} table{border-collapse:collapse;font:.88rem var(--mono);font-variant-numeric:tabular-nums;width:100%}
-th,td{text-align:right;padding:.35em .7em;border-bottom:1px solid var(--line);white-space:nowrap} th{font:600 .78rem var(--body);color:var(--muted);vertical-align:bottom;white-space:normal}
-td.yes{color:var(--good)}
-ul{margin:0;padding-left:1.2rem;max-width:66ch;display:flex;flex-direction:column;gap:.4rem}
-a{color:var(--bracket)} code{font:.9em var(--mono)}
+.why{border-left:2px solid var(--line);padding-left:1rem;color:var(--muted);display:flex;flex-direction:column;gap:.6rem} .why b{color:var(--ink)}
+details{border-top:1px solid var(--line);padding-top:.6rem} details>summary{cursor:pointer;font-weight:500;color:var(--bracket);max-width:64ch}
+details>div{display:flex;flex-direction:column;gap:.8rem;margin-top:.8rem;color:var(--muted)} details b{color:var(--ink)}
+.tablewrap{overflow-x:auto} table{border-collapse:collapse;font:.9rem var(--mono);font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:.35em .9em;border-bottom:1px solid var(--line)} th{font:600 .8rem var(--body);color:var(--muted);vertical-align:bottom}
+td.yes{color:var(--good)} td.txt,th.txt{text-align:left;font-family:var(--body)}
+ul{margin:0;padding-left:1.2rem;max-width:64ch;display:flex;flex-direction:column;gap:.4rem}
+h3{font:600 1rem/1.3 var(--body);margin:.4rem 0 0}
 input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
 @media (prefers-reduced-motion: reduce){ .br{transition:none} }
 </style>
 
 <main>
 <section>
-  <span class="tag">Graceful Tree Conjecture · a bracket model</span>
-  <h1>Every tree, slid out of a star?</h1>
-  <p class="lede">Put the numbers 1 to n on a line. A bracket is an edge: the bracket of length k joins two numbers exactly k apart. There is one bracket for each length 1, 2, …, n−1, and each slides along its own rail, the track at height k.</p>
-  <p>Wherever the brackets sit, every length is used exactly once, so the picture is a graceful labeling of whatever graph it draws. That graph is often not a tree: brackets can close a loop and leave a number out. The conjecture says every tree shape appears among the placements that are trees.</p>
-  <p>The conjecture is still open, and nothing here proves it. What follows is the model made exact, two small theorems with proofs you can watch, and two stronger conjectures that a computer search supports for every tree it could reach.</p>
+  <h1>Sliding Brackets</h1>
+  <p class="lede">An unsolved puzzle about trees, redrawn so you can push it around with your hands. Each section adds one idea.</p>
 </section>
 
 <section>
-  <div class="head"><h2>The bench</h2></div>
-  <p>Drag a bracket along its rail, or tap a green arrow. Arrows appear only where a one-step slide keeps the picture a tree. Brackets that close a loop turn red.</p>
+  <h2>The puzzle</h2>
+  <p>A tree is a set of dots joined by lines, with no loops. Number the dots 1, 2, 3, … and write on each line the difference between the numbers at its two ends.</p>
+  <p>The numbering is called <b>graceful</b> if the differences are all different. With 6 dots there are 5 lines, so the differences must be exactly 1, 2, 3, 4 and 5.</p>
+  <div class="bench"><div class="aside"><div class="fig" id="f1tree"></div><p>A graceful numbering of a tree with 6 dots. The orange numbers are the differences: each of 1 to 5 appears once.</p></div></div>
+  <p>The puzzle: can <em>every</em> tree be numbered gracefully? It was asked in the 1960s. Computers have confirmed it for every tree with up to 35 dots. Nobody has proved it, and nothing on this page does either.</p>
+</section>
+
+<section>
+  <h2>Put the numbers on a line</h2>
+  <p>Here is the same tree, drawn differently. The numbers sit in order along a line. Each line of the tree becomes a <b>bracket</b> joining its two numbers, so the bracket’s length is the difference.</p>
+  <div class="bench"><div class="benchrow"><div class="rails" id="f2rails"></div><div class="shape" id="f2tree"></div></div></div>
+  <p>“All differences different” now means: one bracket of each length. That is why they stack so neatly. Each length gets its own height, longest on top.</p>
+</section>
+
+<section>
+  <h2>Brackets slide, and not every position gives a tree</h2>
+  <p>A bracket can slide left or right at its own height. Wherever the brackets sit, there is still one of each length, so the differences are still all different.</p>
+  <p>But the brackets do not always form a tree. Drag one below and watch. When some brackets close a loop they turn red, and a number is left with nothing attached. A green arrow marks a one-step slide that keeps the picture a tree.</p>
   <div class="bench">
-    <div class="controls">
-      <label for="pn">Vertices</label>
-      <select id="pn"></select>
-      <button id="pstar">Reset to star</button>
-      <button id="ppath">Zigzag path</button>
-    </div>
     <div class="benchrow"><div class="rails" id="prails"></div><div class="shape" id="pshape"></div></div>
+    <div class="controls"><button id="preset">Put them back</button></div>
     <div class="say" id="psay"></div>
   </div>
 </section>
 
 <section>
-  <div class="head"><h2>The slide rule</h2><span class="status proved">Proved</span></div>
-  <p>Lift one bracket off a tree and the tree falls into two pieces, one holding each foot. Set the bracket down one step over. The result is a tree exactly when its two feet land in different pieces.</p>
-  <div class="proof"><p><b>Why.</b> A tree on n vertices is n−1 edges with no loop. Removing an edge leaves two connected pieces. A new edge with one foot in each piece reconnects them without a loop. A new edge with both feet in the same piece closes a loop there and leaves the other piece cut off.</p>
-  <p>This is what the green arrows on the bench compute. A bracket whose far foot is a leaf can almost never slide, because the cut-off piece is that single vertex and the new feet must land on it.</p></div>
+  <h2>Every tree shape should turn up</h2>
+  <p>So the puzzle becomes: among all the positions that do give a tree, does every possible tree shape appear?</p>
+  <p>For small trees you can see that it does. Pick a shape and the brackets show one position that makes it.</p>
+  <div class="bench">
+    <div class="controls"><label for="gn">Dots</label><select id="gn"></select></div>
+    <div class="thumbs" id="gthumbs"></div>
+    <div class="benchrow"><div class="rails" id="grails"></div><div class="shape" id="gshape"></div></div>
+  </div>
+  <p>The number of shapes grows quickly: 6 shapes with 6 dots, 106 with 10, over a hundred million with 25. The rest of this page is about ways of finding the brackets for a given shape without trying everything.</p>
 </section>
 
 <section>
-  <div class="head"><h2>Staircases are caterpillars</h2><span class="status proved">Proved</span></div>
-  <p>Place brackets longest first. Let each bracket keep one foot of the bracket before it and step the other foot one place inward. Choose which foot to keep at every step.</p>
+  <h2>First idea: start from the star and slide</h2>
+  <p>Push every bracket as far left as it goes. All of them then stand on number 1, which makes a <b>star</b>: one dot joined to all the others.</p>
+  <p>From the star, slide one bracket one step to the right, then another, keeping a tree at every step. Each slide changes the shape a little. Pick a tree and watch the shortest route to it.</p>
+  <div class="bench" id="slideplayer"></div>
+  <p>For every tree with up to <span class="nmaxslide">14</span> dots, a computer search found such a route. Whether one always exists is not known.</p>
+</section>
+
+<section>
+  <h2>A family where it always works</h2>
+  <p>Here is a recipe that cannot fail. Place the longest bracket. Then, for each shorter bracket in turn, keep one foot of the bracket before it and move the other foot one step inward. You only choose which foot to keep.</p>
   <div class="bench">
     <div class="controls" id="ccontrols"></div>
     <div class="benchrow"><div class="rails" id="crails"></div><div class="shape" id="cshape"></div></div>
-    <div class="gridwrap"><div id="cgrid"></div><p class="gridnote">The same picture as a grid. Each bracket is one cell: its row is the left foot, its column is the right foot. A staircase is a path that only steps down or right.</p></div>
-    <div class="say" id="csay"></div>
   </div>
-  <div class="proof">
-    <p><b>It is always a tree.</b> The kept feet only move inward, so the foot that steps always lands on a vertex no longer bracket has touched. Every bracket adds exactly one new vertex, so no loop can close.</p>
-    <p><b>It is always a caterpillar, and every caterpillar appears.</b> The kept feet form a path, the spine. Every other vertex was touched once, by a bracket hanging off the spine, so it is a leaf. A run of “keep left” hangs that many leaves on one spine vertex, and switching sides moves to the next spine vertex, so any list of leaf counts along a spine can be dialled in. This is Rosa’s 1967 labeling of caterpillars.</p>
-    <p><b>Nothing else works this way.</b> Suppose every bracket jumps over one common point, and the brackets placed longest first each stand on exactly one used vertex. Then the placement is a staircase. Read the grid backwards from the end: when everything is placed, the used rows and columns fill a full rectangle, and the last cell must sit in its far corner because its length leaves no other place. Removing it leaves a full rectangle one row or one column smaller, and the argument repeats. So the cells form a path stepping down or right, which is a staircase. Any tree that is not a caterpillar therefore needs a bracket that does not jump the common point.</p>
-    <p><b>Right slides reach all of them.</b> Sliding bracket k one step right turns “k keeps left, k−1 keeps right” into “k keeps right, k−1 keeps left”. Sliding bracket 1 right turns its “left” into “right”. So a “right” can be created at the shortest bracket and passed upward to any rail, one slide at a time, and every picture on the way is a staircase. Starting from the star (all “left”), every staircase is reached using right slides only.</p>
+  <p>The brackets nest like a staircase, so call this a <b>staircase</b>. The trees it makes are the <b>caterpillars</b>: a path with single dots hanging off it.</p>
+  <div class="why">
+    <p><b>Why it is always a tree.</b> The moving foot always lands on a number no earlier bracket has touched. So every bracket brings in exactly one new number, and a loop can never close.</p>
+    <p><b>Why caterpillars, and all of them.</b> The feet that are kept form the path. Every other number was touched once, so it hangs off the path. Keeping the same side several times hangs several dots on one path dot; switching sides moves along the path. Any caterpillar can be dialled in. This is Alexander Rosa’s construction from 1967.</p>
+    <p><b>Sliding reaches all of them.</b> Starting from the star and sliding right one step at a time, you can reach every staircase while staying a staircase throughout.</p>
   </div>
+  <details><summary>A second picture of the same thing, and why nothing else behaves this way</summary><div>
+    <div class="aside"><div class="fig" id="cgrid"></div><p>Draw each bracket as one cell of a grid: its row is the left foot, its column is the right foot. A staircase is a path of cells that only steps down or right. Change the choices above and the path changes.</p></div>
+    <p><b>Only staircases work like this.</b> Suppose every bracket jumps over one common point of the line, and the brackets, placed longest first, each bring in exactly one new number. Then the picture must be a staircase. Read the grid backwards: at the end the used rows and columns fill a rectangle, and the last cell has to be its far corner. Remove it and the same is true one step earlier. So the cells form a down-or-right path. A tree that is not a caterpillar needs at least one bracket that does not jump the common point.</p>
+  </div></details>
 </section>
 
 <section>
-  <div class="head"><h2>Atlas of slides</h2><span class="status open">Conjecture</span></div>
-  <p><b>Right-slide conjecture.</b> Every tree can be reached from the star by sliding brackets one step to the right, one at a time, with a tree at every step. Since every picture on the bench is graceful, this would imply the Graceful Tree Conjecture.</p>
-  <p>It holds for all trees with at most <span class="nmaxslide">14</span> vertices. Pick a tree and watch the shortest route, or switch to the growth view described in the next section.</p>
-  <div class="bench">
-    <div class="controls">
-      <label for="an">Vertices</label><select id="an"></select>
-      <button id="mslide" aria-pressed="true">Slide from star</button>
-      <button id="mgrow" aria-pressed="false">Grow longest-first</button>
-    </div>
-    <div class="thumbs" id="athumbs"></div>
-    <div class="benchrow"><div class="rails" id="arails"></div><div class="shape" id="ashape"></div></div>
-    <div class="gridwrap" id="atapewrap" hidden><div id="atape"></div><p class="gridnote">The tape: one row per bracket placed, one cell per label. Filled cells are labels already in the tree; the orange cell is the one just claimed. Watch a block grow in from each end, sometimes with an island between them.</p></div>
-    <div class="controls">
-      <button id="aplay">Play</button><button id="aback" aria-label="Step back">◀</button><button id="afwd" aria-label="Step forward">▶</button>
-      <input type="range" id="at" min="0" max="1" value="0" aria-label="Step">
-    </div>
-    <div class="say" id="asay"></div>
-  </div>
+  <h2>Second idea: build the tree longest bracket first</h2>
+  <p>The staircase worked because each new bracket brought in exactly one new number. Keep only that rule. Place the brackets from longest to shortest, anywhere, as long as each one stands with one foot on a number already used and the other on a fresh number.</p>
+  <p>The tree then grows one dot at a time, and a loop can never close. Pick a tree and step through one way of growing it.</p>
+  <div class="bench" id="growplayer"></div>
+  <p>A computer search found such a build for every tree with up to <span class="nmaxgrow">25</span> dots, which is 104,636,890 trees at 25 alone. Whether one always exists is not known. If it does, the original puzzle is solved.</p>
+  <details><summary>The same rule, said two other ways</summary><div>
+    <p><b>Downhill from one dot.</b> Hold the finished tree by the dot numbered 1. The build was longest-first exactly when the differences get strictly smaller along every path leading away from that dot.</p>
+    <p><b>Without mentioning lengths.</b> Look only at which numbers are used. A fresh number may join a used number exactly when the used numbers strictly between them are as many as the fresh numbers outside them. Playing by that rule from the two end numbers gives exactly these builds.</p>
+  </div></details>
 </section>
 
 <section>
-  <div class="head"><h2>Growing longest-first</h2><span class="status open">Conjecture</span></div>
-  <p>The staircase proof worked because each new bracket touched exactly one new vertex. Keep that property and drop the rest: place brackets n−1, n−2, …, 1 in order, anywhere on their rails, so that each one stands with one foot on a vertex already used and the other on a fresh vertex. Call this a growth placement. It is a tree for the same reason a staircase is.</p>
-  <p><b>Growth conjecture.</b> Every tree has a growth placement. Read backwards: every tree has a graceful labeling in which edge 1 is a leaf edge, and after removing it edge 2 is a leaf edge, and so on up to n−1.</p>
-  <p>This asks for much more than gracefulness, yet it holds for every tree with at most <span class="nmaxgrow">25</span> vertices, checked exhaustively, and for every larger random or structured tree tried, up to 50 vertices. The “Grow longest-first” view in the atlas shows one for each tree.</p>
-  <p><b>No lengths needed.</b> Squeeze the lengths out of the picture and a simple rule is left. A new cell may join a used cell exactly when the used cells strictly between them are as many as the unused cells outside them. Playing by that rule alone, from the two end cells, produces exactly the growth placements. With one clean gap in the middle, an end cell of the gap joins the innermost cell across the gap, which is a staircase step; every skipped cell still waiting shifts that target one cell deeper.</p>
-  <p><b>Two-skip conjecture.</b> Watch the tape in the atlas: a block of used labels grows in from each end, and now and then a cell is skipped and filled later. Allow no skipped cells and some trees cannot be built (the first has 9 vertices). Allow one and a tree with 13 vertices fails. Allow two skipped cells at a time, and every tree with at most <span class="nmaxskip">21</span> vertices can be built. Under the looser rule “the unused labels never form more than three runs”, every tree with at most 25 vertices can be built, all 104,636,890 of them at 25. These are the most rigid rules found that still seem to reach every tree, and both are stronger than the growth conjecture. Every tighter version tried has failed at some size, so the fair alternative reading is that the number of skips needed grows slowly and two is enough only for the sizes reached.</p>
-  <p><b>The same thing, said with a root.</b> Hold the tree by the vertex labelled 1. A graceful labeling is a growth placement exactly when edge lengths get strictly shorter along every path away from that root. So the conjecture reads: every tree can be gracefully labelled so that its edge lengths run downhill from one vertex.</p>
-  <div class="proof">
-    <p><b>Why it is interesting.</b> It turns the conjecture into a statement about building a tree leaf by leaf, which is the shape induction wants. At each moment the state is small: which numbers are used, and which vertices still have unbuilt branches. For the first half of the build the used numbers sit in two blocks at the ends of the line and every bracket jumps from one block to the other.</p>
-    <p><b>What is proved about it.</b> Caterpillars have growth placements (the staircases). If a tree has a growth placement, so does the tree with one more leaf attached to either foot of its longest bracket: shift everything one place and add the new longest bracket on top.</p>
-  </div>
-</section>
-
-<section>
-  <div class="head"><h2>What the search found</h2></div>
+  <h2>What the build looks like: two blocks and a few skips</h2>
+  <p>Under the brackets in the last figure is a tape: one row per step, one cell per number. Blue cells are numbers already in the tree and the orange cell is the one just added.</p>
+  <p>The tape almost always shows the same thing. A block of used numbers grows inward from each end. Now and then a number is skipped, and filled in later. Here is a tree that needs one skip. Step through and watch for it.</p>
+  <div class="bench" id="skipplayer"></div>
+  <p>How many skipped numbers must be allowed at once?</p>
   <div class="tablewrap"><table>
-    <thead><tr><th>Vertices</th><th>Tree shapes</th><th>Graceful tree placements</th><th>Islands under one-step slides</th><th>Placements in the star’s island</th><th>Shapes reached from the star by right slides</th><th>Shapes with a growth placement</th></tr></thead>
+    <thead><tr><th class="txt">Skips allowed at one time</th><th class="txt">Smallest tree that cannot be built</th></tr></thead>
+    <tbody>
+      <tr><td class="txt">none</td><td class="txt">9 dots</td></tr>
+      <tr><td class="txt">one</td><td class="txt">13 dots</td></tr>
+      <tr><td class="txt">two</td><td class="txt">22 dots (one tree out of 5,623,756)</td></tr>
+    </tbody>
+  </table></div>
+  <p>So no small fixed number of skips is enough. The number needed creeps up as trees get larger. Each time a tighter rule looked universal, a bigger tree broke it. That is worth remembering about every “checked up to” on this page.</p>
+  <p>With no skips at all, each new number joins the innermost number of the opposite block, which is a staircase step. Each skip still waiting pushes that target one place deeper. Skips are what let the tree branch.</p>
+</section>
+
+<section>
+  <h2>What is settled and what is not</h2>
+  <h3>Proved on this page</h3>
+  <ul>
+    <li>Staircases always give caterpillars, and give every caterpillar. (Rosa’s result, in this picture.)</li>
+    <li>Sliding right from the star reaches every caterpillar.</li>
+    <li>If every bracket jumps one common point and the build is longest-first, it is a staircase.</li>
+  </ul>
+  <h3>Checked by computer, not proved</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Dots</th><th>Tree shapes</th><th>Reached by sliding from the star</th><th>Built longest-first</th></tr></thead>
     <tbody id="evid"></tbody>
   </table></div>
+  <h3>Shown to be false</h3>
+  <ul><li>That the build never needs more than two skips. The first exception has 22 dots.</li></ul>
+  <h3>Known before this page</h3>
   <ul>
-    <li>From 7 vertices on, one-step slides do not connect all graceful trees. Small islands split off. The star’s island holds 95–97% of placements and contains every tree shape.</li>
-    <li>No graceful tree is frozen: in every case checked, at least one bracket can slide one step.</li>
-    <li>If a bracket may jump any distance along its rail, all graceful trees on up to <span class="nmaxslide">14</span> vertices form a single island.</li>
-    <li>Every spider (a star with lengthened arms) on up to 48 vertices has a growth placement. Whether all spiders are graceful is itself an open problem.</li>
-    <li>The trees with the fewest growth placements, other than caterpillars, were followed out to 52–56 vertices. None failed.</li>
-    <li>Slides that also keep the growth property are too rigid: right slides from the star reach exactly 5·2<sup>n−4</sup>−1 placements for 5 ≤ n ≤ 11 and miss some trees from 9 vertices on.</li>
+    <li>The picture of one bracket per length (Sheppard, 1976; Haviar and Ivaška, 2015).</li>
+    <li>Building longest-first, as a way of searching by computer (Horton, 2003; Fang, 2010). Fang’s search confirmed the puzzle for every tree with up to 35 dots.</li>
   </ul>
-</section>
-
-<section>
-  <div class="head"><h2>Where this stands</h2></div>
+  <h3>Still open</h3>
   <ul>
-    <li><b>Proved here:</b> the slide rule, the staircase theorem with its right-slide route, and the leaf-extension step for growth placements. All three are short, and the staircase labeling itself is classical.</li>
-    <li><b>Not proved:</b> the Graceful Tree Conjecture, the right-slide conjecture, the growth conjecture. Each of the last two implies the first.</li>
-    <li><b>What was already known:</b> the picture itself (Sheppard’s labelling sequences, 1976; Haviar and Ivaška’s graceful chessboards, 2015), and the longest-first build order, which is how Fang’s 2010 computer search verified the conjecture up to 35 vertices. His search, with label 0 fixed at the centre of the tree, succeeded for more than 99.998% of trees at every size from 20 to 35. The “transfer” method of Hrnčiar and Haviar moves pairs of brackets together.</li>
-    <li><b>What a literature pass did not find:</b> slides and the slide graph, the growth property stated as a conjecture, the downhill-from-a-root form, the grid theorem, and the three-run rule. That pass was done by an AI system in a few hours; an expert should check it.</li>
-    <li><b>Evidence is not proof.</b> Graceful labelings are plentiful for small trees, so strong statements can survive small cases and still fail later.</li>
+    <li>The puzzle itself, known as the Graceful Tree Conjecture.</li>
+    <li>Whether sliding from the star, or building longest-first, always works.</li>
   </ul>
+  <p>The proofs, the search programs, the failed attempts and the references are in the README of the project’s repository. The literature check behind “known before this page” was done by an AI system in a few hours and should be confirmed by someone who knows the field.</p>
 </section>
 </main>
 
@@ -178,6 +195,7 @@ const EVID=__EVID__;
 const NS='http://www.w3.org/2000/svg';
 const el=(t,a={},p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
 const $=id=>document.getElementById(id);
+const full=a=>[0,...a], star=n=>Array(n).fill(1);
 
 // ---- combinatorics: p[k] = left foot of bracket k (1-indexed), edge {p[k], p[k]+k}
 function analyze(n,p,minK=1){
@@ -185,33 +203,28 @@ function analyze(n,p,minK=1){
   const deg=Array(n+1).fill(0),adj=Array.from({length:n+1},()=>[]);let tree=true;
   for(let k=minK;k<n;k++){const a=p[k],b=a+k;adj[a].push([b,k]);adj[b].push([a,k]);deg[a]++;deg[b]++;
     const x=f(a),y=f(b);if(x===y)tree=false;else par[x]=y}
-  // 2-core: brackets lying on loops
   const d=deg.slice(),gone=Array(n+1).fill(false),q=[];for(let v=1;v<=n;v++)if(d[v]<=1){q.push(v);gone[v]=true}
   while(q.length){const v=q.pop();for(const[u]of adj[v])if(!gone[u]&&--d[u]<=1){gone[u]=true;q.push(u)}}
   const bad=new Set();for(let k=minK;k<n;k++)if(!gone[p[k]]&&!gone[p[k]+k])bad.add(k);
   return{tree,bad,adj,deg};
 }
 function legal(n,p,k,dir){const q=p[k]+dir;if(q<1||q>n-k)return false;const c=p.slice();c[k]=q;return analyze(n,c).tree}
-function shapeName(n,deg){const mx=Math.max(...deg),leaves=deg.filter(x=>x===1).length;
-  if(mx===n-1)return'a star';if(mx<=2)return'a path';
-  return`a tree with ${leaves} leaves`}
 
-// ---- rails + brackets
+// ---- brackets above the number line
 function Bench(host,o){
   const DX=46,PX=30,RH=19;let n,p,g=[],verts=[],svg,minK=1,act=0;
   const X=i=>PX+(i-1)*DX,Y=k=>18+(n-1-k)*RH;
   function build(nn,pp){n=nn;p=pp.slice();host.textContent='';g=[];verts=[];
     const base=Y(0)+10,W=PX*2+(n-1)*DX,H=base+30;
-    svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Brackets on rails above the number line'},host);
-    svg.style.minWidth=Math.min(W,300)+'px';
+    svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Brackets above the number line'},host);
+    svg.style.minWidth=Math.min(W,280)+'px';
     for(let k=1;k<n;k++){el('line',{class:'rail',x1:X(1),x2:X(n),y1:Y(k),y2:Y(k)},svg);
       const t=el('text',{class:'raillab',x:6,y:Y(k)+3},svg);t.textContent=k}
     for(let k=n-1;k>=1;k--){const gg=el('g',{class:'br'+(o.drag?' drag':'')},svg);
       const d=`M${X(1)},${base-8} L${X(1)},${Y(k)} L${X(1+k)},${Y(k)} L${X(1+k)},${base-8}`;
       el('path',{class:'bar',d},gg);const hit=el('path',{class:'hit',d},gg);
-      const hl=el('path',{class:'hint',d:`M${X(1)-6},${Y(k)-7} l-9,0 l0,-4 l-7,7 l7,7 l0,-4 l9,0 z`,transform:`translate(0,-0)`},gg);
-      const hr=el('path',{class:'hint',d:`M${X(1+k)+6},${Y(k)-7} l9,0 l0,-4 l7,7 l-7,7 l0,-4 l-9,0 z`},gg);
-      hl.setAttribute('transform','translate(0,4)');hr.setAttribute('transform','translate(0,4)');
+      const hl=el('path',{class:'hint',d:`M${X(1)-6},${Y(k)-3} l-9,0 l0,-4 l-7,7 l7,7 l0,-4 l9,0 z`},gg);
+      const hr=el('path',{class:'hint',d:`M${X(1+k)+6},${Y(k)-3} l9,0 l0,-4 l7,7 l-7,7 l0,-4 l-9,0 z`},gg);
       g[k]={gg,hl,hr};
       if(o.drag){
         hl.addEventListener('click',()=>{p[k]--;act=k;update()});hr.addEventListener('click',()=>{p[k]++;act=k;update()});
@@ -229,10 +242,10 @@ function Bench(host,o){
       const show=o.drag&&A.tree;hl.classList.toggle('off',!(show&&legal(n,p,k,-1)));hr.classList.toggle('off',!(show&&legal(n,p,k,1)))}
     for(let i=1;i<=n;i++){const fr=A.deg[i]===0;verts[i][0].classList.toggle('fresh',fr);verts[i][1].classList.toggle('fresh',fr)}
     o.onChange&&o.onChange({n,p:p.slice(),minK,...A})}
-  return{build,set(pp,mk=1,a=0){p=pp.slice();minK=mk;act=a;update()},get p(){return p.slice()},get n(){return n}}
+  return{build,set(pp,mk=1,a=0){p=pp.slice();minK=mk;act=a;update()}}
 }
 
-// ---- tree-shape drawing (root at centre, leaves spread left to right)
+// ---- the tree as dots and lines (root at the centre, leaves spread left to right)
 function drawTree(host,n,p,o={}){
   const minK=o.minK||1,adj=Array.from({length:n+1},()=>[]);const used=new Set();
   for(let k=minK;k<n;k++){adj[p[k]].push(p[k]+k);adj[p[k]+k].push(p[k]);used.add(p[k]);used.add(p[k]+k)}
@@ -243,30 +256,83 @@ function drawTree(host,n,p,o={}){
     if(!ch.length){pos[v]=[leafX++,d];return}ch.forEach(u=>place(u,v,d+1));pos[v]=[ch.reduce((s,u)=>s+pos[u][0],0)/ch.length,d]})(root,0,0);
   const W=o.w||200,H=o.h||150,m=o.m||14,sx=leafX>1?(W-2*m)/(leafX-1):0,sy=maxD?(H-2*m)/maxD:0;
   const P=v=>[leafX>1?m+pos[v][0]*sx:W/2,maxD?m+pos[v][1]*sy:H/2];
-  host.textContent='';const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'The tree these brackets form'},host);
+  host.textContent='';const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'The tree as dots and lines'},host);
   for(const v of vs)for(const u of adj[v])if(u>v){const a=P(v),b=P(u);el('line',{class:'te',x1:a[0],y1:a[1],x2:b[0],y2:b[1]},svg)}
+  if(o.edgeLabels)for(const v of vs)for(const u of adj[v])if(u>v){const a=P(v),b=P(u),t=el('text',{class:'elab',x:(a[0]+b[0])/2,y:(a[1]+b[1])/2},svg);t.textContent=u-v}
   for(const v of vs){const a=P(v);el('circle',{class:'tv',cx:a[0],cy:a[1],r:o.labels?8:2.4},svg);if(o.labels){const t=el('text',{class:'tl',x:a[0],y:a[1]},svg);t.textContent=v}}
 }
-const star=n=>Array(n).fill(1);
 
-// ---- 1. playground
+// ---- the tape: which numbers are used after each bracket
+function drawTape(host,n,p,step){host.textContent='';const S=Math.min(20,Math.floor(220/n)),W=n*S+2,H=(n-1)*S+2,svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Which numbers are used after each step'},host);
+  const used=new Set();for(let r=0;r<n-1;r++){const k=n-1-r,a=p[k],b=a+k,nw=[a,b].filter(v=>!used.has(v));used.add(a);used.add(b);
+    for(let i=1;i<=n;i++)el('rect',{class:'tcell'+(used.has(i)?(nw.includes(i)&&r>0?' new':' on'):'')+(r>step?' later':''),x:1+(i-1)*S,y:1+r*S,width:S-2,height:S-2,rx:1.5},svg)}}
+
+// ---- sections 1 and 2: one example, two drawings
+const EX=[0,4,3,3,2,1];
+drawTree($('f1tree'),6,EX,{labels:true,edgeLabels:true,w:230,h:170,m:20});
+Bench($('f2rails'),{}).build(6,EX);
+drawTree($('f2tree'),6,EX,{labels:true,edgeLabels:true,w:230,h:170,m:20});
+
+// ---- section 3: slide by hand
 (function(){
-  const say=$('psay'),sel=$('pn');for(let i=5;i<=11;i++){const op=document.createElement('option');op.value=i;op.textContent=i;if(i===8)op.selected=true;sel.appendChild(op)}
+  const say=$('psay');
   const B=Bench($('prails'),{drag:true,onChange(s){
     if(s.tree){drawTree($('pshape'),s.n,s.p,{labels:true});
-      let moves=0;for(let k=1;k<s.n;k++)moves+=legal(s.n,s.p,k,1)+legal(s.n,s.p,k,-1);
-      say.innerHTML=`<span class="ok">A graceful tree.</span> The brackets form ${shapeName(s.n,s.deg.slice(1))}; its edge lengths are 1 to ${s.n-1}, each once. <b>${moves}</b> one-step slide${moves===1?'':'s'} keep it a tree.`}
-    else{$('pshape').textContent='';say.innerHTML=`<span class="no">Not a tree.</span> The red brackets close a loop, so some vertex is cut off. Slide one of them away.`}}});
-  const reset=()=>B.build(+sel.value,star(+sel.value));
-  sel.onchange=reset;$('pstar').onclick=reset;
-  $('ppath').onclick=()=>{const n=+sel.value,p=[0];for(let k=1;k<n;k++)p[k]=Math.floor((n-k)/2)+1;B.build(n,p)};
-  // start somewhere more interesting than the bare star
-  B.build(8,[0,3,2,2,1,1,1,1]);
+      say.innerHTML=`<span class="ok">A tree.</span> One bracket of each length from 1 to ${s.n-1}, so the numbering is graceful.`}
+    else{$('pshape').textContent='';say.innerHTML=`<span class="no">Not a tree.</span> The red brackets close a loop, and a number is left out. Slide one of them away.`}}});
+  B.build(6,EX);$('preset').onclick=()=>B.build(6,EX);
 })();
 
-// ---- 2. staircase
+// ---- section 4: every shape
 (function(){
-  const n=9,d=[0,1,0,0,1,1,0,0];// d[k] for k=1..n-2 : 0 keep left foot, 1 keep right foot
+  const sel=$('gn'),thumbs=$('gthumbs');let n=6;
+  for(let i=5;i<=8;i++){const op=document.createElement('option');op.value=i;op.textContent=`${i} (${ATLAS[i].length} shapes)`;if(i===n)op.selected=true;sel.appendChild(op)}
+  const B=Bench($('grails'),{onChange(s){drawTree($('gshape'),s.n,s.p,{labels:true})}});
+  function pick(i){[...thumbs.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i?'true':'false'));B.set(full(ATLAS[n][i].p))}
+  function load(){thumbs.textContent='';ATLAS[n].forEach((e,i)=>{const b=document.createElement('button');b.className='thumb';b.id='g'+i;b.setAttribute('aria-label','Tree shape '+(i+1));
+      drawTree(b,n,full(e.p),{w:60,h:44,m:5});b.onclick=()=>pick(i);thumbs.appendChild(b)});
+    B.build(n,star(n));pick(Math.min(ATLAS[n].length-1,3))}
+  sel.onchange=()=>{n=+sel.value;load()};load();
+})();
+
+// ---- step-through player, used for sliding (section 5) and for building longest-first (sections 7 and 8)
+function Player(host,o){
+  const id=host.id;
+  host.innerHTML=(o.fixed?'':`<div class="controls"><label for="${id}-n">Dots</label><select id="${id}-n"></select></div><div class="thumbs"></div>`)+
+    `<div class="benchrow"><div class="rails"></div><div class="shape"></div></div>`+
+    (o.mode==='grow'?`<div class="aside"><div class="fig tape"></div><p>${o.fixed?'The tape for this tree. A gap between blue cells in the same block is a skipped number.':'The tape: one row per step, one cell per number. It is explained in the next section.'}</p></div>`:'')+
+    `<div class="controls"><button id="${id}-play">Play</button><button id="${id}-back" aria-label="Step back">◀</button><button id="${id}-fwd" aria-label="Step forward">▶</button><input type="range" id="${id}-t" min="0" max="1" value="0" aria-label="Step"></div><div class="say"></div>`;
+  const q=s=>host.querySelector(s),thumbs=q('.thumbs'),slider=q(`#${id}-t`),say=q('.say'),playBtn=q(`#${id}-play`);
+  let n=o.fixed?o.fixed.n:o.n,idx=o.fixed?o.fixed.idx:0,frames=[],t=0,timer=null;
+  const B=Bench(q('.rails'),{onChange(s){drawTree(q('.shape'),s.n,s.p,{labels:true,minK:s.minK})}});
+  function makeFrames(){const e=ATLAS[n][idx];frames=[];
+    if(o.mode==='slide'){let p=star(n);const L=e.path.length;
+      frames.push({p:p.slice(),mk:1,a:0,txt:L?`Start at the star. This tree is <b>${L}</b> slide${L===1?'':'s'} away, and no route is shorter.`:'This tree is the star itself.'});
+      e.path.forEach((k,i)=>{p[k]++;frames.push({p:p.slice(),mk:1,a:k,txt:`Slide ${i+1} of ${L}: bracket <b>${k}</b> moves one step right. Still a tree.`+(i===L-1?' <span class="ok">Arrived.</span>':'')})})}
+    else{const p=full(e.g),usedSet=new Set([1,n]);frames.push({p,mk:n-1,a:n-1,txt:`The longest bracket, <b>${n-1}</b>, has only one place to go: from 1 to ${n}.`});
+      for(let k=n-2;k>=1;k--){const a=p[k],b=a+k,old=usedSet.has(a)?a:b,nw=usedSet.has(a)?b:a;usedSet.add(a);usedSet.add(b);
+        frames.push({p,mk:k,a:k,txt:`Bracket <b>${k}</b> stands on ${old}, already in the tree, and brings in ${nw}.`+(k===1?' <span class="ok">Every number is used.</span>':'')})}}
+    slider.max=frames.length-1;go(0)}
+  function go(x){t=Math.max(0,Math.min(frames.length-1,x));slider.value=t;const f=frames[t];B.set(f.p,f.mk,f.a);say.innerHTML=f.txt;if(o.mode==='grow')drawTape(q('.tape'),n,f.p,t)}
+  function stop(){clearInterval(timer);timer=null;playBtn.textContent='Play'}
+  function pick(i){idx=i;if(thumbs)[...thumbs.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i?'true':'false'));stop();makeFrames()}
+  function load(){if(thumbs){thumbs.textContent='';ATLAS[n].forEach((e,i)=>{const b=document.createElement('button');b.className='thumb';b.id=`${id}-th${i}`;b.setAttribute('aria-label','Tree shape '+(i+1));
+      drawTree(b,n,full(e.p),{w:60,h:44,m:5});b.onclick=()=>pick(i);thumbs.appendChild(b)})}
+    B.build(n,star(n));pick(o.fixed?idx:Math.min(ATLAS[n].length-1,Math.floor(ATLAS[n].length*0.6)))}
+  if(!o.fixed){const sel=q(`#${id}-n`);for(let i=5;i<=10;i++){const op=document.createElement('option');op.value=i;op.textContent=`${i} (${ATLAS[i].length} shapes)`;if(i===n)op.selected=true;sel.appendChild(op)}
+    sel.onchange=()=>{n=+sel.value;load()}}
+  q(`#${id}-back`).onclick=()=>{stop();go(t-1)};q(`#${id}-fwd`).onclick=()=>{stop();go(t+1)};slider.oninput=()=>{stop();go(+slider.value)};
+  playBtn.onclick=()=>{if(timer)return stop();if(t>=frames.length-1)go(0);playBtn.textContent='Pause';
+    timer=setInterval(()=>{if(t>=frames.length-1)return stop();go(t+1)},700)};
+  load();
+}
+Player($('slideplayer'),{mode:'slide',n:7});
+Player($('growplayer'),{mode:'grow',n:8});
+Player($('skipplayer'),{mode:'grow',fixed:{n:9,idx:Math.max(0,ATLAS[9].findIndex(e=>e.r===2))}});
+
+// ---- section 6: staircases, and the grid drawing of them
+(function(){
+  const n=8,d=[0,1,0,1,1,0,0];// d[k], k=1..n-2 : 0 keep the left foot, 1 keep the right foot
   const B=Bench($('crails'),{onChange(s){drawTree($('cshape'),s.n,s.p,{labels:true})}});
   const cfg=()=>{const p=Array(n).fill(1);for(let k=n-2;k>=1;k--)p[k]=p[k+1]+d[k];return p};
   function drawGrid(p){const host=$('cgrid');host.textContent='';const cells={};let A=1,Bm=0;
@@ -276,51 +342,16 @@ const star=n=>Array(n).fill(1);
     for(let a=1;a<=A;a++){const y=el('text',{class:'gtxt',x:ox-12,y:oy+(a-1)*S+S/2},svg);y.textContent=a
       for(let b=0;b<=Bm;b++){const k=cells[a+','+b];el('rect',{class:'gcell'+(k?' on':''),x:ox+b*S,y:oy+(a-1)*S,width:S-2,height:S-2,rx:2},svg);
         if(k){const tx=el('text',{class:'gtxt on',x:ox+b*S+S/2-1,y:oy+(a-1)*S+S/2-1},svg);tx.textContent=k}}}}
-  const box=$('ccontrols');const lab=document.createElement('span');lab.textContent='Bracket keeps its';box.appendChild(lab);
-  const btn=[];for(let k=n-2;k>=1;k--){const b=document.createElement('button');b.id='cb'+k;btn[k]=b;box.appendChild(b);
-    b.onclick=()=>{d[k]^=1;draw()}}
+  const box=$('ccontrols');const lab=document.createElement('span');lab.textContent='Foot kept by bracket';box.appendChild(lab);
+  const btn=[];for(let k=n-2;k>=1;k--){const b=document.createElement('button');b.id='cb'+k;btn[k]=b;box.appendChild(b);b.onclick=()=>{d[k]^=1;draw()}}
   function draw(){for(let k=1;k<=n-2;k++){btn[k].textContent=`${k}: ${d[k]?'right':'left'}`;btn[k].setAttribute('aria-pressed',d[k]?'true':'false')}
-    B.set(cfg());drawGrid(cfg());
-    $('csay').innerHTML=`Longest bracket first, each toggle sets which foot the next bracket shares with the one above it. <b>Always a caterpillar</b>: the shared feet make the spine and everything else is a leaf.`}
+    B.set(cfg());drawGrid(cfg())}
   B.build(n,cfg());draw();
 })();
 
-// ---- 3. atlas
-(function(){
-  const sel=$('an'),thumbs=$('athumbs'),slider=$('at'),say=$('asay');let n=8,idx=0,mode='slide',frames=[],t=0,timer=null;
-  for(let i=4;i<=10;i++){const op=document.createElement('option');op.value=i;op.textContent=`${i} (${ATLAS[i].length} trees)`;if(i===n)op.selected=true;sel.appendChild(op)}
-  const B=Bench($('arails'),{onChange(s){drawTree($('ashape'),s.n,s.p,{labels:true,minK:s.minK})}});
-  const full=a=>[0,...a];
-  function makeFrames(){const e=ATLAS[n][idx];frames=[];
-    if(mode==='slide'){let p=star(n);frames.push({p:p.slice(),mk:1,a:0,txt:`Start: the star centred at 1. This tree is <b>${e.path.length}</b> right slide${e.path.length===1?'':'s'} away, and no route is shorter.`});
-      e.path.forEach((k,i)=>{p[k]++;frames.push({p:p.slice(),mk:1,a:k,txt:`Slide ${i+1} of ${e.path.length}: bracket <b>${k}</b> moves right to {${p[k]}, ${p[k]+k}}. Still a tree.`})});
-      if(e.path.length)frames[frames.length-1].txt+=' <span class="ok">Arrived.</span>'}
-    else{const p=full(e.g),usedSet=new Set([1,n]);frames.push({p,mk:n-1,a:n-1,txt:`Bracket <b>${n-1}</b> has only one place to go: {1, ${n}}.`});
-      for(let k=n-2;k>=1;k--){const a=p[k],b=a+k,old=usedSet.has(a)?a:b,nw=usedSet.has(a)?b:a;usedSet.add(a);usedSet.add(b);
-        frames.push({p,mk:k,a:k,txt:`Bracket <b>${k}</b> stands on ${old}, already in the tree, and claims the fresh vertex ${nw}.`+(k===1?' <span class="ok">Every vertex is used: a graceful tree.</span>':'')})}}
-    slider.max=frames.length-1;go(0)}
-  function go(x){t=Math.max(0,Math.min(frames.length-1,x));slider.value=t;const f=frames[t];B.set(f.p,f.mk,f.a);say.innerHTML=f.txt;
-    $('atapewrap').hidden=mode!=='grow';if(mode==='grow')drawTape(f.p,t)}
-  function drawTape(p,step){const host=$('atape');host.textContent='';const S=Math.min(20,Math.floor(220/n)),W=n*S+2,H=(n-1)*S+2,svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Which labels are used after each bracket'},host);
-    const used=new Set();for(let r=0;r<n-1;r++){const k=n-1-r,a=p[k],b=a+k,nw=[a,b].filter(v=>!used.has(v));used.add(a);used.add(b);
-      for(let i=1;i<=n;i++)el('rect',{class:'tcell'+(used.has(i)?(nw.includes(i)&&r>0?' new':' on'):'')+(r>step?' later':''),x:1+(i-1)*S,y:1+r*S,width:S-2,height:S-2,rx:1.5},svg)}}
-  function stop(){clearInterval(timer);timer=null;$('aplay').textContent='Play'}
-  function pick(i){idx=i;[...thumbs.children].forEach((c,j)=>c.setAttribute('aria-pressed',j===i?'true':'false'));stop();makeFrames()}
-  function loadN(){thumbs.textContent='';ATLAS[n].forEach((e,i)=>{const b=document.createElement('button');b.className='thumb';b.id='th'+i;b.setAttribute('aria-label','Tree '+(i+1));
-      drawTree(b,n,full(e.p),{w:60,h:44,m:5});b.onclick=()=>pick(i);thumbs.appendChild(b)});
-    B.build(n,star(n));pick(Math.min(ATLAS[n].length-1,Math.floor(ATLAS[n].length*0.6)))}
-  sel.onchange=()=>{n=+sel.value;loadN()};
-  const setMode=m=>{mode=m;$('mslide').setAttribute('aria-pressed',m==='slide');$('mgrow').setAttribute('aria-pressed',m==='grow');stop();makeFrames()};
-  $('mslide').onclick=()=>setMode('slide');$('mgrow').onclick=()=>setMode('grow');
-  $('aback').onclick=()=>{stop();go(t-1)};$('afwd').onclick=()=>{stop();go(t+1)};slider.oninput=()=>{stop();go(+slider.value)};
-  $('aplay').onclick=()=>{if(timer)return stop();if(t>=frames.length-1)go(0);$('aplay').textContent='Pause';
-    timer=setInterval(()=>{if(t>=frames.length-1)return stop();go(t+1)},650)};
-  loadN();
-})();
-
-// ---- evidence table
-(function(){const tb=$('evid'),f=x=>x==null?'—':typeof x==='number'?x.toLocaleString('en-US'):x;
+// ---- closing table
+(function(){const tb=$('evid'),f=x=>x==null?'':typeof x==='number'?x.toLocaleString('en-US'):x;
   for(const r of EVID.rows){const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r[0]}</td><td>${f(r[1])}</td><td>${f(r[2])}</td><td>${f(r[3])}</td><td>${f(r[4])}</td><td class="${r[5]==='all'?'yes':''}">${f(r[5])}</td><td class="${r[6]==='all'?'yes':''}">${f(r[6])}</td>`;tb.appendChild(tr)}
+    tr.innerHTML=`<td>${r[0]}</td><td>${f(r[1])}</td><td class="${r[5]==='all'?'yes':''}">${r[5]==='all'?'every one':'not checked'}</td><td class="${r[6]==='all'?'yes':''}">${r[6]==='all'?'every one':''}</td>`;tb.appendChild(tr)}
   document.querySelectorAll('.nmaxslide').forEach(e=>e.textContent=EVID.maxSlide);document.querySelectorAll('.nmaxgrow').forEach(e=>e.textContent=EVID.maxGrow)})();
 </script>

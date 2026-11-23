@@ -581,31 +581,38 @@ the partner. With a single gap and no holes, an end cell of the gap attaches
 across the gap to the innermost cell of the opposite block (`j = b = 0`): a
 staircase step. Each outstanding hole shifts that target one cell deeper.
 
-**Conjecture B4 (two-skip conjecture).** Every tree has a growth placement in
-which, at every moment, the unused labels are one run together with at most
-two isolated single labels. In the picture: two blocks grow inward from the
-ends; a move may skip one cell, and at most two skipped cells are waiting to
-be filled at any time. B4 implies B3.
+**The two-skip rule (fails at `n = 22`).** For a while the following looked
+universal: every tree has a growth placement in which, at every moment, the
+unused labels are one run together with at most two isolated single labels
+(two blocks grow inward; a move may skip one cell; at most two skipped cells
+wait to be filled). It holds for every tree on `n ≤ 21` vertices and fails for
+exactly one of the 5,623,756 trees on 22 vertices: two vertices, each carrying
+six leaves, joined by a path with one extra pendant path
+(edges `0-1 1-2 2-3 3-4`, leaves `5..10` on `4`, `0-11 11-12 12-13`, leaves
+`14..19` on `13`, `12-20 20-21`). That tree can be built with three single
+skips, and with three runs when one hole has two cells. Confirmed with a
+second solver (`src/runsolve128.cpp`).
 
 | rule | first failure | exhaustive range with no failure |
 |---|---|---|
 | one run, at most one single skipped cell | 1 tree at `n = 13` | `n ≤ 12` |
 | one run, two skipped cells, both on the same side of the run | 1 tree at `n = 15` | `n ≤ 14` |
 | one run, at most one skipped cell on each side of the run | 2 trees at `n = 18` | `n ≤ 17` |
-| one run, at most two single skipped cells (B4) | none found | `n ≤ 21` |
+| one run, at most two single skipped cells | 1 tree at `n = 22` | `n ≤ 21` |
 | at most three runs of any sizes (B3) | none found | `n ≤ 25` |
 
 (`./holes n R HS SIDE` enumerates; `./runsolve_gen n 3 part parts 1 SIDE`
-searches tree by tree. The two agree at `n = 13` and `n = 15`.) B4 also holds
-for 200 uniformly random trees at each of `n = 40` and `n = 60`
-(`src/runsolve128.cpp`).
+searches tree by tree. The two agree at `n = 13` and `n = 15`.)
 
-Every tightening tried so far has failed eventually, the looser ones at
-larger sizes. B4 and B3 should be read with that in mind: the honest
-alternative hypothesis is that the number of skipped cells needed grows
-slowly with `n` and two is simply enough for the sizes reached.
+The number of single skipped cells needed therefore grows with the size of
+the tree: none suffices up to 8 vertices, one up to 12, two up to 21. Every
+tightening tried has failed, the looser ones at larger sizes. Conjecture B3
+(three runs of any size) is the loosest of these rules and has not failed for
+`n ≤ 25`, but by the same pattern it may fail at a size not yet reached; the
+statement to trust least is any fixed bound on the number of holes. What
+survives all of this is Conjecture B itself, with no bound on holes.
 
-In a B4 build each step has at most six candidate cells (either end of the
+In a build with at most two skipped cells each step has at most six candidate cells (either end of the
 main run, one cell in from either end, or a skipped cell) and two possible
 partners for each, and the state is the main run plus at most two positions.
 
