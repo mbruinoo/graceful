@@ -36,3 +36,4 @@ src/attack/
 src/growfam
 src/growcheck
 src/hunt_*.log
+results/counterexample-hunt/counts/*.tmp
