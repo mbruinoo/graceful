@@ -1,0 +1,1 @@
+gen n=24: 39299897 trees, known 39299897, distinct codes n/a: OK

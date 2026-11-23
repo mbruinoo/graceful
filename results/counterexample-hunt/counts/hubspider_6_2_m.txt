@@ -1,0 +1,4 @@
+hubspider(6,2,1) n=19 count=30416 nodes=1154899 hits=58504 t=2.2s non_anchors=0/19 orbits[deg x size: placements with it at label 1]: [6 x1: 11918] [2 x6: 14585] [2 x6: 3290] [1 x6: 623]
+hubspider(6,2,2) n=25 count=ABORTED(budget) nodes=40000001 t=42.2s
+hubspider(6,2,3) n=31 count=ABORTED(budget) nodes=40000001 t=39.8s
+# stopped after 2 trees over budget in a row

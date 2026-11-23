@@ -1,0 +1,5 @@
+spider(8,1) n=9 count=2 nodes=14 hits=0 t=0.0s non_anchors=0/9 orbits[deg x size: placements with it at label 1]: [8 x1: 1] [1 x8: 1]
+spider(8,2) n=17 count=1734 nodes=97266 hits=2108 t=0.4s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [8 x1: 664] [2 x8: 867] [1 x8: 203]
+spider(8,3) n=25 count=ABORTED(budget) nodes=40000001 t=38.2s
+spider(8,4) n=33 count=ABORTED(budget) nodes=40000001 t=38.6s
+# stopped after 2 trees over budget in a row

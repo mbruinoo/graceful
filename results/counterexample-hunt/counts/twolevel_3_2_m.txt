@@ -1,0 +1,5 @@
+twolevel(3,2,1) n=16 count=2458 nodes=73823 hits=2565 t=0.2s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [3 x1: 733] [3 x3: 1129] [2 x6: 496] [1 x6: 100]
+twolevel(3,2,2) n=22 count=1062292 nodes=12393413 hits=1540720 t=8.1s non_anchors=0/22 orbits[deg x size: placements with it at label 1]: [3 x1: 280916] [3 x3: 470455] [3 x6: 250230] [1 x12: 60691]
+twolevel(3,2,3) n=28 count=ABORTED(budget) nodes=40000001 t=26.1s
+twolevel(3,2,4) n=34 count=ABORTED(budget) nodes=40000001 t=24.0s
+# stopped after 2 trees over budget in a row

@@ -1,0 +1,3 @@
+{"n": 8, "trees": 23, "vertices": 184, "non_anchors": 6, "trees_all_anchor": 18, "trees_with_no_anchor": 0, "trees_with_no_anchor_leaf": 0, "max_degree_of_non_anchor": 2}
+{"n": 10, "trees": 106, "vertices": 1060, "non_anchors": 19, "trees_all_anchor": 95, "trees_with_no_anchor": 0, "trees_with_no_anchor_leaf": 1, "max_degree_of_non_anchor": 2}
+{"n": 12, "trees": 551, "vertices": 6612, "non_anchors": 37, "trees_all_anchor": 525, "trees_with_no_anchor": 0, "trees_with_no_anchor_leaf": 1, "max_degree_of_non_anchor": 2}

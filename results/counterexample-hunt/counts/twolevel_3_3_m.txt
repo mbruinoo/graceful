@@ -1,0 +1,3 @@
+twolevel(3,3,1) n=22 count=ABORTED(budget) nodes=40000001 t=26.8s
+twolevel(3,3,2) n=31 count=ABORTED(budget) nodes=40000001 t=24.3s
+# stopped after 2 trees over budget in a row

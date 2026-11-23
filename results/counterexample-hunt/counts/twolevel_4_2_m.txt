@@ -1,0 +1,4 @@
+twolevel(4,2,1) n=21 count=745010 nodes=18592783 hits=1975432 t=12.9s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 240269] [3 x4: 353614] [2 x8: 132236] [1 x8: 18891]
+twolevel(4,2,2) n=29 count=ABORTED(budget) nodes=40000001 t=23.2s
+twolevel(4,2,3) n=37 count=ABORTED(budget) nodes=40000001 t=21.5s
+# stopped after 2 trees over budget in a row

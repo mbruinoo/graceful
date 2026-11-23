@@ -1,0 +1,23 @@
+sph(2,2) n=7 count=6 nodes=54 hits=0 t=0.0s non_anchors=0/7 orbits[deg x size: placements with it at label 1]: [2 x1: 2] [3 x2: 3] [1 x4: 1]
+sph(3,3) n=13 count=18 nodes=1257 hits=24 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [3 x1: 1] [4 x3: 9] [1 x9: 8]
+sph(4,4) n=21 count=9844 nodes=189416 hits=17468 t=0.4s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 4092] [5 x4: 4922] [1 x16: 830]
+sph(5,5) n=31 count=ABORTED(budget) nodes=40000001 t=10.8s
+sph(6,6) n=43 count=ABORTED(budget) nodes=40000001 t=9.4s
+sph(7,7) n=57 count=ABORTED(budget) nodes=40000001 t=9.2s
+sph(2,2,2) n=15 count=370 nodes=15029 hits=25 t=0.0s non_anchors=0/15 orbits[deg x size: placements with it at label 1]: [2 x1: 118] [3 x2: 158] [3 x4: 67] [1 x8: 27]
+sph(3,3,3) n=40 count=ABORTED(budget) nodes=40000001 t=8.7s
+sph(2,2,2,2) n=31 count=ABORTED(budget) nodes=40000001 t=7.7s
+sph(2,2,2,2,2) n=63 count=ABORTED(budget) nodes=40000001 t=7.3s
+sph(3,2,2) n=22 count=1062292 nodes=23563509 hits=163216 t=4.3s non_anchors=0/22 orbits[deg x size: placements with it at label 1]: [3 x1: 280916] [3 x3: 470455] [3 x6: 250230] [1 x12: 60691]
+sph(2,3,3) n=27 count=ABORTED(budget) nodes=40000001 t=7.5s
+sph(3,3,2) n=31 count=ABORTED(budget) nodes=40000001 t=8.2s
+sph(2,2,3) n=19 count=2822 nodes=227655 hits=307 t=0.0s non_anchors=0/19 orbits[deg x size: placements with it at label 1]: [2 x1: 451] [3 x2: 1002] [4 x4: 960] [1 x12: 409]
+sph(4,4,2) n=53 count=ABORTED(budget) nodes=40000001 t=8.4s
+sph(3,3,3,2) n=94 count=ABORTED(budget) nodes=40000001 t=11.4s
+sph(4,3) n=17 count=840 nodes=48335 hits=61 t=0.0s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [4 x1: 222] [4 x4: 420] [1 x12: 198]
+sph(3,4) n=16 count=168 nodes=5040 hits=5 t=0.0s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [3 x1: 43] [5 x3: 84] [1 x12: 41]
+sph(5,2) n=16 count=1940 nodes=60090 hits=42 t=0.0s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [5 x1: 684] [3 x5: 970] [1 x10: 286]
+sph(2,5) n=13 count=6 nodes=370 hits=0 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [2 x1: 2] [6 x2: 3] [1 x10: 1]
+sph(4,2,2) n=29 count=ABORTED(budget) nodes=40000001 t=7.8s
+sph(2,4,2) n=27 count=ABORTED(budget) nodes=40000001 t=8.5s
+sph(2,2,4) n=23 count=20400 nodes=2428864 hits=5914 t=0.5s non_anchors=0/23 orbits[deg x size: placements with it at label 1]: [2 x1: 5664] [3 x2: 8208] [5 x4: 4536] [1 x16: 1992]

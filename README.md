@@ -134,8 +134,8 @@ off, but the star's component always contains every shape.
 
 Growth placements, exhaustive over all trees (`src/growsolve.cpp`, trees from
 `networkx.nonisomorphic_trees`): **every tree on `n ≤ 23` vertices has
-one**, and every tree on `n ≤ 25` vertices by the stronger three-run check of
-section 11. Every spider on `n ≤ 48` vertices has one too (section 8). Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
+one**, and every tree on `n ≤ 26` vertices by the stronger three-run check of
+section 11 (279,793,450 trees at `n = 26`). Every spider on `n ≤ 48` vertices has one too (section 8). Spot checks: 200 uniformly random trees at each of `n = 30, 40, 50`,
 the path on 40, complete binary tree on 31, complete ternary on 40, spiders
 with 10 legs of length 3 and 7 legs of length 5 — all have one.
 
@@ -532,7 +532,7 @@ island between them, `R = 3` two islands.
 | trees without one, `n = 15` | 724 of 7,741 | 0 | 0 |
 | trees without one, `n = 16` | — | 2 of 19,320 | 0 |
 | trees without one, `n = 18` | — | 1 of 123,867 | 0 |
-| exhaustive range with none missing | `n ≤ 8` | `n ≤ 15` | `n ≤ 25` (104,636,890 trees at `n = 25`) |
+| exhaustive range with none missing | `n ≤ 8` | `n ≤ 15` | `n ≤ 26` (279,793,450 trees at `n = 26`) |
 
 (`src/holes.cpp` enumerates placements; `src/runsolve.cpp` and
 `src/runsolve_gen.cpp` search tree by tree, the latter with a built-in tree
@@ -558,8 +558,9 @@ one core.
 
 **Caution, from this project's own history.** The two-run version looked
 universal through `n = 15` (7,741 trees) and then failed for 2 trees in 19,320
-at `n = 16`. Most of its known failures are trees with three equal branches
-(one of the two 16-vertex failures has only two). A three-run failure could be waiting in the same way at a size not
+at `n = 16`. Most of its known failures are trees with three equal branches;
+one of the two 16-vertex failures has only two equal branches and a longer
+third (the two trees are listed in `verify/REPORT.md`). A three-run failure could be waiting in the same way at a size not
 yet reached.
 
 **Parity in the failures.** In the family "centre, three arms of length 2,
@@ -605,7 +606,7 @@ re-verification of section 16, which used a SAT solver for this tree.
 | one run, two skipped cells, both on the same side of the run | 1 tree at `n = 15` | `n ≤ 14` |
 | one run, at most one skipped cell on each side of the run | 1 tree at `n = 18` | `n ≤ 17` |
 | one run, at most two single skipped cells | 1 tree at `n = 22` | `n ≤ 21` |
-| at most three runs of any sizes (B3) | none found | `n ≤ 25` |
+| at most three runs of any sizes (B3) | none found | `n ≤ 26` |
 
 (`./holes n R HS SIDE` enumerates; `./runsolve_gen n 3 part parts 1 SIDE`
 searches tree by tree. The two agree at `n = 13` and `n = 15`.)
@@ -613,7 +614,9 @@ searches tree by tree. The two agree at `n = 13` and `n = 15`.)
 The number of single skipped cells needed therefore grows with the size of
 the tree: none suffices up to 8 vertices, one up to 9, two up to 21. It is not
 monotone in between: the spider `S(3,3,3)` on 10 vertices needs two, while
-every tree on 11 or 12 vertices needs at most one. (An earlier version of
+every tree on 11 or 12 vertices needs at most one; and one tree on 22
+vertices needs three, while every one of the 14,828,074 trees on 23 vertices
+needs at most two (`verify/results/log_n23.txt`). (An earlier version of
 this table gave 13 and 18 as first failures for two of the rules; those rules
 had only been run from `n = 12` up. `src/skipmin.cpp` now computes the least
 number of skips for every tree and all rows were re-run from `n = 5`. A later
@@ -623,7 +626,7 @@ vertices; the value 10 came from this repository's program treating the
 leftmost single cell as the main run when every unused run is a single cell.) Every
 tightening tried has failed, the looser ones at larger sizes. Conjecture B3
 (three runs of any size) is the loosest of these rules and has not failed for
-`n ≤ 25`, but by the same pattern it may fail at a size not yet reached; the
+`n ≤ 26`, but by the same pattern it may fail at a size not yet reached; the
 statement to trust least is any fixed bound on the number of holes. What
 survives all of this is Conjecture B itself, with no bound on holes.
 
@@ -786,7 +789,7 @@ graceful, which is open.
 |---|---|
 | zigzag deal, numbers handed out in a repeating order of period 3, 6 or 9, three equal legs | no order works for all leg lengths (`src/dealrule.py`) |
 | level by level (every leg gets its `j`-th number before any gets its `(j+1)`-th) | fails for 3 of 11 spiders at `n = 8`, 129 of 288 at `n = 18` |
-| first number of every leg first, then free | fails for 3 of 11 at `n = 8`, 26 of 480 at `n = 20`; the failures have many legs of length 1 |
+| first number of every leg first, then free | fails for 3 of 11 at `n = 8`, 26 of 480 at `n = 20`; most failures have many legs of length 1 or 2 (5 of the 26 at `n = 20` have no leg of length 1) |
 | leg by leg (finish one leg before starting the next) | the second leg cannot start unless the first has at least half the edges |
 | growing by clean gap insertion of one leaf at a time (Lemma 8), keeping the centre at 0 | reaches 36 of 231 leg patterns at `n = 17` (`src/derive_spider.cpp`) |
 
@@ -1106,6 +1109,76 @@ independent pass that tested each one by brute force from the definitions in
 section 1 (all placements up to `n = 8..10`, every tree and leaf up to
 `n = 12` for the leaf rule). It found no false theorem; it found a wrong
 exponent, an under-specified condition in Lemma 8, a false summary sentence
-and several unbounded claims, all corrected in this version. The exhaustive
-runs for `n ≥ 14` rest on the programs in `src/` alone and have not been
-independently re-implemented.
+and several unbounded claims, all corrected in this version. At that time the
+exhaustive runs for `n ≥ 14` rested on the programs in `src/` alone.
+
+They have since been re-implemented three times, by sessions that did not
+read the solvers in `src/`:
+
+* `verify/` (Python reference, Rust searcher, separate certificate checker,
+  SAT): a growth placement, checked from the definition, for every tree on
+  `n ≤ 25` vertices; the run, skip, anchor, spider and slide tables of
+  sections 4, 7, 11, 12, 13 at the sizes listed in `verify/REPORT.md`. Every
+  number checked agrees. It found one sentence that was too narrow (the
+  shapes of the two-run failures, section 11, corrected), one that was weaker
+  than the truth (the 22-vertex tree has a two-run placement) and one loose
+  phrase in the section 13 table (corrected). Its tree lists come from
+  `networkx`, as do this repository's for `growsolve`; `runsolve_gen` uses the
+  separate generator `src/treegen.h`, and the totals agree.
+* `src/attack/reverify/` and its two referees (`src/attack/referee_reverify_*`):
+  growth placements and the three-run rule for all trees on `n ≤ 22`, the skip
+  tables, Conjecture S for `n ≤ 31`. Agreement everywhere except the "one on
+  each side" row of section 11, corrected there.
+* Sections 9 and 10 (clean cuts, gap splits) have **not** been independently
+  re-implemented.
+
+The `n = 26` three-run run (`results/counterexample-hunt/REPORT.md` section 7)
+rests on `src/runsolve_gen.cpp` alone.
+
+## 18. Two further reports (not yet refereed)
+
+These came from separate sessions. Their reports are in the repository; their
+proofs have been read by one author only, so by the rule in `CLAUDE.md` they
+are listed here as *argued*, not as Proved.
+
+**Counterexample hunt** (`results/counterexample-hunt/REPORT.md`). Nothing
+found.
+
+* *Observation (`n = 26`):* all 279,793,450 trees have a three-run growth
+  placement.
+* *Observation:* a growth placement was found and re-checked for each of
+  92,409 structured trees with `26 ≤ n ≤ 70` (equal and two-length spiders,
+  `k` copies of every rooted tree on up to 9 vertices round a centre,
+  spherically symmetric trees, coronas, relatives of the 22-vertex tree).
+* *Observation (`n ≤ 16`, exact counts):* the non-caterpillar with the fewest
+  growth placements has 6, 10, 14, 8, 14, 16, 18, 18, 24, 28 of them for
+  `n = 7..16`. From `n = 11` it is (except at 13) the tree H(m): a centre with
+  two legs of length 2 and one neighbour carrying `m` leaves. Its count is
+  52 at `n = 26` and 270 at `n = 70`; it is not monotone, and on this range
+  shows no downward trend. H(m) has a growth placement for every `m` by
+  Lemma 6.
+* *Observation (`n ≤ 16`):* non-anchors number 4, 6, 11, 19, 21, 37, 54, 84,
+  117, 154 for `n = 7..16`, a falling share of all vertices; only `S(3,3,3)`
+  has half its vertices non-anchors. A counterexample to Conjecture B would
+  need every vertex to be a non-anchor.
+
+**Composition rules** (`results/composition/REPORT.md`). Rules that build a
+growth placement from smaller ones, each with a short written argument and a
+brute-force check:
+
+* *transplant:* the last `k` brackets of one growth placement can be moved
+  under the first brackets of another when the patterns of used cells agree
+  (this is Lemma 10 read backwards: whether a bracket may be placed depends
+  only on which cells are used);
+* *run filling* and *nesting at a clean cut*, which contain Lemma 6, the
+  gluing statement of section 7 and Lemma 8;
+* *block designs:* multiply all lengths by `t` and fill the freed residues
+  with leaves.
+* *Observation (`n ≤ 16`):* starting from staircases, complement, transplant
+  and block designs together reach a growth placement of every tree. The
+  report's own caution applies: transplant recombines placements that already
+  exist, so this does not say how to label a given tree.
+* *Fails:* "identify (or join by an edge) an anchor of one tree with an
+  anchor of another and the result is anchored there", smallest failure
+  `n = 6`.
+

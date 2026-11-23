@@ -1,0 +1,3 @@
+hubleaflegs(1,5,4) n=22 count=ABORTED(budget) nodes=40000001 t=13.1s
+hubleaflegs(2,5,4) n=23 count=ABORTED(budget) nodes=40000001 t=12.5s
+# stopped after 2 trees over budget in a row

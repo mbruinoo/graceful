@@ -1,0 +1,8 @@
+spider(5,1) n=6 count=2 nodes=8 hits=0 t=0.0s non_anchors=0/6 orbits[deg x size: placements with it at label 1]: [5 x1: 1] [1 x5: 1]
+spider(5,2) n=11 count=32 nodes=696 hits=0 t=0.0s non_anchors=0/11 orbits[deg x size: placements with it at label 1]: [5 x1: 11] [2 x5: 16] [1 x5: 5]
+spider(5,3) n=16 count=1622 nodes=51681 hits=1334 t=0.3s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [5 x1: 623] [2 x5: 764] [2 x5: 188] [1 x5: 47]
+spider(5,4) n=21 count=78780 nodes=3327915 hits=212026 t=4.4s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [5 x1: 26859] [2 x5: 36597] [2 x5: 12063] [2 x5: 2793] [1 x5: 468]
+spider(5,5) n=26 count=3988962 nodes=197090380 hits=6166870 t=216.8s non_anchors=0/26 orbits[deg x size: placements with it at label 1]: [5 x1: 1336322] [2 x5: 1787427] [2 x5: 622160] [2 x5: 202515] [2 x5: 35999] [1 x5: 4539]
+spider(5,6) n=31 count=ABORTED(budget) nodes=200000001 t=222.6s
+spider(5,7) n=36 count=ABORTED(budget) nodes=200000001 t=230.0s
+# stopped after 2 trees over budget in a row

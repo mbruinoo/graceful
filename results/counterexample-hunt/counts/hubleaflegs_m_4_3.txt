@@ -1,0 +1,13 @@
+hubleaflegs(1,4,3) n=14 count=890 nodes=23570 hits=806 t=0.1s non_anchors=0/14 orbits[deg x size: placements with it at label 1]: [5 x1: 338] [1 x1: 47] [2 x4: 369] [2 x4: 107] [1 x4: 29]
+hubleaflegs(2,4,3) n=15 count=3536 nodes=96027 hits=5230 t=0.1s non_anchors=0/15 orbits[deg x size: placements with it at label 1]: [6 x1: 1418] [1 x2: 338] [2 x4: 1339] [2 x4: 350] [1 x4: 91]
+hubleaflegs(3,4,3) n=16 count=10068 nodes=279973 hits=19679 t=0.2s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [7 x1: 4118] [1 x3: 1418] [2 x4: 3380] [2 x4: 916] [1 x4: 236]
+hubleaflegs(4,4,3) n=17 count=23830 nodes=698453 hits=58960 t=0.3s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [8 x1: 10005] [1 x4: 4118] [2 x4: 7369] [2 x4: 1910] [1 x4: 428]
+hubleaflegs(5,4,3) n=18 count=48932 nodes=1482709 hits=137104 t=0.4s non_anchors=0/18 orbits[deg x size: placements with it at label 1]: [9 x1: 20975] [1 x5: 10005] [2 x4: 13681] [2 x4: 3491] [1 x4: 780]
+hubleaflegs(6,4,3) n=19 count=93128 nodes=2963944 hits=298023 t=0.9s non_anchors=0/19 orbits[deg x size: placements with it at label 1]: [10 x1: 40546] [1 x6: 20975] [2 x4: 24388] [2 x4: 6018] [1 x4: 1201]
+hubleaflegs(7,4,3) n=20 count=159008 nodes=5354538 hits=546759 t=1.6s non_anchors=0/20 orbits[deg x size: placements with it at label 1]: [11 x1: 70054] [1 x7: 40546] [2 x4: 37056] [2 x4: 9450] [1 x4: 1902]
+hubleaflegs(8,4,3) n=21 count=262820 nodes=9592998 hits=959366 t=2.7s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [12 x1: 117170] [1 x8: 70054] [2 x4: 58775] [2 x4: 14240] [1 x4: 2581]
+hubleaflegs(9,4,3) n=22 count=404382 nodes=16614384 hits=1404281 t=4.9s non_anchors=0/22 orbits[deg x size: placements with it at label 1]: [13 x1: 181794] [1 x9: 117170] [2 x4: 81261] [2 x4: 20397] [1 x4: 3760]
+hubleaflegs(10,4,3) n=23 count=612596 nodes=29886792 hits=1808645 t=8.9s non_anchors=0/23 orbits[deg x size: placements with it at label 1]: [14 x1: 277477] [1 x10: 181794] [2 x4: 119684] [2 x4: 28821] [1 x4: 4820]
+hubleaflegs(11,4,3) n=24 count=ABORTED(budget) nodes=40000001 t=10.9s
+hubleaflegs(12,4,3) n=25 count=ABORTED(budget) nodes=40000001 t=11.4s
+# stopped after 2 trees over budget in a row

@@ -1,0 +1,1 @@
+n=24: 39299897 trees, 39299897 distinct canonical codes (by 64-bit hash): OK

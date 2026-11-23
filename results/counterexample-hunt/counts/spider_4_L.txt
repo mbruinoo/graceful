@@ -1,0 +1,10 @@
+spider(4,1) n=5 count=2 nodes=6 hits=0 t=0.0s non_anchors=0/5 orbits[deg x size: placements with it at label 1]: [4 x1: 1] [1 x4: 1]
+spider(4,2) n=9 count=14 nodes=168 hits=0 t=0.0s non_anchors=0/9 orbits[deg x size: placements with it at label 1]: [4 x1: 5] [2 x4: 7] [1 x4: 2]
+spider(4,3) n=13 count=138 nodes=3030 hits=70 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [4 x1: 47] [2 x4: 65] [2 x4: 22] [1 x4: 4]
+spider(4,4) n=17 count=1434 nodes=48766 hits=1349 t=0.2s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [4 x1: 468] [2 x4: 656] [2 x4: 243] [2 x4: 61] [1 x4: 6]
+spider(4,5) n=21 count=14454 nodes=605144 hits=29246 t=1.3s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 4539] [2 x4: 6133] [2 x4: 2458] [2 x4: 1061] [2 x4: 230] [1 x4: 33]
+spider(4,6) n=25 count=157488 nodes=6436914 hits=515719 t=6.1s non_anchors=0/25 orbits[deg x size: placements with it at label 1]: [4 x1: 47453] [2 x4: 66697] [2 x4: 27449] [2 x4: 11348] [2 x4: 3778] [2 x4: 699] [1 x4: 64]
+spider(4,7) n=29 count=1684080 nodes=65979498 hits=4153438 t=66.1s non_anchors=0/29 orbits[deg x size: placements with it at label 1]: [4 x1: 503338] [2 x4: 698091] [2 x4: 288775] [2 x4: 128650] [2 x4: 47457] [2 x4: 15090] [2 x4: 2470] [1 x4: 209]
+spider(4,8) n=33 count=ABORTED(budget) nodes=200000001 t=196.8s
+spider(4,9) n=37 count=ABORTED(budget) nodes=200000001 t=222.5s
+# stopped after 2 trees over budget in a row

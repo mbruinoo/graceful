@@ -37,3 +37,7 @@ src/attack/**/an_*.txt
 src/attack/**/d_*.txt
 src/attack/referee_reverify_brute/
 src/attack/referee_reverify_proof/
+src/growfam
+src/growcheck
+src/hunt_*.log
+results/counterexample-hunt/counts/*.tmp

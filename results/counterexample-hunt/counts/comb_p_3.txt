@@ -1,0 +1,6 @@
+comb(3,3) n=12 count=98 nodes=2331 hits=40 t=0.0s non_anchors=0/12 orbits[deg x size: placements with it at label 1]: [2 x2: 29] [3 x1: 21] [2 x2: 18] [2 x2: 7] [1 x2: 2] [2 x1: 12] [2 x1: 8] [1 x1: 1]
+comb(4,3) n=16 count=4324 nodes=129503 hits=6431 t=0.5s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [2 x2: 842] [3 x2: 1906] [2 x2: 456] [2 x2: 148] [1 x2: 29] [2 x2: 691] [2 x2: 215] [1 x2: 37]
+comb(5,3) n=20 count=413330 nodes=13804142 hits=1623180 t=13.8s non_anchors=0/20 orbits[deg x size: placements with it at label 1]: [2 x2: 60918] [3 x2: 146354] [3 x1: 86747] [2 x2: 23858] [2 x2: 5383] [1 x2: 842] [2 x2: 47068] [2 x2: 10273] [1 x2: 1523] [2 x1: 24699] [2 x1: 5026] [1 x1: 639]
+comb(6,3) n=24 count=ABORTED(budget) nodes=40000001 t=36.0s
+comb(7,3) n=28 count=ABORTED(budget) nodes=40000001 t=36.5s
+# stopped after 2 trees over budget in a row
