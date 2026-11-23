@@ -1,0 +1,8 @@
+d=10 rooted trees=719  least m with root anchor found: [(0, 706), (1, 12), (2, 1)]  unresolved(root never found as anchor up to m=12)=0  smaller members checked=14 failing=0
+  [0s]
+d=11 rooted trees=1842  least m with root anchor found: [(0, 1824), (1, 18)]  unresolved(root never found as anchor up to m=12)=0  smaller members checked=18 failing=0
+  [1s]
+d=12 rooted trees=4766  least m with root anchor found: [(0, 4734), (1, 32)]  unresolved(root never found as anchor up to m=12)=0  smaller members checked=32 failing=0
+  [0s]
+d=13 rooted trees=12486  least m with root anchor found: [(0, 12436), (1, 46), (2, 4)]  unresolved(root never found as anchor up to m=12)=0  smaller members checked=54 failing=0
+  [0s]

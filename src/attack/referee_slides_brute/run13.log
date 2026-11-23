@@ -1,0 +1,17 @@
+n=13 tree placements=8733628
+unit components=34181 star comp size=8433246
+shapes=1301 right-reach placements=3128297 shapes=1301
+local minima=954376 shapes among minima=1301 missing=0
+components: unit+slide2=379 unit+reflect=149 unit+two=1 two-samedir=467 two-consec=4315
+LemmaF: leaf-footed (placement,bracket) pairs tested=52138508 violations=0
+ThmI: comp size of P=2, P' in same comp=1
+islands(non-star comps)=34180 holding 300382 placements; size-2 islands=9208
+S2: a=2 b=8 tree=1 spider=1 right-reachable=1
+S2: a=3 b=6 tree=1 spider=1 right-reachable=1
+S2: a=4 b=4 tree=1 spider=1 right-reachable=1
+S2: a=5 b=2 tree=1 spider=1 right-reachable=1
+S2: a=6 b=0 tree=1 spider=1 right-reachable=1
+
+real	0m37.217s
+user	0m36.623s
+sys	0m0.226s

@@ -1,0 +1,11 @@
+m 0 case-2 end pieces 1 rooted shapes 1
+m 1 case-2 end pieces 2 rooted shapes 2
+m 2 case-2 end pieces 12 rooted shapes 10
+m 3 case-2 end pieces 90 rooted shapes 51
+exhaustive n<=6, m<=3: case1 7872, case2 254625, total 262497, failures 0
+negative control (inadmissible case-2 end piece, n<=4): 31648 of 31992 fail
+random n in 7..12, m in 1..5: 0 triples, failures 0
+
+real	2m30.140s
+user	2m28.691s
+sys	0m0.004s

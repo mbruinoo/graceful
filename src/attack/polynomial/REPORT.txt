@@ -1,0 +1,64 @@
+SUMMARY
+No proof of GTC or Conjecture B. The polynomial line gave one sharp negative: for a fixed rooted tree and heap order, the valid sign vector is unique for n <= 9, so a Nullstellensatz-type signed count is +-1; from n = 10 some classes have two vectors that cancel. Following the signed-sum form on paths gave the main positive result: three explicit infinite families (m = 3s+2, 5s+4, 7s+3 edges) where the vertex at distance 2 from the end of a path is an anchor, proved by explicit deals and machine-checked. By README section 13 gluing this gives growth placements for the 3-leg spiders S(a,2,c) with a = 0 mod 3, 2 mod 5 or 1 mod 7, any c. Conversely, for 15 <= m <= 1000 these congruences are exactly the anchors, so path non-anchors persist (conjectured density 48/105). Novelty was not checked against the literature.
+
+DEAD ENDS
+1. Combinatorial Nullstellensatz in vertex-label variables (labels in {0..m}): the natural polynomial (Vandermonde times the product over edge pairs of (d_e^2 - d_e'^2)) has degree (n-1)(3n-4)/2, above the capacity n(n-1) for every n >= 5, so every monomial has an exponent >= n and the theorem cannot be applied as stated. The degree only fits if labels may range over about 1.5n values, which is a relaxed problem.
+2. Sign variables with a fixed heap order: 'labels distinct' alone is trivially satisfiable (all signs +), so the whole content is the range condition 0..m, which has no low-degree polynomial form. The signed count Z that a degree-m certificate would need is 0 for some classes from n = 10 (claim 3). Smallest obstruction: the n = 10 class listed there.
+3. Signed counts summed over all heap orders of one rooted tree (sign = parity of the number of down edges): computed for n <= 7, no pattern; they vanish already at n = 5 for the root with a leaf child and a 3-path child (2 placements, signed count 0).
+4. Root-of-unity evaluations of the identity sum_v q^f(v) = 1 + q + ... + q^m. Only q = 1 (derivative) and q = -1 give sign-free conditions: sum_v eps_v w_v s_v = m(m+1)/2, and #{v : s_v even, w_v odd} = n f(root) (mod 2). Both hold (checked n <= 9, all roots) but are too weak to explain any non-anchor, e.g. they do not exclude the middle of the path on 7 vertices. README Lemma 11 is the special case of the linear identity for zigzag signs.
+5. 'Two sign vectors for one heap order always differ in an odd number of signs' held for all n <= 15 and fails at n = 16 (1,944 pairs differ in 4 or 6 signs). Not claimed.
+6. The 'only if' half of claim 2 was not attempted beyond the structural sketch.
+7. Leg-by-leg root gluing (caterpillar O with low labels 0..A, a tree T' on exactly A+1 vertices hung on O's root): works but forces |T'|, and for paths yields only the anchor pairs (2b-1, b) and (2b-2, b). Not pursued or machine-checked beyond those path cases appearing in the deal counts.
+
+FILES
+/home/user/graceful/src/attack/polynomial/verify.py
+/home/user/graceful/src/attack/polynomial/pathanchor.cpp
+/home/user/graceful/src/attack/polynomial/signclass.cpp
+/home/user/graceful/src/attack/polynomial/signsum2.py
+/home/user/graceful/src/attack/polynomial/signtree.py
+/home/user/graceful/src/attack/polynomial/deal2show.py
+
+
+===== CLAIM 0 [proved]
+STATEMENT
+Theorem (path anchors at distance 2). Let P be the path with m edges and y the vertex at distance 2 from one end. If m = 3s+2, m = 5s+4 or m = 7s+3 for some integer s >= 1, then P has a growth placement with y labelled 0 (labels 0..m), i.e. y is an anchor. Corollary (uses the pendant-path gluing statement proved in README section 13): for every c >= 1 the spider S(a,2,c) has a growth placement whenever a = 3s, a = 5s+2 or a = 7s+1 with s >= 1. For a, c >= 2 these spiders are not caterpillars.
+
+EVIDENCE
+verify.py families 150: all three families built from the closed formulas and checked from README section 1 (each length 1..m exactly once, longest-first growth test, graph is a path, label 0 at distance 2 from an end) for s = 1..150. Spider corollary: 1080 cases (three families, s <= 12, c = 1..30) built by the section 13 gluing and checked the same way, including the leg lengths. verify.py brute 10: for every n <= 10, the count of path growth placements by position of label 1, taken over all (n-1)! placements, equals the two-leg deal counter.
+
+PROOF
+Labels 0..m, root y = 0. Leg A has m-2 edges, leg B has 2. Hand the numbers m, m-1, ..., 1 in decreasing order; each number k moves the tip of the leg that receives it by +k or -k. Edge lengths are then 1..m once each and decrease outward along both legs, so by README Theorem 7 the result is a growth placement provided every move lands in [0,m] on an unvisited label. 'Zigzag on [p,q]' means alternating to the current extreme unvisited cells of that interval.
+
+Family m = 3s+2. B gets m: 0 -> m. A gets m-1, ..., m-2s: 0 -> m-1 -> 1 -> m-2 -> 2 -> ... (i-th up-move lands on m-i, i-th down-move on i, i = 1..s), ending at s. B gets s+1: m -> 2s+1. A gets s, ..., 1: s -> 2s -> s+1 -> 2s-1 -> ..., a zigzag on [s+1,2s]. Visited labels: 0; 1..s; s+1..2s; 2s+1; 2s+2..3s+1; 3s+2. These partition [0,m].
+
+Family m = 5s+4. A gets m, ..., m-2s-1 (2s+2 numbers): 0 -> m -> 1 -> m-1 -> ... ending at s+1, visiting m-s..m and 1..s+1. B gets 3s+2: 0 -> 3s+2. A gets 3s+1, ..., s+2: s+1 -> 4s+2 -> s+2 -> 4s+1 -> s+3 -> ... (i-th up-move lands on 4s+3-i with length 3s+3-2i, i-th down-move on s+1+i with length 3s+2-2i, i = 1..s), ending at 2s+1. B gets s+1: 3s+2 -> 4s+3. A gets s, ..., 1: 2s+1 -> 3s+1 -> 2s+2 -> ..., a zigzag on [2s+2,3s+1]. Visited: 0; 1..s+1; s+2..2s+1; 2s+2..3s+1; 3s+2; 3s+3..4s+2; 4s+3; 4s+4..5s+4. A partition of [0,m].
+
+Family m = 7s+3. A gets m, ..., m-4s (4s+1 numbers): zigzag from 0 ending at 5s+3, visiting 5s+3..7s+3 and 1..2s. B gets 3s+2: 0 -> 3s+2. A gets 3s+1, ..., s+2: 5s+3 -> 2s+2 -> 5s+2 -> 2s+3 -> ... (i-th down-move lands on 2s+1+i, i-th up-move on 5s+3-i, i = 1..s), ending at 4s+3. B gets s+1: 3s+2 -> 2s+1. A gets s, ..., 1: 4s+3 -> 3s+3 -> 4s+2 -> ..., a zigzag on [3s+3,4s+2]. Visited: 0; 1..2s; 2s+1; 2s+2..3s+1; 3s+2; 3s+3..4s+2; 4s+3..5s+2; 5s+3..7s+3. A partition of [0,m].
+
+In each phase the stated landing labels follow by adding or subtracting the consecutive numbers, and the listed blocks are disjoint with union [0,m], so no label repeats.
+
+Corollary: README section 13 ('one more leg of any length') says that if y is an anchor of T then T with a pendant path of c edges at y has a growth placement. Apply it to (P, y); the result is S(m-2, 2, c).
+
+
+===== CLAIM 1 [conjecture]
+STATEMENT
+Conjecture (exact description of distance-2 anchors on paths). Let N2(m) be the number of growth placements of the path with m edges in which the vertex at distance 2 from an end is labelled 0. For all m >= 21, N2(m) = [m = 2 mod 3] + [m = 5 mod 9] + [m = 4 mod 5] + [m = 3 mod 7]. In particular, for m >= 15 that vertex is an anchor if and only if m = 2 (mod 3) or m = 4 (mod 5) or m = 3 (mod 7), so it is a non-anchor for a set of m of density (2/3)(4/5)(6/7) = 48/105. The 'if' direction is the theorem of claim 1; the 'only if' direction and the exact count are unproved.
+
+EVIDENCE
+pathanchor.cpp (exhaustive two-leg deal search, cross-checked against full placement enumeration for n <= 10). The count formula holds for every m with 21 <= m <= 1000 (980 values, no mismatch); the anchor criterion holds for every 15 <= m <= 1000. Small exceptions: m = 20 has 2 (formula 1); m = 7, 12, 13 are anchors outside the congruences; m = 6 is not an anchor. Maximum N2(m) for m <= 1000 is 5 (at m = 14). Wider data, all positions b, m <= 90: interior non-anchors exist for many m, e.g. b = 2,3,4 all fail at m = 40, 51, 55, 58, 70, 75, 85, 90, and b = 2,3,4,5 at m = 78. The middle vertex (b = m/2) is a non-anchor for m = 6, 12, 14, 16, 18, 20, 24, 26, 32. For b = 3, 4, 5, 6 there are 49, 45, 20, 3 non-anchor values of m in 100..250. The total number of growth placements of the path with m edges is 2, 26, 76, 144, 280, 448, 2976 for m = 6, 20, 30, 40, 50, 60, 90.
+
+PROOF
+Not proved. Sketch of why the structure is rigid (a sketch only): until leg B receives a number, leg A's moves are forced zigzag steps by the balance rule (README Lemma 10). Every solution found for b = 2 and m <= 40 is either 'B, A x 2s, B, A x s' with m = 3s+2, or a zigzag prefix of A of length 2s+2, 4s+1 or 6s+3 followed by that core pattern (giving m = 5s+4, 7s+3, 9s+5), plus finitely many small sporadic ones built on the m = 7 solution (m = 13, 14, 20). A proof of 'only if' would need a forced-move case analysis of leg A after B's first label; I did not attempt it.
+
+
+===== CLAIM 2 [verified-only]
+STATEMENT
+Sign rigidity and the failure point of the sign-variable Nullstellensatz. Fix a rooted tree (T, r) and a heap order w (a bijection from non-root vertices to 1..m with w(child) < w(parent), README Theorem 7). Call a sign vector eps valid if the signed root-path sums are exactly 0..m, and let Z(T,r,w) be the sum over valid eps of the product of the signs. (i) Proved: two distinct valid sign vectors for the same (T,r,w) differ on a set D with sum over u in D of eps_u w_u s_u = 0, where s_u is the subtree size; hence |D| >= 2, and the two labellings agree mod 2 at every vertex. (ii) Verified only: for n <= 9 every (T,r,w) has at most one valid sign vector, so Z = +-1 exactly when a growth placement exists. For 10 <= n <= 16 every class has at most two. For 10 <= n <= 15 any two differ in an odd number of signs (3 or 5), so Z = 0 for those classes although growth placements exist. At n = 16 even differences (4 and 6) first appear.
+
+EVIDENCE
+signclass.cpp, exhaustive over all growth placements (totals match README section 4: 1764, 7888, 40220, 214600, 1275368 for n = 9..13). Classes with two valid sign vectors: n = 9: 0 of 1,764; n = 10: 12 of 7,876; n = 11: 98 of 40,122; n = 12: 808 of 213,792; n = 13: 4,636 of 1,270,732; n = 14: 30,558 of 7,895,602 (differing signs 3: 30,546, 5: 12); n = 15: 199,818 of 53,423,950 (3: 199,624, 5: 194); n = 16: 1,430,876 of 378,614,184 (3: 1,425,224, 4: 1,916, 5: 3,708, 6: 28). No class has three vectors for n <= 16. Smallest Z = 0 example (n = 10, labels 0..9, parent->child:length): 0->9:9, 0->8:8, 9->2:7, 0->6:6, 0->5:5, 0->4:4, then either 4->1:3, 5->7:2, 2->3:1 or 4->7:3, 5->3:2, 2->1:1. signsum2.py (independent Python version) agrees for n <= 13. signtree.py: every tree on n <= 12 vertices has some rooting and heap order with exactly one valid sign vector. The linear identity in (i) was checked on all tree placements and all roots for n <= 9 (verify.py brute).
+
+PROOF
+Proof of (i). Let f, f' be the labellings for eps, eps' and D the set where they differ. For every vertex v, f'(v) - f(v) = -2 * (sum of eps_u w_u over u in D on the root path to v, v included), so f' = f (mod 2) pointwise. Both labellings use each of 0..m once, so the sum over v of (f'(v) - f(v)) is 0. Each u in D contributes -2 eps_u w_u to every vertex of its subtree, so the total is -2 * sum over u in D of eps_u w_u s_u = 0. If D = {u} this gives w_u s_u = 0, impossible; so |D| >= 2. QED.
+
+Consequence for the method (standard, not new): if F is a polynomial of degree at most m in x_v = eps_v w_v, the coefficient of the product of all x_v is (1/(2^m m!)) times the sum over eps of (product of signs) F(eps w). So a certificate F that is constant on valid sign vectors has leading coefficient proportional to Z. Part (ii) is computation only, not proved.

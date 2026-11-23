@@ -1,0 +1,8 @@
+n=3 growth=2 clean_sets=4 disjoint_pairs(ordered)=0 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=2 (2^(n-2)=2) nonorder_growth_restrictions=0
+n=4 growth=4 clean_sets=22 disjoint_pairs(ordered)=16 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=4 (2^(n-2)=4) nonorder_growth_restrictions=0
+n=5 growth=12 clean_sets=120 disjoint_pairs(ordered)=152 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=8 (2^(n-2)=8) nonorder_growth_restrictions=0
+n=6 growth=32 clean_sets=542 disjoint_pairs(ordered)=1092 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=16 (2^(n-2)=16) nonorder_growth_restrictions=0
+n=7 growth=116 clean_sets=2894 disjoint_pairs(ordered)=6920 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=32 (2^(n-2)=32) nonorder_growth_restrictions=16
+n=8 growth=412 clean_sets=14622 disjoint_pairs(ordered)=41344 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=64 (2^(n-2)=64) nonorder_growth_restrictions=140
+n=9 growth=1764 clean_sets=83486 disjoint_pairs(ordered)=246224 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=128 (2^(n-2)=128) nonorder_growth_restrictions=1562
+n=10 growth=7888 clean_sets=484058 disjoint_pairs(ordered)=1451768 T1viol=0 T1conv_viol=0 T2viol=0 T3viol=0 T4viol=0 staircases=256 (2^(n-2)=256) nonorder_growth_restrictions=14192

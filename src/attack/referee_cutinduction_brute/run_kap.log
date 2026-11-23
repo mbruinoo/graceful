@@ -1,0 +1,21 @@
+n=17 labelings=4784 distinct placements=598  min kappa=3  kappa distribution (per labeling): 3:208 4:544 5:768 6:1024 7:848 8:784 9:464 10:144   [memo 1119, clean sets seen 88562]
+n=17 labelings=340 distinct placements=170  min kappa=3  kappa distribution (per labeling): 3:28 4:84 5:80 6:72 7:52 8:20 9:4   [memo 355, clean sets seen 25509]
+n=22 labelings=7752 distinct placements=1292  min kappa=3  kappa distribution (per labeling): 3:12 4:12 5:24 6:84 7:96 8:300 9:600 10:1104 11:1680 12:2484 13:1044 14:312   [memo 1613, clean sets seen 172837]
+n=25 labelings=23016 distinct placements=3836  min kappa=6  kappa distribution (per labeling): 6:24 7:36 8:180 9:588 10:888 11:1452 12:2820 13:4380 14:6168 15:5124 16:1344 17:12   [memo 4277, clean sets seen 564820]
+
+real	0m0.536s
+user	0m0.528s
+sys	0m0.000s
+n=28 labelings=67212 distinct placements=11202  min kappa=6  kappa distribution (per labeling): 6:12 7:12 8:72 9:216 10:492 11:1092 12:2256 13:4080 14:7188 15:12576 16:19644 17:13968 18:5352 19:252   [memo 11934, clean sets seen 1934296]
+
+real	0m2.164s
+user	0m2.128s
+sys	0m0.008s
+n=21 labelings=346896 distinct placements=14454  min kappa=3  kappa distribution (per labeling): 3:96 4:912 5:1248 6:5520 7:10080 8:16800 9:25536 10:46320 11:62112 12:102720 13:61152 14:14400   [memo 18101, clean sets seen 2019006]
+
+real	0m4.740s
+user	0m4.647s
+sys	0m0.012s
+n=9 labelings=336 distinct placements=14  min kappa=2  kappa distribution (per labeling): 2:288 3:48   [memo 35, clean sets seen 943]
+n=13 labelings=3312 distinct placements=138  min kappa=2  kappa distribution (per labeling): 2:480 3:816 4:816 5:528 6:672   [memo 382, clean sets seen 18156]
+n=17 labelings=34416 distinct placements=1434  min kappa=2  kappa distribution (per labeling): 2:432 3:672 4:2352 5:3072 6:3552 7:4992 8:6432 9:8592 10:4176 11:144   [memo 2584, clean sets seen 198369]

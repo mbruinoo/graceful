@@ -1,0 +1,13 @@
+n=12 tree placements=1112032
+local minima=128546 shapes=551 shapes with no local minimum=1
+  missing shape (8 placements) e.g. {1,12} {1,11} {1,10} {1,9} {1,8} {1,7} {2,7} {2,6} {2,5} {2,4} {2,3}  degs: 6 5 2 1 1 1 1 1 1 1 1 1
+unit only: components=4987
+unit + slide-by-2: components=45
+unit + reflect through foot: components=103
+unit + two-at-once: components=1
+unit + two-at-once same direction: components=89
+unit + two-at-once consecutive lengths: components=815
+
+real	0m22.748s
+user	0m22.556s
+sys	0m0.038s

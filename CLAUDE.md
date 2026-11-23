@@ -24,7 +24,7 @@ These come from the author's opening brief; treat them as standing.
 
 | Word | Meaning |
 |---|---|
-| **Proved** | A complete argument is written in the README. |
+| **Proved** | A complete argument is written in the README, or in a file the README cites, and (for results from multi-agent runs) two independent referees found no gap. |
 | **Classical** | Proved by someone else; cite them. |
 | **Conjecture** | Believed, unproved, with stated evidence. |
 | **Observation** | True in every case checked; give the bound (`n ≤ …`). |

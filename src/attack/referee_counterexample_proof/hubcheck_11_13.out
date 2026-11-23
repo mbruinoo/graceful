@@ -1,0 +1,8 @@
+d=11 rooted=1842 least-m histogram=[(0, 1824), (1, 18)]  monotonicity violations=0  T(D,m) m<=3 with NO growth placement=0  root-degree>=4 non-anchors (n<=14)=0  [0s]
+   degree-3 root with two leaf neighbours, NOT an anchor: n=11  11 0 1 1 2 2 3 3 4 4 5 2 6 6 7 7 8 0 9 0 10
+d=12 rooted=4766 least-m histogram=[(0, 4734), (1, 32)]  monotonicity violations=0  T(D,m) m<=3 with NO growth placement=0  root-degree>=4 non-anchors (n<=15)=0  [1s]
+   d=13 least m=2 D=((((), (), (), (), ()), ((), (), (), ())),)  edges(m=1): 14 0 1 1 2 2 3 2 4 2 5 2 6 2 7 1 8 8 9 8 10 8 11 8 12 0 13
+   d=13 least m=2 D=((((((), (), (), (), (), ()),),), ((),)),)  edges(m=1): 14 0 1 1 2 2 3 3 4 4 5 4 6 4 7 4 8 4 9 4 10 1 11 11 12 0 13
+   d=13 least m=2 D=((((), (), (), (), (), (), (), ()), ((),)),)  edges(m=1): 14 0 1 1 2 2 3 2 4 2 5 2 6 2 7 2 8 2 9 2 10 1 11 11 12 0 13
+   d=13 least m=2 D=((((((((), ()),), (((), ()),)),),),),)  edges(m=1): 14 0 1 1 2 2 3 3 4 4 5 5 6 6 7 6 8 4 9 9 10 10 11 10 12 0 13
+d=13 rooted=12486 least-m histogram=[(0, 12436), (1, 46), (2, 4)]  monotonicity violations=0  T(D,m) m<=3 with NO growth placement=0  root-degree>=4 non-anchors (n<=16)=0  [4s]

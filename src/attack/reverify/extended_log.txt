@@ -1,0 +1,59 @@
+# Runs beyond run_all.sh's default range (same programs; commands as in run_all.sh with larger n). Times are wall-clock on one core.
+## all trees n=19,20 (gp + check_cert.py)
+n=19 R=3: trees 317955, certificates verified 317955, NONE 0 (R=3 H=None SIDE=0 TRACK=0) 24s
+n=19 H=2: trees 317955, certificates verified 317955, NONE 0 (R=None H=2 SIDE=0 TRACK=0) 35s
+n=19 R=2: trees 317955, certificates verified 317951, NONE 4 (R=2 H=None SIDE=0 TRACK=0) 47s
+n=20: 823065 trees
+n=20 R=3: trees 823065, certificates verified 823065, NONE 0 (R=3 H=None SIDE=0 TRACK=0) 83s
+n=20 H=2: trees 823065, certificates verified 823065, NONE 0 (R=None H=2 SIDE=0 TRACK=0) 119s
+n=20 R=2: trees 823065, certificates verified 823061, NONE 4 (R=2 H=None SIDE=0 TRACK=0) 149s
+## all trees n=21
+n=21: 2144505 trees
+n=21 H=2: trees 2144505, certificates verified 2144505, NONE 0 (R=None H=2 SIDE=0 TRACK=0) 393s
+n=21 R=3: trees 2144505, certificates verified 2144505, NONE 0 (R=3 H=None SIDE=0 TRACK=0) 207s
+n=21 R=2: trees 2144505, certificates verified 2144495, NONE 10 (R=2 H=None SIDE=0 TRACK=0) 506s
+## all trees n=22 (5,623,756 trees; the H=2 run was interrupted by a job time limit after 3.6M trees and resumed from tree 3,600,001; gp is deterministic per tree)
+n=22 R=3: gp 494s
+n=22 R=3: trees 5623756, certificates verified 5623756, NONE 0 (R=3 H=None SIDE=0 TRACK=0) 804s
+n=22 H=2 (resumed at tree 3600001): gp 637s
+n=22 H=2: trees 5623756, certificates verified 5623755, NONE 1 (R=None H=2 SIDE=0 TRACK=0) 959s
+NONE|22 1 0 1 2 0 11 2 3 3 4 4 5 4 6 4 7 4 8 4 9 4 10 11 12 12 13 12 20 13 14 13 15 13 16 13 17 13 18 13 19 20 21
+## SIDE=2 (at most one single on each side of the run of size > 1), pure enumeration, n=17,18
+n=17 R=99 H=2 SIDE=2 placements=54226312 shapes=48629 :: trees 48629, drawn 48629, not drawn 0
+n=18 R=99 H=2 SIDE=2 placements=195855332 shapes=123866 rooted_shapes=0 :: trees 123867, drawn 123866, not drawn 1   not drawn: 18 1 0 1 2 0 9 2 3 3 4 3 7 4 5 4 6 7 8 9 10 10 11 11 12 11 13 11 14 11 15 11 16 11 17  242s
+## spiders, Conjecture S (spiderdeal free + check_deal.py), n=21..31
+rc=0 n=21 mode=free: spiders 616, deals verified 616, NONE 0 0s
+rc=0 n=22 mode=free: spiders 781, deals verified 781, NONE 0 0s
+rc=0 n=23 mode=free: spiders 990, deals verified 990, NONE 0 0s
+rc=0 n=24 mode=free: spiders 1243, deals verified 1243, NONE 0 1s
+rc=0 n=25 mode=free: spiders 1562, deals verified 1562, NONE 0 0s
+rc=0 n=26 mode=free: spiders 1945, deals verified 1945, NONE 0 1s
+rc=0 n=27 mode=free: spiders 2422, deals verified 2422, NONE 0 2s
+rc=0 n=28 mode=free: spiders 2996, deals verified 2996, NONE 0 3s
+rc=0 n=29 mode=free: spiders 3703, deals verified 3703, NONE 0 5s
+rc=0 n=30 mode=free: spiders 4550, deals verified 4550, NONE 0 10s
+rc=0 n=31 mode=free: spiders 5588, deals verified 5588, NONE 0 18s
+## spiders, least number of skips (spider_skips.py)
+L\k   3 4 5 6 8
+L=1:  0 0 0 0 0
+L=2:  0 1 1 1 1
+L=3:  2 2 2 2 2
+L=4:  0 2 1 2 2
+L=5:  0 1 1 2 2
+L=6:  1 1 1 1 2
+n=16: spiders 168, need 0: 143, need 1: 24, need 2: 1, need more: 0
+n=20: spiders 480, need 0: 378, need 1: 102, need 2: 0, need more: 0
+n=24: spiders 1243, need 0: 888, need 1: 343, need 2: 12, need more: 0
+## SAT (sat_check.py) on the 22-vertex tree
+SAT 21 1 22 4 13 7 8 9 10 12 20 2 19 3 5 11 14 15 17 18 6 16   [132.9s]  22 0 1 1 2 2 3 3 4 4 5 4 6 4 7 4 8 4 9 4 10 0 11 11 12 12 13 13 14 13 15 13 16 13 17 13 18 13 19 12 20 20 21
+tree22.txt R=None H=3: SAT 1, UNSAT 0
+UNSAT   [180.0s]  22 0 1 1 2 2 3 3 4 4 5 4 6 4 7 4 8 4 9 4 10 0 11 11 12 12 13 13 14 13 15 13 16 13 17 13 18 13 19 12 20 20 21
+tree22.txt R=None H=2: SAT 0, UNSAT 1
+## the author's enumerator src/holes (binary run, source not read), for identifying its side rules
+holes 10 3 1 0: placements=6884 shapes=106 | holes 10 3 1 1: placements=4728 shapes=105 | holes 10 3 1 2: placements=5672 shapes=106
+holes 11 3 1 0: 28788/235 | holes 11 3 1 1: 17220/235 | holes 11 3 1 2: 21228/235 | holes 15 3 1 2: 4547360/7740 | holes 15 3 1 1: 2735192/7741
+enumgp 10 H=2: 6884/106; H=2 SIDE=1: 5672/106; H=2 SIDE=2: 6192/106; probe_side.py 10 each_leftmost: 4728/105
+n=11 each_side: placements 23556, shapes 235
+n=11 each_leftmost: placements 17220, shapes 235
+n=11 each_any: placements 23556, shapes 235
+n=11 same_side: placements 21228, shapes 235

@@ -1,0 +1,15 @@
+mode=deg4 d=5 part=0/1 rooted trees total=9 tested=1 root-not-anchor-found=0 maxnodes(last)=4
+mode=deg4 d=6 part=0/1 rooted trees total=20 tested=2 root-not-anchor-found=0 maxnodes(last)=13
+mode=deg4 d=7 part=0/1 rooted trees total=48 tested=5 root-not-anchor-found=0 maxnodes(last)=11
+mode=deg4 d=8 part=0/1 rooted trees total=115 tested=12 root-not-anchor-found=0 maxnodes(last)=34
+mode=deg4 d=9 part=0/1 rooted trees total=286 tested=31 root-not-anchor-found=0 maxnodes(last)=116
+mode=deg4 d=10 part=0/1 rooted trees total=719 tested=77 root-not-anchor-found=0 maxnodes(last)=309
+mode=deg4 d=11 part=0/1 rooted trees total=1842 tested=202 root-not-anchor-found=0 maxnodes(last)=607
+mode=deg4 d=12 part=0/1 rooted trees total=4766 tested=524 root-not-anchor-found=0 maxnodes(last)=3491
+mode=deg4 d=13 part=0/1 rooted trees total=12486 tested=1390 root-not-anchor-found=0 maxnodes(last)=3697
+mode=deg4 d=14 part=0/1 rooted trees total=32973 tested=3695 root-not-anchor-found=0 maxnodes(last)=28589
+mode=deg4 d=15 part=0/1 rooted trees total=87811 tested=9929 root-not-anchor-found=0 maxnodes(last)=47494
+mode=deg4 d=16 part=0/1 rooted trees total=235381 tested=26792 root-not-anchor-found=0 maxnodes(last)=555754
+mode=deg4 d=17 part=0/1 rooted trees total=634847 tested=72791 root-not-anchor-found=0 maxnodes(last)=402125
+mode=deg4 d=18 part=0/1 rooted trees total=1721159 tested=198553 root-not-anchor-found=0 maxnodes(last)=9279132
+mode=deg4 d=19 part=0/1 rooted trees total=4688676 tested=544155 root-not-anchor-found=0 maxnodes(last)=11151561

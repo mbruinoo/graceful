@@ -1,0 +1,170 @@
+SLIDES LINE OF ATTACK -- proofs and exact data
+==============================================
+Nothing here proves the Graceful Tree Conjecture or Conjecture A.  Status words as in CLAUDE.md.
+Novelty was NOT checked against the literature (slides are this repository's notion; that the
+spiders below are graceful is classical -- they are trees of diameter <= 4, Hrnciar-Haviar 2001).
+
+Notation (README section 1): bracket k sits at p_k and is the edge {p_k, p_k+k}.  "br k" = bracket k.
+
+Path form of Lemma 1.  Let e = {x,y} be a bracket of a tree placement T.  Moving e to {x',y'}
+gives a tree iff the path of T from x' to y' passes through e.
+(Proof: x', y' lie in different pieces of T-e iff the unique path between them uses e.)
+So a slide is certified by NAMING a path of T from the new left foot to the new right foot
+that contains the sliding bracket.
+
+---------------------------------------------------------------------------------------------
+LEMMA F (leaf freeze).  Proved.
+In a tree placement on n >= 3 vertices let bracket k have a foot l that is a leaf.
+ (a) If k >= 2, bracket k has no legal slide.
+ (b) If k = 1, its only possible legal slide is the one that moves it over its leaf
+     ({l-1,l} -> {l,l+1}, or {l,l+1} -> {l-1,l}); that slide is legal whenever it stays on the rail.
+Proof.  Removing the bracket leaves pieces {l} and the rest.  By Lemma 1 the new bracket must
+have exactly one foot equal to l.  The new feet are x+-1, y+-1 with y = x+k; one of them equals
+l (a foot of the old bracket) only if k = 1, and then the other new foot is not l.  QED
+Consequence: once a bracket of length >= 2 is pendant it stays frozen until some OTHER bracket
+lands on its leaf.  In the islands for n = 7..10, 54-58% of all (placement, non-moving bracket)
+pairs are frozen for exactly this reason (islands.py).
+
+---------------------------------------------------------------------------------------------
+THEOREM I (the slide graph is disconnected for every n >= 7).  Proved.
+For n >= 7 let
+     P  = (2, n-3, 1, 1, ..., 1, 2, 1),      P' = (3, n-3, 1, 1, ..., 1, 2, 1)
+(p_1 = 2 or 3, p_2 = n-3, p_k = 1 for 3 <= k <= n-3, p_{n-2} = 2, p_{n-1} = 1).
+Then {P, P'} is a connected component of the slide graph (an island of size 2).
+Proof.  Edges of P: {1,j} for j = 4..n-2 and j = n;  {2,n};  {2,3};  {n-3,n-1}.
+Since n-3 >= 4, n-3 is a neighbour of 1; every vertex is joined to 1, so P is a tree.  P' is P
+with the leaf 3 re-hung on 4.
+ br 1.  In P it is {2,3} with leaf 3; in P' it is {3,4} with leaf 3.  By Lemma F(b) the only
+        legal slide is P <-> P'.
+ br 2 = {n-3,n-1}; n-1 is a leaf.  Frozen by Lemma F(a).
+ br k, 3 <= k <= n-3, = {1,k+1}, at the left end of its rail.  A right slide gives {2,k+2}.
+        The piece B of k+1 after removing the bracket is {k+1}, or {n-3,n-1} (k = n-4), or in P'
+        {4,3} (k = 3).  Neither 2 nor k+2 lies in B (k+2 is k+1+1, never n-1 or 3; 2 hangs on n).
+        So both new feet are in the other piece: not a tree.
+ br n-2 = {2,n}, at the right end of its rail.  A left slide gives {1,n-1}.  The piece of 2 is
+        {2,3} (in P) or {2} (in P'); neither contains 1 or n-1.  Not a tree.
+ br n-1 has a one-point rail.                                                            QED
+Machine check: island2_check.py, 7 <= n <= 60.  For n <= 6 the graph is connected (sl.cpp).
+
+---------------------------------------------------------------------------------------------
+THEOREM S2 (right slides reach every spider with legs of length <= 2).  Proved.
+Let a >= 2, b >= 0, n = 2a+1+b.  Define the placement F(a,b) by
+     p_{2j-1} = a+2-j   (1 <= j <= a-1),      p_k = 2 for every other k <= n-2,      p_{n-1} = 1.
+Then F(a,b) draws the spider with a legs of length 2 and b legs of length 1, and F(a,b) is
+reachable from the star by legal right slides.  (a <= 2 gives caterpillars; a >= 3 does not.)
+The route has (a-1)(a+2)/2 + a + b slides (Lemma 4).
+
+Picture.  The odd brackets 2j-1, j = 1..a, are nested around the gap between a+1 and a+2:
+{a+2-j, a+1+j}.  All other brackets below the top one fan out from vertex 2.  The top is {1,n}.
+Shape.  2 is joined to 4,6,...,2a (even brackets) and to 2a+1,...,n (brackets 2a-1..n-2).
+Each even x in 4..2a is joined by a nested bracket to the odd 2a+3-x in 3..2a-1; n is joined
+to 1; 2a+1..n-1 are leaves.  That is the spider with centre 2.
+
+Route.  Write T_j = a+2-j (the target of bracket 2j-1; also T_a = 2).  "Slide k, capped" means:
+slide bracket k right once unless it is already at its target.
+   Start:  slide 1, slide 2.
+   Round r = 1, 2, ..., a-1:
+     (a) slide 1, capped;
+     (b) for j = r+1, r, ..., 2 in this order: slide bracket 2j-1 twice, capped;
+     (c) slide 1, capped;
+     (d) slide bracket 2r+2 (if 2r+2 <= n-2).
+   Tail:   slide 2a+1, 2a+2, ..., n-2 once each, in this order.
+
+State S_t after round t (t = 0 is after "Start"), by induction:
+   p_1 = min(a+1, 2t+2);   p_{2j-1} = min(T_j, 2t+5-2j) for 2 <= j <= t+1;
+   p_{2i} = 2 for 1 <= i <= t+1 (when 2i <= n-2);   every other bracket at 1.
+S_{a-1} has all odd brackets at target, and the Tail finishes F(a,b).
+
+Start.  br 1 {1,2}->{2,3}: path 2,1,3.   br 2 {1,3}->{2,4}: path 2,3,1,4.
+
+Round r (1 <= r <= a-1).  Put R = 2r+2 and J = 2r+2-a.  At the start (state S_{r-1}):
+   (i)  2 is joined to 4,6,...,R                    (even brackets 2..2r);
+   (ii) 1 is joined to R, R+1, ..., n               (brackets 2r+1, ..., n-1 at position 1);
+   (iii) for 2 <= j <= r bracket 2j-1 is at min(T_j, R+1-2j); it is at R+1-2j, i.e. it is
+        {R+1-2j, R}, exactly when j >= J-1;
+   (iv) br 1 is at min(a+1, 2r).
+(i) does not change during the round; in (ii) only {1,R} (first slide of step b) and {1,R+1}
+(step d) change.  Comparing S_{r-1} with S_r: among 2 <= j <= r+1, bracket 2j-1 slides twice if
+j > J, once if j = J, not at all if j < J.  If some j <= r slides then J <= r, i.e. r <= a-2, so
+R+2 <= 2a <= n and {1,R+2} is an edge.
+
+ (a) happens iff 2r <= a.  br 1 {2r,2r+1} -> {2r+1,R}:  path 2r+1, 2r, 2, R   (r = 1: 3, 2, 4).
+     Afterwards br 1 = {R-1, R}.
+ (b) j = r+1 (bracket 2r+1, at {1,R}):
+       first slide -> {2,R+1}:                 path 2, R, 1, R+1.
+       second slide (iff r <= a-2) -> {3,R+2}: path 3, R, 2, R+1, 1, R+2.
+       ({3,R} is bracket 2r-1 by (iii) if r >= 2 -- note r >= J-1 -- and is br 1 if r = 1.)
+     j = r, ..., 2 with j >= J.  Put q = R+1-2j (odd), so bracket 2j-1 is {q,R}.  At its turn
+     bracket 2j+1 has finished both of its slides (j+1 > J) and is {q, R+2}; bracket 2j-3 has
+     not moved and is {q+2, R} (for j = 2 read br 1 = {R-1,R}, see below).
+       first slide -> {q+1, R+1}:            path q+1, 2, R, q, R+2, 1, R+1.
+       second slide (iff j > J) -> {q+2,R+2}: path q+2, R, 2, q+1, R+1, 1, R+2.
+     (q+1 is even, 4 <= q+1 <= R-2, so {2,q+1} is in (i).  For the second slide j-1 >= J >= J-1,
+     so by (iii) bracket 2j-3 is uncapped at {q+2,R}; if j = 2 then J <= 1, so 2r+1 <= a, step
+     (a) happened and br 1 = {R-1,R} = {q+2,R}.)
+ (c) happens iff 2r < a.  Then J < 2, so bracket 3 slid twice and is {R-1, R+2}.
+     br 1 {R-1,R} -> {R,R+1}:  path R, R-1, R+2, 1, R+1.
+ (d) bracket 2r+2, {1,R+1} -> {2,R+2}, when 2r+2 <= n-2.  Who holds R+1 besides 1?
+       if 2r < a:   br 1 = {R,R+1}:                          path 2, R, R+1, 1, R+2;
+       if r = a-1:  bracket 2a-1 = {2,R+1}:                   path 2, R+1, 1, R+2;
+       otherwise (a <= 2r, r <= a-2): then 2 <= J <= r and bracket 2J-1 made its single slide
+                    to {2a-2r, R+1}, with 2a-2r even in 4..2r: path 2, 2a-2r, R+1, 1, R+2.
+ Each path is a path of the current tree containing the sliding bracket, so every slide is
+ legal by Lemma 1, and the end state is S_r.
+
+Tail.  bracket k (2a+1 <= k <= n-2), {1,k+1} -> {2,k+2}: path 2, k+1, 1, k+2
+ ({2,k+1} is bracket k-1, already at 2; {1,k+2} is bracket k+1, still at 1).            QED
+
+Machine checks.  spider2_route.py: the route simulated, every intermediate placement tested to
+be a tree from the definition, end shape tested, 2 <= a <= 40, 0 <= b <= 6.
+spider2_cert.py: every path named above tested edge by edge against the current placement, and
+the invariant S_r asserted after each round, 2 <= a <= 45, 0 <= b <= 8.
+For n <= 12 the placements F(a,b) are also in the exhaustive right-reach set computed by sl.cpp
+(t_spider2.py searches backwards from the target without using the schedule).
+How the route was found: the "smallest bracket first" route inside the co-reach set of F(a,0)
+(t_lex.py); the co-reach sets are small (13, 34, 87, 244, 991, 2931, 15209 placements for
+a = 3..9), so the route is nearly forced.
+
+---------------------------------------------------------------------------------------------
+EXACT DATA (sl.cpp, sl2.cpp, islands.py, broom_min.py; all from the definitions)
+
+Richer local moves, number of components of the graph "unit slides + the extra move":
+   n                                     7   8   9   10    11    12     13
+   unit slides only                      5  11  55  171  1013  4987  34181
+   + slide one bracket by 2              1   1   1    5     7    45    379
+   + reflect a bracket through a foot    1   3   1    9    11   103    149
+   + two brackets at once (each by +-1)  1   1   1    1     1     1      1
+   two-at-once, same direction only      1   1   1    5    19    89    467
+   two-at-once, consecutive lengths only 1   3   5   37   145   815   4315
+("two at once": change two different p_k by +-1 each, tree before and after, the middle
+placement need not be a tree.)   Connected for n <= 6 with unit slides alone.
+
+Islands, n = 7..10: 4, 10, 54, 170 islands holding 16, 56, 398, 1494 placements.  Every island
+of size 2 (2, 4, 16, 46 of them) moves only bracket 1 (Lemma F(b) rocking, as in Theorem I).
+No island moves more than 3, 4, 5, 6 brackets.  Frozen brackets: 54-58% by Lemma F(a), the
+rest are non-pendant brackets whose two neighbouring positions keep both feet in one piece.
+
+Local minima (placements with no legal left slide; the star is one):
+   n        4  5  6   7    8    9    10     11      12      13
+   minima   1  3  7  30  119  616  3195  19903  128546  954376
+   shapes missing among minima: n=4: 1 (path), n=6: 1, n=8: 1, n=12: 1; none for n=5,7,9,10,11,13.
+Every missing shape is the double broom B(d+1,d): hubs u, w joined by a path u-x-w, u with d+1
+leaves, w with d leaves, n = 2d+4.  All graceful labelings of B(d+1,d) were enumerated for
+d <= 12 (n <= 28): there are 2, 6, 8, 10, 8, 8, ..., 8 of them (d = 0, 1, 2, 3, 4, ..., 12)
+and none is a local minimum except one at d = 3 (n = 10).   So "every tree shape occurs at a
+local minimum" FAILS at n = 4, 6, 8, 12, 14, 16, ..., 28.
+
+Right reach vs growth (sl.cpp): of the 106 shapes at n = 10, 105 have a growth placement that
+is right-reachable; at n = 5..9, 11, 12 all shapes do.  Interval growth placements (README 7)
+are not all right-reachable (t_interval.py: 3 of 12 at n = 5 are not).
+
+DEAD ENDS
+ * "Every interval growth placement is right-reachable": false, smallest (1,3,1,1) at n = 5.
+   The mirror option needs a bracket of length k to travel k steps alone while holding a leaf,
+   which Lemma F(a) forbids.
+ * "Cut insertion preserves right reach" (insert a label at a cut crossed exactly by the
+   brackets of length >= k and hang it by a new bracket k): fails already at n = 4 -> 5
+   (t_insert.py; about 83% of instances succeed at n = 9 -> 10).
+ * Translating the whole nest one step per round (states K(m) in t_K.py): no legal order of the
+   slides exists from m = 4 on; the working route moves the outer brackets as a fan by two.
+ * Lemma 6 / staircase gluing in the slide setting only re-creates Lemma 6 iterated.

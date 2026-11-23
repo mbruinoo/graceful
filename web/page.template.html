@@ -108,7 +108,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
   <p>Push every bracket as far left as it goes. All of them then stand on number 1, which makes a <b>star</b>: one dot joined to all the others.</p>
   <p>From the star, slide one bracket one step to the right, then another, keeping a tree at every step. Each slide changes the shape a little. Pick a tree and watch the shortest route to it.</p>
   <div class="bench" id="slideplayer"></div>
-  <p>For every tree with up to <span class="nmaxslide">14</span> dots, a computer search found such a route. Whether one always exists is not known.</p>
+  <p>For every tree with up to <span class="nmaxslide">14</span> dots, a computer search found such a route. Whether one always exists is not known. It is now proved for one family beyond the simplest: every spider (a star with lengthened arms) whose arms have length at most 2.</p>
 </section>
 
 <section>
@@ -166,7 +166,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
   <h3>Proved on this page</h3>
   <ul>
     <li>Staircases always give caterpillars, and give every caterpillar. (Rosa’s result, in this picture.)</li>
-    <li>Sliding right from the star reaches every caterpillar.</li>
+    <li>Sliding right from the star reaches every caterpillar, and every spider whose arms have length at most 2.</li>
     <li>If every bracket jumps one common point and the build is longest-first, it is a staircase.</li>
     <li>A new number joins the number as many places in from the far block’s tip as there are skips waiting.</li>
     <li>If two trees can each be built longest-first from a chosen dot, so can the first tree with an odd bunch of copies of the second attached at that dot (2m+1 copies, where m is the number of lines in the first). This gives infinitely many new buildable trees with no search; details in the README.</li>
@@ -177,7 +177,11 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     <tbody id="evid"></tbody>
   </table></div>
   <h3>Shown to be false</h3>
-  <ul><li>That the build never needs more than two skips. The first exception has 22 dots.</li></ul>
+  <ul>
+    <li>That the build never needs more than two skips. The first exception has 22 dots.</li>
+    <li>That the build can start from any dot with four or more neighbours. The first exception has 24 dots.</li>
+    <li>That trees can be grown by opening a bounded number of gaps at a time.</li>
+  </ul>
   <h3>Known before this page</h3>
   <ul>
     <li>The picture of one bracket per length (Sheppard, 1976; Haviar and Ivaška, 2015).</li>
@@ -188,6 +192,7 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     <li>The puzzle itself, known as the Graceful Tree Conjecture.</li>
     <li>Whether sliding from the star, or building longest-first, always works.</li>
   </ul>
+  <p>Further results in the README, each checked by two independent referees: explicit builds for several infinite families of trees with four-step diameter, exact arithmetic rules for which dot a build can start from, and an independent re-computation of the numbers on this page.</p>
   <p>The proofs, the search programs, the failed attempts and the references are in the README of the project’s repository. The literature check behind “known before this page” was done by an AI system in a few hours and should be confirmed by someone who knows the field.</p>
 </section>
 </main>

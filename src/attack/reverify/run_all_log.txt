@@ -1,0 +1,194 @@
+# output of ./run_all.sh <workdir> 18 (workdir prefix removed; BrokenPipe tracebacks from '| head -1' removed, since fixed in the script)
+== trees (networkx, counts asserted against A000055)
+n=4: 2 trees
+n=5: 3 trees
+n=6: 6 trees
+n=7: 11 trees
+n=8: 23 trees
+n=9: 47 trees
+n=10: 106 trees
+n=11: 235 trees
+n=12: 551 trees
+n=13: 1301 trees
+n=14: 3159 trees
+n=15: 7741 trees
+n=16: 19320 trees
+n=17: 48629 trees
+n=18: 123867 trees
+== (a)+(b) three-run growth placement for every tree, certificates checked from definitions
+n=4 R=3: trees 2, certificates verified 2, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=5 R=3: trees 3, certificates verified 3, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=6 R=3: trees 6, certificates verified 6, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=7 R=3: trees 11, certificates verified 11, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=8 R=3: trees 23, certificates verified 23, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=9 R=3: trees 47, certificates verified 47, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=10 R=3: trees 106, certificates verified 106, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=11 R=3: trees 235, certificates verified 235, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=12 R=3: trees 551, certificates verified 551, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=13 R=3: trees 1301, certificates verified 1301, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=14 R=3: trees 3159, certificates verified 3159, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=15 R=3: trees 7741, certificates verified 7741, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=16 R=3: trees 19320, certificates verified 19320, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=17 R=3: trees 48629, certificates verified 48629, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+n=18 R=3: trees 123867, certificates verified 123867, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+== number of growth placements, shapes drawn (pure enumeration); README sec 4: 4,12,32,116,412,1764,7888,40220,214600,1275368
+n=10 R=2 H=-1 SIDE=0 placements=5004 shapes=106 rooted_shapes=0
+n=11 R=99 H=2 SIDE=1 placements=21228 shapes=235 rooted_shapes=0
+n=11 R=99 H=2 SIDE=2 placements=23556 shapes=235 rooted_shapes=0
+n=4 R=99 H=-1 SIDE=0 placements=4 shapes=2 rooted_shapes=4
+n=5 R=99 H=-1 SIDE=0 placements=12 shapes=3 rooted_shapes=9
+n=6 R=99 H=-1 SIDE=0 placements=32 shapes=6 rooted_shapes=19
+n=7 R=99 H=-1 SIDE=0 placements=116 shapes=11 rooted_shapes=45
+n=8 R=99 H=-1 SIDE=0 placements=412 shapes=23 rooted_shapes=110
+n=9 R=99 H=-1 SIDE=0 placements=1764 shapes=47 rooted_shapes=277
+n=10 R=99 H=-1 SIDE=0 placements=7888 shapes=106 rooted_shapes=706
+n=11 R=99 H=-1 SIDE=0 placements=40220 shapes=235 rooted_shapes=1824
+n=12 R=99 H=-1 SIDE=0 placements=214600 shapes=551 rooted_shapes=4734
+n=13 R=99 H=-1 SIDE=0 placements=1275368 shapes=1301 rooted_shapes=12436
+n=14 R=99 H=-1 SIDE=0 placements=7926160 shapes=3159 rooted_shapes=32899
+== (e) anchors: enumeration (rooted shapes) vs tree search, vertex by vertex
+n=6 trees 6, vertices 36, non-anchors 1, trees with every vertex an anchor 5, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=7 trees 11, vertices 77, non-anchors 4, trees with every vertex an anchor 9, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=8 trees 23, vertices 184, non-anchors 6, trees with every vertex an anchor 18, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=9 trees 47, vertices 423, non-anchors 11, trees with every vertex an anchor 40, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=10 trees 106, vertices 1060, non-anchors 19, trees with every vertex an anchor 95, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=11 trees 235, vertices 2585, non-anchors 21, trees with every vertex an anchor 218, trees with no anchor 0, max degree of a non-anchor 3, gp.cpp agrees vertex by vertex
+n=12 trees 551, vertices 6612, non-anchors 37, trees with every vertex an anchor 525, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=13 trees 1301, vertices 16913, non-anchors 54, trees with every vertex an anchor 1258, trees with no anchor 0, max degree of a non-anchor 2, gp.cpp agrees vertex by vertex
+n=14 trees 3159, vertices 44226, non-anchors 84, trees with every vertex an anchor 3092, trees with no anchor 0, max degree of a non-anchor 3, gp.cpp agrees vertex by vertex
+== (c) run and skip rules, tree search (NONE = exhaustive failure)
+n=9 R=1: trees 47, certificates verified 46, NONE 1 (R=1 H=None SIDE=0 TRACK=0)
+n=10 R=1: trees 106, certificates verified 104, NONE 2 (R=1 H=None SIDE=0 TRACK=0)
+n=10 H=1: trees 106, certificates verified 105, NONE 1 (R=None H=1 SIDE=0 TRACK=0)
+n=10 H=1 TRACK=1: trees 106, certificates verified 105, NONE 1 (R=None H=1 SIDE=0 TRACK=1)
+n=11 R=1: trees 235, certificates verified 230, NONE 5 (R=1 H=None SIDE=0 TRACK=0)
+n=12 R=1: trees 551, certificates verified 531, NONE 20 (R=1 H=None SIDE=0 TRACK=0)
+n=13 R=1: trees 1301, certificates verified 1221, NONE 80 (R=1 H=None SIDE=0 TRACK=0)
+n=13 H=1: trees 1301, certificates verified 1300, NONE 1 (R=None H=1 SIDE=0 TRACK=0)
+n=13 H=1 TRACK=1: trees 1301, certificates verified 1300, NONE 1 (R=None H=1 SIDE=0 TRACK=1)
+n=14 R=1: trees 3159, certificates verified 2926, NONE 233 (R=1 H=None SIDE=0 TRACK=0)
+n=14 H=1: trees 3159, certificates verified 3158, NONE 1 (R=None H=1 SIDE=0 TRACK=0)
+n=14 H=1 TRACK=1: trees 3159, certificates verified 3158, NONE 1 (R=None H=1 SIDE=0 TRACK=1)
+n=15 R=1: trees 7741, certificates verified 7017, NONE 724 (R=1 H=None SIDE=0 TRACK=0)
+n=15 H=1: trees 7741, certificates verified 7737, NONE 4 (R=None H=1 SIDE=0 TRACK=0)
+n=15 H=2 SIDE=1: trees 7741, certificates verified 7740, NONE 1 (R=None H=2 SIDE=1 TRACK=0)
+n=15 H=2 SIDE=1 TRACK=1: trees 7741, certificates verified 7740, NONE 1 (R=None H=2 SIDE=1 TRACK=1)
+n=15 H=1 TRACK=1: trees 7741, certificates verified 7737, NONE 4 (R=None H=1 SIDE=0 TRACK=1)
+n=16 R=1: trees 19320, certificates verified 17132, NONE 2188 (R=1 H=None SIDE=0 TRACK=0)
+n=16 R=2: trees 19320, certificates verified 19318, NONE 2 (R=2 H=None SIDE=0 TRACK=0)
+n=16 H=1: trees 19320, certificates verified 19309, NONE 11 (R=None H=1 SIDE=0 TRACK=0)
+n=16 H=2 SIDE=1: trees 19320, certificates verified 19317, NONE 3 (R=None H=2 SIDE=1 TRACK=0)
+n=16 H=2 SIDE=1 TRACK=1: trees 19320, certificates verified 19317, NONE 3 (R=None H=2 SIDE=1 TRACK=1)
+n=16 H=1 TRACK=1: trees 19320, certificates verified 19309, NONE 11 (R=None H=1 SIDE=0 TRACK=1)
+n=17 R=1: trees 48629, certificates verified 42296, NONE 6333 (R=1 H=None SIDE=0 TRACK=0)
+n=17 H=1: trees 48629, certificates verified 48618, NONE 11 (R=None H=1 SIDE=0 TRACK=0)
+n=17 H=2 SIDE=1: trees 48629, certificates verified 48628, NONE 1 (R=None H=2 SIDE=1 TRACK=0)
+n=17 H=2 SIDE=1 TRACK=1: trees 48629, certificates verified 48628, NONE 1 (R=None H=2 SIDE=1 TRACK=1)
+n=17 H=1 TRACK=1: trees 48629, certificates verified 48618, NONE 11 (R=None H=1 SIDE=0 TRACK=1)
+n=18 R=1: trees 123867, certificates verified 103980, NONE 19887 (R=1 H=None SIDE=0 TRACK=0)
+n=18 R=2: trees 123867, certificates verified 123866, NONE 1 (R=2 H=None SIDE=0 TRACK=0)
+n=18 H=1: trees 123867, certificates verified 123817, NONE 50 (R=None H=1 SIDE=0 TRACK=0)
+n=18 H=2 SIDE=1: trees 123867, certificates verified 123865, NONE 2 (R=None H=2 SIDE=1 TRACK=0)
+n=18 H=2 SIDE=2: trees 123867, certificates verified 123866, NONE 1 (R=None H=2 SIDE=2 TRACK=0)
+n=18 H=2 SIDE=1 TRACK=1: trees 123867, certificates verified 123865, NONE 2 (R=None H=2 SIDE=1 TRACK=1)
+n=18 H=2 SIDE=2 TRACK=1: trees 123867, certificates verified 123866, NONE 1 (R=None H=2 SIDE=2 TRACK=1)
+n=18 H=1 TRACK=1: trees 123867, certificates verified 123817, NONE 50 (R=None H=1 SIDE=0 TRACK=1)
+== (c) same rules by pure enumeration of placements (second method); 'not drawn' must equal NONE above
+n=9 R=1 H=-1 SIDE=0 placements=464 shapes=46 rooted_shapes=0 :: trees 47, drawn 46, not drawn 1
+n=10 R=1 H=-1 SIDE=0 placements=1152 shapes=104 rooted_shapes=0 :: trees 106, drawn 104, not drawn 2
+n=10 R=99 H=1 SIDE=0 placements=4240 shapes=105 rooted_shapes=0 :: trees 106, drawn 105, not drawn 1
+n=11 R=1 H=-1 SIDE=0 placements=2976 shapes=230 rooted_shapes=0 :: trees 235, drawn 230, not drawn 5
+n=12 R=1 H=-1 SIDE=0 placements=7456 shapes=531 rooted_shapes=0 :: trees 551, drawn 531, not drawn 20
+n=13 R=1 H=-1 SIDE=0 placements=18624 shapes=1221 rooted_shapes=0 :: trees 1301, drawn 1221, not drawn 80
+n=13 R=99 H=1 SIDE=0 placements=133988 shapes=1300 rooted_shapes=0 :: trees 1301, drawn 1300, not drawn 1
+n=14 R=1 H=-1 SIDE=0 placements=47808 shapes=2926 rooted_shapes=0 :: trees 3159, drawn 2926, not drawn 233
+n=14 R=99 H=1 SIDE=0 placements=404012 shapes=3158 rooted_shapes=0 :: trees 3159, drawn 3158, not drawn 1
+n=15 R=1 H=-1 SIDE=0 placements=120064 shapes=7017 rooted_shapes=0 :: trees 7741, drawn 7017, not drawn 724
+n=15 R=99 H=1 SIDE=0 placements=1233600 shapes=7737 rooted_shapes=0 :: trees 7741, drawn 7737, not drawn 4
+n=15 R=99 H=2 SIDE=1 placements=4547360 shapes=7740 rooted_shapes=0 :: trees 7741, drawn 7740, not drawn 1
+n=16 R=1 H=-1 SIDE=0 placements=300032 shapes=17132 rooted_shapes=0 :: trees 19320, drawn 17132, not drawn 2188
+n=16 R=2 H=-1 SIDE=0 placements=10254980 shapes=19318 rooted_shapes=0 :: trees 19320, drawn 19318, not drawn 2
+n=16 R=99 H=1 SIDE=0 placements=3717132 shapes=19309 rooted_shapes=0 :: trees 19320, drawn 19309, not drawn 11
+== (c) the named trees
+two 16-vertex trees without a two-run placement: same as trees16_no2run.txt
+18-vertex tree without a two-run placement: same as tree18_no2run.txt
+22-vertex tree, H=1: NONE :: trees 1, certificates verified 0, NONE 1 (R=None H=1 SIDE=0 TRACK=0)
+22-vertex tree, H=2: NONE :: trees 1, certificates verified 0, NONE 1 (R=None H=2 SIDE=0 TRACK=0)
+22-vertex tree, H=2 TRACK=1: NONE :: trees 1, certificates verified 0, NONE 1 (R=None H=2 SIDE=0 TRACK=1)
+22-vertex tree, H=3: OK 2 22 1 19 10 3 16 15 14 13 11 21 4 20 5 6 8 9 12 18 17 7 :: trees 1, certificates verified 1, NONE 0 (R=None H=3 SIDE=0 TRACK=0)
+22-vertex tree, R=3: OK 1 22 2 21 4 14 13 12 10 9 8 19 3 18 5 6 7 11 15 20 17 16 :: trees 1, certificates verified 1, NONE 0 (R=3 H=None SIDE=0 TRACK=0)
+22-vertex tree, R=2: OK 3 19 4 18 5 17 13 9 8 7 6 20 2 21 10 11 12 14 15 16 22 1 :: trees 1, certificates verified 1, NONE 0 (R=2 H=None SIDE=0 TRACK=0)
+n=10 each_side: placements 6192, shapes 106
+n=10 each_leftmost: placements 4728, shapes 105
+n=10 each_any: placements 6192, shapes 106
+n=10 same_side: placements 5672, shapes 106
+== (d) spiders: deals (Conjecture S) and restricted deals
+n=4 mode=free: spiders 1, deals verified 1, NONE 0
+n=5 mode=free: spiders 2, deals verified 2, NONE 0
+n=6 mode=free: spiders 4, deals verified 4, NONE 0
+n=7 mode=free: spiders 7, deals verified 7, NONE 0
+n=8 mode=free: spiders 11, deals verified 11, NONE 0
+n=9 mode=free: spiders 17, deals verified 17, NONE 0
+n=10 mode=free: spiders 25, deals verified 25, NONE 0
+n=11 mode=free: spiders 36, deals verified 36, NONE 0
+n=12 mode=free: spiders 50, deals verified 50, NONE 0
+n=13 mode=free: spiders 70, deals verified 70, NONE 0
+n=14 mode=free: spiders 94, deals verified 94, NONE 0
+n=15 mode=free: spiders 127, deals verified 127, NONE 0
+n=16 mode=free: spiders 168, deals verified 168, NONE 0
+n=17 mode=free: spiders 222, deals verified 222, NONE 0
+n=18 mode=free: spiders 288, deals verified 288, NONE 0
+n=19 mode=free: spiders 375, deals verified 375, NONE 0
+n=20 mode=free: spiders 480, deals verified 480, NONE 0
+n=21 mode=free: spiders 616, deals verified 616, NONE 0
+n=22 mode=free: spiders 781, deals verified 781, NONE 0
+n=23 mode=free: spiders 990, deals verified 990, NONE 0
+n=24 mode=free: spiders 1243, deals verified 1243, NONE 0
+n=25 mode=free: spiders 1562, deals verified 1562, NONE 0
+n=26 mode=free: spiders 1945, deals verified 1945, NONE 0
+n=4 mode=zigzag: spiders 1, deals verified 1, NONE 0
+n=5 mode=zigzag: spiders 2, deals verified 2, NONE 0
+n=6 mode=zigzag: spiders 4, deals verified 3, NONE 1  (2, 2, 1)
+n=7 mode=zigzag: spiders 7, deals verified 7, NONE 0
+n=8 mode=zigzag: spiders 11, deals verified 10, NONE 1  (3, 3, 1)
+n=9 mode=zigzag: spiders 17, deals verified 17, NONE 0
+n=10 mode=zigzag: spiders 25, deals verified 24, NONE 1  (3, 3, 3)
+n=11 mode=zigzag: spiders 36, deals verified 35, NONE 1  (2, 2, 2, 2, 2)
+n=12 mode=zigzag: spiders 50, deals verified 49, NONE 1  (5, 5, 1)
+n=13 mode=zigzag: spiders 70, deals verified 69, NONE 1  (6, 5, 1)
+n=14 mode=zigzag: spiders 94, deals verified 92, NONE 2  (7, 5, 1) (6, 6, 1)
+n=15 mode=zigzag: spiders 127, deals verified 127, NONE 0
+n=16 mode=zigzag: spiders 168, deals verified 166, NONE 2  (8, 6, 1) (7, 7, 1)
+n=17 mode=zigzag: spiders 222, deals verified 220, NONE 2  (8, 7, 1) (2, 2, 2, 2, 2, 2, 2, 2)
+n=18 mode=zigzag: spiders 288, deals verified 285, NONE 3  (13, 3, 1) (11, 5, 1) (9, 7, 1)
+n=19 mode=zigzag: spiders 375, deals verified 375, NONE 0
+n=20 mode=zigzag: spiders 480, deals verified 480, NONE 0
+n=21 mode=zigzag: spiders 616, deals verified 613, NONE 3  (17, 2, 1) (16, 3, 1) (11, 8, 1)
+n=8 mode=level: spiders 11, deals verified 8, NONE 3  (3, 3, 1) (2, 2, 2, 1) (2, 2, 1, 1, 1)
+n=18 mode=level: spiders 288, deals verified 159, NONE 129
+n=20 mode=level: spiders 480, deals verified 268, NONE 212
+n=8 mode=first: spiders 11, deals verified 8, NONE 3  (3, 3, 1) (2, 2, 2, 1) (2, 2, 1, 1, 1)
+n=18 mode=first: spiders 288, deals verified 268, NONE 20
+n=20 mode=first: spiders 480, deals verified 454, NONE 26
+== SAT cross-check (CaDiCaL via python-sat)
+SAT 23, UNSAT 0, agrees with gp on every tree
+SAT 23, UNSAT 0, agrees with gp on every tree
+SAT 23, UNSAT 0, agrees with gp on every tree
+SAT 46, UNSAT 1, agrees with gp on every tree
+SAT 47, UNSAT 0, agrees with gp on every tree
+SAT 47, UNSAT 0, agrees with gp on every tree
+SAT 104, UNSAT 2, agrees with gp on every tree
+SAT 105, UNSAT 1, agrees with gp on every tree
+SAT 106, UNSAT 0, agrees with gp on every tree
+SAT 230, UNSAT 5, agrees with gp on every tree
+UNSAT   [37.2s]  16 1 0 1 2 0 7 2 3 3 4 4 5 4 6 7 8 7 12 8 9 9 10 9 11 12 13 13 14 13 15
+UNSAT   [15.4s]  16 1 0 1 2 0 6 0 11 2 3 2 4 2 5 6 7 7 8 7 9 7 10 11 12 12 13 12 14 12 15
+trees16_no2run.txt R=2 H=None: SAT 0, UNSAT 2
+SAT 13 2 12 8 5 4 7 1 16 3 9 10 15 6 11 14   [4.8s]  16 1 0 1 2 0 7 2 3 3 4 4 5 4 6 7 8 7 12 8 9 9 10 9 11 12 13 13 14 13 15
+SAT 16 5 12 6 9 10 2 15 7 11 14 1 13 3 4 8   [0.7s]  16 1 0 1 2 0 6 0 11 2 3 2 4 2 5 6 7 7 8 7 9 7 10 11 12 12 13 12 14 12 15
+trees16_no2run.txt R=3 H=None: SAT 2, UNSAT 0
+UNSAT   [88.9s]  18 1 0 1 2 1 6 1 10 0 14 2 3 2 4 2 5 6 7 6 8 6 9 10 11 10 12 10 13 14 15 15 16 15 17
+tree18_no2run.txt R=2 H=None: SAT 0, UNSAT 1
+SAT 21 1 22 4 13 7 8 9 10 12 20 2 19 3 5 11 14 15 17 18 6 16   [134.5s]  22 0 1 1 2 2 3 3 4 4 5 4 6 4 7 4 8 4 9 4 10 0 11 11 12 12 13 13 14 13 15 13 16 13 17 13 18 13 19 12 20 20 21
+tree22.txt R=None H=3: SAT 1, UNSAT 0
+(python3 sat_check.py tree22.txt H=2 is the long one; run separately)

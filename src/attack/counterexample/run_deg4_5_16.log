@@ -1,0 +1,12 @@
+d=5 rooted trees with root degree >= 4: 1   root is NOT an anchor (exhaustive): 0
+d=6 rooted trees with root degree >= 4: 2   root is NOT an anchor (exhaustive): 0
+d=7 rooted trees with root degree >= 4: 5   root is NOT an anchor (exhaustive): 0
+d=8 rooted trees with root degree >= 4: 12   root is NOT an anchor (exhaustive): 0
+d=9 rooted trees with root degree >= 4: 31   root is NOT an anchor (exhaustive): 0
+d=10 rooted trees with root degree >= 4: 77   root is NOT an anchor (exhaustive): 0
+d=11 rooted trees with root degree >= 4: 202   root is NOT an anchor (exhaustive): 0
+d=12 rooted trees with root degree >= 4: 524   root is NOT an anchor (exhaustive): 0
+d=13 rooted trees with root degree >= 4: 1390   root is NOT an anchor (exhaustive): 0
+d=14 rooted trees with root degree >= 4: 3695   root is NOT an anchor (exhaustive): 0
+d=15 rooted trees with root degree >= 4: 9929   root is NOT an anchor (exhaustive): 0
+d=16 rooted trees with root degree >= 4: 26792   root is NOT an anchor (exhaustive): 0

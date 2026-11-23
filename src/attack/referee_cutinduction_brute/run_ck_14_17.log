@@ -1,0 +1,38 @@
+n=3 trees=1 growth=2 shapesWithGrowth=1 | C1 2 pl 1 trees | C2 2 pl 1 trees | C3 2 pl 1 trees | V(no order,<=2) 2 pl 1 trees
+n=4 trees=2 growth=4 shapesWithGrowth=2 | C1 4 pl 2 trees | C2 4 pl 2 trees | C3 4 pl 2 trees | V(no order,<=2) 4 pl 2 trees
+n=5 trees=3 growth=12 shapesWithGrowth=3 | C1 10 pl 3 trees | C2 12 pl 3 trees | C3 12 pl 3 trees | V(no order,<=2) 12 pl 3 trees
+n=6 trees=6 growth=32 shapesWithGrowth=6 | C1 24 pl 6 trees | C2 32 pl 6 trees | C3 32 pl 6 trees | V(no order,<=2) 32 pl 6 trees
+n=7 trees=11 growth=116 shapesWithGrowth=11 | C1 66 pl 10 trees | C2 116 pl 11 trees | C3 116 pl 11 trees | V(no order,<=2) 116 pl 11 trees
+   C1 misses n=7 tree: 0-1 0-2 1-3 2-4 0-5 5-6   degs: 3 2 2 2 1 1 1
+n=8 trees=23 growth=412 shapesWithGrowth=23 | C1 178 pl 21 trees | C2 398 pl 23 trees | C3 412 pl 23 trees | V(no order,<=2) 398 pl 23 trees
+   C1 misses n=8 tree: 0-1 0-2 1-3 2-4 0-5 0-6 5-7   degs: 4 2 2 2 1 1 1 1
+   C1 misses n=8 tree: 0-1 0-2 1-3 2-4 0-5 5-6 1-7   degs: 3 3 2 2 1 1 1 1
+n=9 trees=47 growth=1764 shapesWithGrowth=47 | C1 502 pl 43 trees | C2 1600 pl 47 trees | C3 1748 pl 47 trees | V(no order,<=2) 1630 pl 47 trees
+n=10 trees=106 growth=7888 shapesWithGrowth=106 | C1 1408 pl 93 trees | C2 6284 pl 105 trees | C3 7602 pl 106 trees | V(no order,<=2) 6562 pl 105 trees
+   C2 misses n=10 tree: 0-1 0-2 1-3 2-4 3-5 4-6 0-7 7-8 8-9   degs: 3 2 2 2 2 2 2 1 1 1
+   V misses n=10 tree: 0-1 0-2 1-3 2-4 3-5 4-6 0-7 7-8 8-9   degs: 3 2 2 2 2 2 2 1 1 1
+n=11 trees=235 growth=40220 shapesWithGrowth=235 | C1 4064 pl 205 trees | C2 26698 pl 235 trees | C3 36540 pl 235 trees | V(no order,<=2) 29272 pl 235 trees
+n=12 trees=551 growth=214600 shapesWithGrowth=551 | C1 11600 pl 474 trees | C2 111854 pl 551 trees | C3 178924 pl 551 trees | V(no order,<=2) 128660 pl 551 trees
+n=13 trees=1301 growth=1275368 shapesWithGrowth=1301 | C1 33644 pl 1112 trees | C2 489592 pl 1301 trees | C3 927572 pl 1301 trees | V(no order,<=2) 604094 pl 1301 trees
+n=14 trees=3159 growth=7926160 shapesWithGrowth=3159 | C1 96768 pl 2663 trees | C2 2122632 pl 3159 trees | C3 4850496 pl 3159 trees | V(no order,<=2) 2798736 pl 3159 trees
+forward n=3: generated=4 distinct C2 placements=2  backward=2  IDENTICAL SETS
+forward n=4: generated=22 distinct C2 placements=4  backward=4  IDENTICAL SETS
+forward n=5: generated=72 distinct C2 placements=12  backward=12  IDENTICAL SETS
+forward n=6: generated=208 distinct C2 placements=32  backward=32  IDENTICAL SETS
+forward n=7: generated=718 distinct C2 placements=116  backward=116  IDENTICAL SETS
+forward n=8: generated=2380 distinct C2 placements=398  backward=398  IDENTICAL SETS
+forward n=9: generated=8932 distinct C2 placements=1600  backward=1600  IDENTICAL SETS
+forward n=10: generated=33572 distinct C2 placements=6284  backward=6284  IDENTICAL SETS
+forward n=11: generated=136608 distinct C2 placements=26698  backward=26698  IDENTICAL SETS
+forward n=12: generated=559342 distinct C2 placements=111854  backward=111854  IDENTICAL SETS
+forward n=13: generated=2391236 distinct C2 placements=489592  backward=489592  IDENTICAL SETS
+forward n=14: generated=10245246 distinct C2 placements=2122632  backward=2122632  IDENTICAL SETS
+forward n=15: generated=44918604 distinct C2 placements=9423972  trees reached 7741 of 7741
+forward n=16: generated=196988508 distinct C2 placements=41572830  trees reached 19320 of 19320
+forward n=17 (shapes only): generated=875551616 trees reached 48627 of 48629
+   C2 misses n=17 tree: 0-1 0-2 1-3 2-4 3-5 4-6 5-7 6-8 7-9 8-10 3-11 4-12 11-13 12-14 13-15 14-16   degs: 3 3 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1
+   C2 misses n=17 tree: 0-1 0-2 1-3 2-4 3-5 4-6 5-7 6-8 7-9 8-10 9-11 10-12 5-13 13-14 14-15 12-16   degs: 3 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1
+
+real	8m37.922s
+user	15m39.211s
+sys	0m3.329s

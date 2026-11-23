@@ -1,0 +1,5 @@
+m=0: 1 end pieces for case 1, 1 for case 2 (1 rooted shapes)
+m=1: 1 end pieces for case 1, 2 for case 2 (2 rooted shapes)
+m=2: 2 end pieces for case 1, 12 for case 2 (10 rooted shapes)
+m=3: 4 end pieces for case 1, 90 for case 2 (51 rooted shapes)
+T with at most 6 edges, m <= 3: 262497 (labeling, core, end piece) triples (7872 case 1, 254625 case 2); failures: 0

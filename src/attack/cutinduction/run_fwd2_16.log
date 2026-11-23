@@ -1,0 +1,19 @@
+n=2 C(2) placements=1 trees=1
+n=3 C(2) placements=2 trees=1
+n=4 C(2) placements=4 trees=2
+n=5 C(2) placements=12 trees=3
+n=6 C(2) placements=32 trees=6
+n=7 C(2) placements=116 trees=11
+n=8 C(2) placements=398 trees=23
+n=9 C(2) placements=1600 trees=47
+n=10 C(2) placements=6284 trees=105
+n=11 C(2) placements=26698 trees=235
+n=12 C(2) placements=111854 trees=551
+n=13 C(2) placements=489592 trees=1301
+n=14 C(2) placements=2122632 trees=3159
+n=15 C(2) placements=9423972 trees=7741
+n=16 C(2) placements=41572830 trees=19320
+
+real	5m12.817s
+user	4m38.556s
+sys	0m1.794s

@@ -1,0 +1,10 @@
+n=13 placements=8733628 shapes=1301 unit_components=34181 localmin=954376 shapes_missing_from_localmin=0
+unit + slide-by-2: components=379
+unit + reflect-through-foot: components=149
+unit + two-at-once: components=1
+unit + two-at-once (consecutive lengths only): components=4315
+unit + two-at-once (same direction only): components=467
+
+real	1m55.690s
+user	1m54.469s
+sys	0m0.166s

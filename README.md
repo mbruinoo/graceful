@@ -294,7 +294,12 @@ placement with label 1 on a leaf, which would make the leaf rule a complete
 induction. It does not: among `n ≤ 14`, one tree on 10 vertices and one on 12
 have no anchor leaf (and one more appears at `n = 15`).
 
-**Observation.** Every vertex of degree ≥ 4 is an anchor (`n ≤ 14`).
+**Every vertex of degree ≥ 4 is an anchor: true for `n ≤ 19`, fails at
+`n = 24`.** This was recorded here as an observation for `n ≤ 14`. It holds
+for every tree on `n ≤ 19` vertices and is false in general: in the 24-vertex
+tree with edges `0-1, 1-2, 1-3`, leaves `4..11` on `2`, leaves `12..20` on `3`
+and leaves `21, 22, 23` on `0`, the degree-4 vertex `0` is not an anchor (two
+independent exhaustive searches, and two referees; section 16).
 
 ## 8. A cleaner statement of the growth property, and a counterexample hunt
 
@@ -553,8 +558,8 @@ one core.
 
 **Caution, from this project's own history.** The two-run version looked
 universal through `n = 15` (7,741 trees) and then failed for 2 trees in 19,320
-at `n = 16`. All its known failures are trees with three or more equal
-branches. A three-run failure could be waiting in the same way at a size not
+at `n = 16`. Most of its known failures are trees with three equal branches
+(one of the two 16-vertex failures has only two). A three-run failure could be waiting in the same way at a size not
 yet reached.
 
 **Parity in the failures.** In the family "centre, three arms of length 2,
@@ -590,14 +595,15 @@ exactly one of the 5,623,756 trees on 22 vertices: two vertices, each carrying
 six leaves, joined by a path with one extra pendant path
 (edges `0-1 1-2 2-3 3-4`, leaves `5..10` on `4`, `0-11 11-12 12-13`, leaves
 `14..19` on `13`, `12-20 20-21`). That tree can be built with three single
-skips, and with three runs when one hole has two cells. Confirmed with a
-second solver (`src/runsolve128.cpp`).
+skips, and with only two runs when a hole may have more than one cell.
+Confirmed with a second solver (`src/runsolve128.cpp`) and by the independent
+re-verification of section 16, which used a SAT solver for this tree.
 
 | rule | first failure | exhaustive range with no failure |
 |---|---|---|
 | one run, at most one single skipped cell | 1 tree at `n = 10` (spider `S(3,3,3)`); none at 11, 12; 1 at 13 | `n ≤ 9` |
 | one run, two skipped cells, both on the same side of the run | 1 tree at `n = 15` | `n ≤ 14` |
-| one run, at most one skipped cell on each side of the run | 1 tree at `n = 10` (the same spider) | `n ≤ 9` |
+| one run, at most one skipped cell on each side of the run | 1 tree at `n = 18` | `n ≤ 17` |
 | one run, at most two single skipped cells | 1 tree at `n = 22` | `n ≤ 21` |
 | at most three runs of any sizes (B3) | none found | `n ≤ 25` |
 
@@ -610,7 +616,11 @@ monotone in between: the spider `S(3,3,3)` on 10 vertices needs two, while
 every tree on 11 or 12 vertices needs at most one. (An earlier version of
 this table gave 13 and 18 as first failures for two of the rules; those rules
 had only been run from `n = 12` up. `src/skipmin.cpp` now computes the least
-number of skips for every tree and all rows were re-run from `n = 5`.) Every
+number of skips for every tree and all rows were re-run from `n = 5`. A later
+independent re-verification (section 16) corrected the "one on each side" row
+a second time: read literally, that rule first fails for one tree on 18
+vertices; the value 10 came from this repository's program treating the
+leftmost single cell as the main run when every unused run is a single cell.) Every
 tightening tried has failed, the looser ones at larger sizes. Conjecture B3
 (three runs of any size) is the loosest of these rules and has not failed for
 `n ≤ 25`, but by the same pattern it may fail at a size not yet reached; the
@@ -964,7 +974,132 @@ above are new as graceful trees has not been checked against the literature:
 equal-leg spiders are known to be graceful (Bahls–Lake–Wertheim), spiders
 with legs of two very different lengths in general are not.
 
-## 16. Checking
+## 16. Results of the nine-line panel
+
+A multi-agent run attacked the problem along nine independent lines. Every
+claim was then given to two referees who had not seen the claimant's code: one
+re-implemented the statement from the definitions and tried to break it, one
+read the proof line by line. What follows is what survived both, in the
+author's summary; the full statements, proofs, programs and verdicts are in
+`src/attack/<line>/REPORT.txt`, `src/attack/<line>/` and
+`src/attack/REFEREE_VERDICTS.json`. "Proved" below means: a complete written
+argument in the cited file, judged complete by the proof referee and
+confirmed by brute force by the other. None of this proves the Graceful Tree
+Conjecture or Conjecture B.
+
+**Slides (the original picture).**
+
+* *Proved: Conjecture A holds for every spider with legs of length at most
+  2.* An explicit placement of the spider with `a` legs of length 2 and `b`
+  leaves is reached from the star by an explicit sequence of legal right
+  slides. This is the first family beyond caterpillars for which a slide route
+  is proved (`src/attack/slides`).
+* *Proved: what freezes a bracket.* A bracket of length at least 2 with a leaf
+  at one foot has no legal slide; a bracket of length 1 with a leaf foot has
+  exactly one. An explicit two-element island exists for every `n ≥ 7`.
+* *Fails:* "every tree shape is drawn by a placement with no legal left
+  slide" is false at `n = 4, 6, 8, 12` (one shape missing each time).
+* *Observation (`n ≤ 13`):* allowing two brackets to slide at once makes all
+  tree placements one island.
+
+**Explicit builds for trees of diameter 4.**
+
+* *Proved:* closed-form growth placements, with no search, for (i) every tree
+  made of a centre joined to three stars, and (ii) every tree made of a centre
+  joined to `d` stars with `a` leaves each and one more star with at least
+  `d − 1` leaves (`src/attack/gamestrategy`).
+* *Conjecture (checked for every diameter-4 tree with `n ≤ 26`):* every
+  diameter-4 tree has a growth placement of one specific shape, with a largest
+  star's centre at the end label ("all-up comb").
+
+**Induction by clean cuts.**
+
+* *Proved:* the clean leaf of Lemma 8 generalises to a *clean set* of labels:
+  deleting a clean set leaves a growth placement; disjoint clean sets stay
+  clean, so deletions commute; peeling clean leaves in any order ends at the
+  same placement. A placement in which every leaf is clean is a staircase.
+* *Fails: no bounded step size.* Let `C(K)` be the placements that can be
+  dismantled by clean sets of size at most `K`. For each `K ≤ 5` some
+  three-legged spider has growth placements but none in `C(K)`; the step
+  needed for three legs of length `L = 1..9` is 1, 2, 3, 2, 2, 5, 3, 6, 6. So
+  the gap-insertion induction of sections 9–10 needs unboundedly large steps
+  (`src/attack/cutinduction`).
+
+**Anchors.**
+
+* *Fails:* "every vertex of degree ≥ 4 is an anchor" (see section 7); by
+  search the same family gives non-anchors of every degree from 2 to 9.
+* *Proved: non-anchors are arithmetic.* For the tree "path `c₁ – v – c₂` with
+  `p` leaves on `c₁` and `q` on `c₂`", `v` is an anchor exactly when a stated
+  divisibility condition on `m = p + q + 2` holds; in particular, if `m` is
+  prime and `p, q ≥ 1`, `v` is never an anchor. A similar exact rule holds for
+  a second family. This explains why no structural pattern was found in
+  section 7 (`src/attack/anchors/PROOFS.txt`).
+* *Proved:* any vertex becomes an anchor once enough leaves are attached to
+  it, with an explicit (large) bound.
+* *Proved (path anchors):* the vertex at distance 2 from the end of a path
+  with `m` edges is an anchor when `m = 3s+2`, `5s+4` or `7s+3`; with the
+  pendant-path step of section 13 this gives growth placements for the
+  three-legged spiders `S(a, 2, c)` for those `a` and every `c`
+  (`src/attack/polynomial`). *Conjecture (checked `15 ≤ m ≤ 2500`):* these
+  congruences are exactly the cases.
+
+**Composition** (extending Theorem 13; `src/attack/composition`).
+
+* *Proved (core fattening):* the copies in Theorem 13 need not be glued at
+  the root: the branches hanging off any subtree containing the root may be
+  multiplied `2m + 1` times, including gluing `2m + 1` copies of a
+  growth-placed tree along its top bracket.
+* *Proved (mixed bunch):* the `2m + 1` copies may be different trees, equal
+  in pairs, under stated conditions.
+* *Observation (all trees `S` with at most 14 vertices):* in the corona of
+  `S` (one new leaf on every vertex) every vertex of `S` is an anchor.
+
+**Where a counterexample to Conjecture B cannot be.**
+
+* *Proved (with a finite computer check):* if a tree has a vertex `v` such
+  that removing the leaves at `v` leaves at most 20 vertices, it has a growth
+  placement (every rooted tree on at most 20 vertices was checked, then
+  Lemma 6).
+* *Observation:* about 1.15 million structured trees with `26 ≤ n ≤ 70`
+  (all diameter-4 trees to `n = 42`, all diameter-5 trees to `n = 32`,
+  symmetric and spider families to `n = 70`) all have growth placements. No
+  counterexample was found (`src/attack/counterexample`).
+
+**One spare label.**
+
+* *Proved:* for every tree and every root there is a labeling with distinct
+  edge lengths decreasing away from the root that uses labels up to `2n − 2`.
+* *Observation (every tree with `n ≤ 18`, every vertex):* with just one spare
+  label (`n + 1` labels for `n` vertices) **every** vertex can be the root.
+  The anchor obstructions of section 7 disappear completely with one extra
+  label (`src/attack/asymptotic`).
+* The published probabilistic methods do not adapt directly: fixing the order
+  in which edge lengths are used removes the randomness they rely on. A
+  one-pass random longest-first process needs about 6–10% spare labels.
+
+**Signs.** *Proved:* for a fixed rooted tree and a fixed order of lengths, two
+different valid sign choices must differ in at least two places; for `n ≤ 9`
+the valid sign choice is unique (`src/attack/polynomial`).
+
+**Independent re-verification** (`src/attack/reverify`): new programs written
+without reading this repository's solvers, including a SAT formulation,
+reproduce every number checked in sections 4, 7, 11, 12 and 13 (growth
+placements for all trees with `n ≤ 22` under the three-run rule; the skip
+tables; the failing trees at 9, 10, 16 and 22 vertices; anchors; Conjecture S
+to `n = 31`), with one exception, corrected above: the "one skipped cell on
+each side" row.
+
+**What changes.** Three things recorded earlier in this file were wrong or
+too optimistic and are now corrected: the degree-4 anchor observation, the
+"one on each side" row, and the hope that the clean-cut induction might work
+with bounded steps. On the positive side there are now explicit, search-free
+growth placements for several infinite families that are not caterpillars,
+and the first proved slide routes beyond caterpillars. The conjecture itself
+is no closer to proved; what has improved is the map of which approaches are
+dead and which statements are sharp.
+
+## 17. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
 independent pass that tested each one by brute force from the definitions in

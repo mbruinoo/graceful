@@ -1,0 +1,74 @@
+SUMMARY
+Slides line. Nothing here proves GTC or Conjecture A. Main outcome: a complete proof that every spider with legs of length <= 2 (a legs of length 2, b leaves; non-caterpillar for a >= 3) is drawn by an explicit placement reachable from the star by legal right slides. The route is explicit, each slide is certified by a named path via Lemma 1, and the certificates are machine-checked for a <= 45, b <= 8. Second: a proved explicit island of size 2 for every n >= 7, with a leaf-freeze lemma explaining what freezes islands. Third: local minima do NOT contain every shape (double broom B(d+1,d) missing at n = 4, 6, 8, 12; exhaustive n <= 13). Also: adding "two brackets at once" makes the slide graph connected for all n <= 13, while slide-by-2 and reflect-through-a-foot do not. Novelty not checked against the literature.
+
+DEAD ENDS
+1. "Every interval growth placement (README 7) is right-reachable": false; smallest (1,3,1,1) at n = 5 (3 of 12 fail at n = 5, 312 of 1152 at n = 10). Obstruction: the mirror option needs a bracket of length k to travel k steps while holding a leaf, which Lemma F forbids, and Lemma 4 leaves no spare slides for other brackets to help.
+2. "Cut insertion preserves right reach" (insert a label at a cut crossed exactly by the brackets of length >= k, hang it with a new bracket k): fails already going from n = 4 to 5 (1 of 9 on each side); about 83% of instances succeed from 9 to 10. No clean side condition found.
+3. Translating the whole odd nest one step per round (states K(m) = (m+1,2,m,2,...,3,2,1,...,1), t_K.py): a legal order of the slides exists for m = 2, 3 and none from m = 4. The working route instead moves the outer brackets as a fan by two and folds them into the nest one at a time.
+4. Gluing a reachable placement under a staircase (slide analogue of README 7 gluing) works but is only Lemma 6 iterated; it produces no new shapes without a non-caterpillar base.
+5. Growth and right reach stay unrelated: at n = 10 one of the 106 shapes has no placement that is both growth and right-reachable (all shapes do at n = 5..9, 11, 12).
+6. Not attempted: a route for all trees of diameter 4, or a proof that B(d+1,d) has exactly 8 graceful labelings. Slide-by-2 and reflect-through-a-foot were not tested without unit slides beyond the reflect-alone counts (30, 112, 434, 2060, 10018, 57266 components for n = 7..12).
+
+FILES
+/home/user/graceful/src/attack/slides/PROOFS.txt
+/home/user/graceful/src/attack/slides/spider2_route.py
+/home/user/graceful/src/attack/slides/spider2_cert.py
+/home/user/graceful/src/attack/slides/island2_check.py
+/home/user/graceful/src/attack/slides/islands.py
+/home/user/graceful/src/attack/slides/broom_min.py
+/home/user/graceful/src/attack/slides/sl.cpp
+/home/user/graceful/src/attack/slides/sl2.cpp
+/home/user/graceful/src/attack/slides/lib.py
+/home/user/graceful/src/attack/slides/run_sl2_13.log
+/home/user/graceful/src/attack/slides/t_spider2.py
+/home/user/graceful/src/attack/slides/t_lex.py
+/home/user/graceful/src/attack/slides/t_min.py
+/home/user/graceful/src/attack/slides/t_interval.py
+/home/user/graceful/src/attack/slides/t_insert.py
+/home/user/graceful/src/attack/slides/t_K.py
+/home/user/graceful/src/attack/slides/t_routes.py
+
+
+===== CLAIM 0 [proved]
+STATEMENT
+Theorem S2 (Conjecture A for spiders with legs <= 2). Let a >= 2, b >= 0, n = 2a+1+b. Define the placement F(a,b) by p_{2j-1} = a+2-j for 1 <= j <= a-1, p_k = 2 for every other k <= n-2, p_{n-1} = 1 (bracket k is the edge {p_k, p_k+k}). Then F(a,b) is a tree placement drawing the spider with a legs of length 2 and b legs of length 1 (centre labelled 2), and F(a,b) is reachable from the star (all p_k = 1) by legal one-step right slides, in (a-1)(a+2)/2 + a + b slides. Picture: the odd brackets are nested, {a+2-j, a+1+j} for j = 1..a; every other bracket below the top one fans out from vertex 2.
+
+EVIDENCE
+spider2_route.py: the explicit route simulated, every intermediate placement tested to be a tree from the definition and the end shape tested, for all 2 <= a <= 40, 0 <= b <= 6 (273 pairs). spider2_cert.py: every path certificate named in the proof checked edge by edge against the current placement, and the round invariant asserted, for all 2 <= a <= 45, 0 <= b <= 8. t_spider2.py: independent backward search (no schedule) finds F(a,b) right-reachable for a <= 6, b <= 2. Co-reach sets of F(a,0) have 13, 34, 87, 244, 991, 2931, 15209 placements for a = 3..9, so the route is nearly forced.
+
+PROOF
+Path form of Lemma 1: moving bracket e={x,y} of a tree placement T to {x',y'} gives a tree iff the T-path from x' to y' passes through e. So each slide is certified by naming such a path.
+Shape: 2 is joined to 4,6,...,2a (even brackets 2i at {2,2+2i}) and to 2a+1..n (brackets 2a-1..n-2 at {2,k+2}); each even x in 4..2a is joined by a nested bracket to the odd 2a+3-x; n is joined to 1; 2a+1..n-1 are leaves.
+Route. T_j = a+2-j is the target of bracket 2j-1 (T_a = 2). 'Capped' = slide once unless already at target. Start: slide 1, slide 2. Round r = 1..a-1: (a) slide 1 capped; (b) for j = r+1, r, ..., 2: slide bracket 2j-1 twice, capped; (c) slide 1 capped; (d) slide bracket 2r+2 if 2r+2 <= n-2. Tail: slide 2a+1, ..., n-2 once each in increasing order.
+Invariant S_t after round t (t=0 after Start): p_1 = min(a+1, 2t+2); p_{2j-1} = min(T_j, 2t+5-2j) for 2<=j<=t+1; p_{2i} = 2 for i <= t+1 (when 2i <= n-2); all else at 1. S_{a-1} has all odd brackets on target.
+Start: br1 {1,2}->{2,3}: path 2,1,3. br2 {1,3}->{2,4}: path 2,3,1,4.
+Round r, R = 2r+2, J = 2r+2-a. At its start: (i) 2 is joined to 4,6,..,R; (ii) 1 is joined to R,R+1,..,n; (iii) for 2<=j<=r bracket 2j-1 is at min(T_j, R+1-2j), equal to {R+1-2j, R} exactly when j >= J-1; (iv) br1 at min(a+1, 2r). (i) is unchanged in the round; in (ii) only {1,R} and {1,R+1} change. Comparing S_{r-1}, S_r: bracket 2j-1 (2<=j<=r+1) slides twice if j > J, once if j = J, never if j < J. If some j <= r slides then r <= a-2, so {1,R+2} is an edge.
+(a) iff 2r <= a: br1 {2r,2r+1}->{2r+1,R}: path 2r+1, 2r, 2, R (r=1: 3,2,4). Then br1 = {R-1,R}.
+(b) j = r+1, bracket {1,R}: first slide to {2,R+1}: path 2,R,1,R+1. Second (iff r <= a-2) to {3,R+2}: path 3,R,2,R+1,1,R+2 ({3,R} is bracket 2r-1 if r>=2, br1 if r=1). For j = r..2 with j >= J, put q = R+1-2j, bracket = {q,R}; bracket 2j+1 has finished two slides and is {q,R+2}; bracket 2j-3 has not moved and is {q+2,R} (for j=2, br1 = {R-1,R}). First slide to {q+1,R+1}: path q+1, 2, R, q, R+2, 1, R+1. Second (iff j > J) to {q+2,R+2}: path q+2, R, 2, q+1, R+1, 1, R+2. (q+1 is even in 4..R-2 so {2,q+1} is in (i); for the second slide j-1 >= J so bracket 2j-3 is uncapped; if j=2 then J<=1, i.e. 2r+1<=a, so step (a) happened.)
+(c) iff 2r < a: then J < 2, bracket 3 slid twice and is {R-1,R+2}; br1 {R-1,R}->{R,R+1}: path R, R-1, R+2, 1, R+1.
+(d) bracket 2r+2 {1,R+1}->{2,R+2}: if 2r < a, br1 = {R,R+1}: path 2,R,R+1,1,R+2; if r = a-1, bracket 2a-1 = {2,R+1}: path 2,R+1,1,R+2; otherwise 2<=J<=r and bracket 2J-1 made its single slide to {2a-2r,R+1} with 2a-2r even in 4..2r: path 2, 2a-2r, R+1, 1, R+2.
+Tail: bracket k {1,k+1}->{2,k+2}: path 2,k+1,1,k+2 ({2,k+1} is bracket k-1 already at 2, {1,k+2} is bracket k+1 still at 1).
+Every named path lies in the current tree and contains the sliding bracket, so every slide is legal; the end state is F(a,b). Full text: PROOFS.txt.
+
+
+===== CLAIM 1 [proved]
+STATEMENT
+Theorem I (explicit island for every n >= 7) with Lemma F (leaf freeze). Lemma F: in a tree placement on n >= 3 vertices, a bracket of length k >= 2 that has a leaf foot has no legal slide; a bracket of length 1 with leaf foot l has at most one legal slide, the one moving it over l ({l-1,l} <-> {l,l+1}), and that slide is legal whenever it stays on the rail. Theorem I: for every n >= 7 the two placements P = (2, n-3, 1, ..., 1, 2, 1) and P' = (3, n-3, 1, ..., 1, 2, 1) (p_1 = 2 or 3, p_2 = n-3, p_k = 1 for 3 <= k <= n-3, p_{n-2} = 2, p_{n-1} = 1) form a connected component of the unit-slide graph. Hence the slide graph is disconnected for every n >= 7 and the star's component never contains all tree placements.
+
+EVIDENCE
+island2_check.py: for every 7 <= n <= 60, P and P' are trees and the only tree placement at unit-slide distance 1 from either is the other. sl.cpp reproduces README's component counts (5, 11, 55, 171, 1013, 4987; sl2.cpp 34181 at n=13) and connectivity for n <= 6. islands.py, n = 7..10: 4, 10, 54, 170 islands holding 16, 56, 398, 1494 placements; all islands of size 2 (2, 4, 16, 46) move only bracket 1; no island moves more than 3, 4, 5, 6 brackets; 54-58% of (placement, non-moving bracket) pairs are frozen by Lemma F, the rest are non-pendant brackets whose neighbouring positions keep both feet in one piece.
+
+PROOF
+Lemma F: removing the bracket leaves pieces {l} and the rest; by Lemma 1 the new bracket must have exactly one foot equal to l. The new feet are x±1 and y±1 with y = x+k, and one of them equals an old foot only if k = 1; then the other new foot is not l, so the slide is legal if on the rail.
+Theorem I: edges of P are {1,j} for j = 4..n-2 and j = n, {2,n}, {2,3}, {n-3,n-1}. As n-3 >= 4, n-3 is joined to 1, so P is a tree; P' is P with leaf 3 re-hung on 4. br1 is {2,3} (P) or {3,4} (P') with leaf 3: by Lemma F its only legal slide is P <-> P'. br2 = {n-3,n-1} has leaf n-1: frozen by Lemma F. br k for 3 <= k <= n-3 is {1,k+1} at the left end of its rail; a right slide gives {2,k+2}; the piece of k+1 after removal is {k+1}, or {n-3,n-1} (k = n-4), or {4,3} in P' (k = 3); neither 2 nor k+2 lies in it, so both new feet are in one piece: not a tree. br n-2 = {2,n} is at the right end of its rail; a left slide gives {1,n-1}; the piece of 2 is {2,3} or {2}, containing neither 1 nor n-1: not a tree. br n-1 has a one-point rail.
+
+
+===== CLAIM 2 [counterexample]
+STATEMENT
+Local minima miss shapes, and one richer local move connects everything in range. (i) A local minimum is a tree placement with no legal left slide. It is FALSE that every tree shape on n vertices is drawn by a local minimum: it fails at n = 4 (the path), 6, 8 and 12, and holds at n = 5, 7, 9, 10, 11, 13. In each failing case exactly one shape is missing, the double broom B(d+1,d) (hubs u, w joined by a path u-x-w, u with d+1 leaves, w with d leaves, n = 2d+4). Observation: for d = 2 and 4 <= d <= 12, B(d+1,d) has exactly 8 graceful labelings and none is a local minimum; so the failure persists at every even n from 12 to 28 (n = 10 is the lone exception, with 10 labelings, one a local minimum). (ii) Let the move 'two at once' change two different p_k by ±1 each, tree before and after, middle placement arbitrary. Unit slides plus two-at-once give a connected graph on all tree placements for every n <= 13. Unit slides plus slide-by-2 are disconnected from n = 10; unit slides plus reflecting a bracket through one of its feet are disconnected at n = 8 and from n = 10.
+
+EVIDENCE
+sl.cpp / sl2.cpp, exhaustive over all tree placements: local minima 1, 3, 7, 30, 119, 616, 3195, 19903, 128546, 954376 for n = 4..13; shapes missing among them 1,0,1,0,1,0,0,0,1,0. broom_min.py enumerates ALL graceful labelings of B(d1,d2): B(d+1,d) has 2, 6, 8, 10, 8, 8, 8, 8, 8, 8, 8, 8, 8 labelings for d = 0..12 with 0 local minima except 1 at d = 3. Components, n = 7..13: unit only 5, 11, 55, 171, 1013, 4987, 34181; + slide-by-2: 1, 1, 1, 5, 7, 45, 379; + reflect through a foot: 1, 3, 1, 9, 11, 103, 149; + two-at-once: 1 at every n; two-at-once restricted to same direction: 1, 1, 1, 5, 19, 89, 467; restricted to consecutive lengths: 1, 3, 5, 37, 145, 815, 4315. Smallest missing shapes: n = 6: edges {2,3},{2,4},{1,4},{1,5},{1,6}; n = 8: {1,8},{1,7},{1,6},{1,5},{2,5},{2,4},{2,3}.
+
+PROOF
+Finite exhaustive computation for (i) at n = 4, 6, 8, 12 and for (ii) at n <= 13; no general proof. The claim that B(d+1,d) is missing for all even n >= 12 is an observation checked for n <= 28 only (it would need a proof that the tree has exactly 8 graceful labelings).

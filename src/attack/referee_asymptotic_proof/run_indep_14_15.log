@@ -1,0 +1,5 @@
+  route fails: n=14 root=10 deg=1 leafnb=0 edges: 0-1 0-11 1-2 1-9 2-3 2-4 2-5 2-6 2-7 2-8 9-10 11-12 12-13
+  route fails: n=14 root=13 deg=1 leafnb=0 edges: 0-1 0-9 0-12 1-2 2-3 2-4 2-5 2-6 2-7 2-8 9-10 10-11 12-13
+n=14 trees=3159 pairs=44226 slack0=44142 slack1=84 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 6; degrees of non-anchors: 54 29 1 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 82, is not: 2

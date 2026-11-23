@@ -1,0 +1,40 @@
+n=5 trees=3 pairs=15 slack0=15 slack1=0 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 0 0 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 0, is not: 0
+n=6 trees=6 pairs=36 slack0=35 slack1=1 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 0 1 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 1, is not: 0
+n=7 trees=11 pairs=77 slack0=73 slack1=4 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 1 3 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 4, is not: 0
+  route fails: n=8 root=4 deg=1 leafnb=0 edges: 0-1 0-5 1-2 1-4 2-3 5-6 6-7
+n=8 trees=23 pairs=184 slack0=178 slack1=6 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 4 2 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 5, is not: 1
+  route fails: n=9 root=8 deg=1 leafnb=0 edges: 0-1 0-4 0-7 1-2 2-3 4-5 5-6 7-8
+n=9 trees=47 pairs=423 slack0=412 slack1=11 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 2; degrees of non-anchors: 6 5 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 10, is not: 1
+  route fails: n=10 root=2 deg=2 leafnb=1 edges: 0-1 0-4 0-7 1-2 2-3 4-5 5-6 7-8 8-9
+  route fails: n=10 root=5 deg=2 leafnb=1 edges: 0-1 0-4 0-7 1-2 2-3 4-5 5-6 7-8 8-9
+  route fails: n=10 root=8 deg=2 leafnb=1 edges: 0-1 0-4 0-7 1-2 2-3 4-5 5-6 7-8 8-9
+n=10 trees=106 pairs=1060 slack0=1041 slack1=19 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 3; degrees of non-anchors: 13 6 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 16, is not: 3
+n=11 trees=235 pairs=2585 slack0=2564 slack1=21 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 1; degrees of non-anchors: 16 4 1 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 21, is not: 0
+n=12 trees=551 pairs=6612 slack0=6575 slack1=37 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 21 16 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 37, is not: 0
+  route fails: n=13 root=4 deg=1 leafnb=0 edges: 0-1 0-5 0-9 1-2 2-3 3-4 5-6 6-7 6-8 9-10 10-11 10-12
+  route fails: n=13 root=12 deg=1 leafnb=0 edges: 0-1 0-9 1-2 2-3 2-4 2-5 2-6 2-7 2-8 9-10 9-12 10-11
+  route fails: n=13 root=12 deg=1 leafnb=0 edges: 0-1 0-10 0-12 1-2 1-3 1-4 1-5 1-6 1-7 1-8 1-9 10-11
+  route fails: n=13 root=12 deg=1 leafnb=0 edges: 0-1 0-7 0-12 1-2 1-3 1-4 1-5 1-6 7-8 7-9 7-10 7-11
+n=13 trees=1301 pairs=16913 slack0=16859 slack1=54 slack2=0 slack>2=0  verify_failures=0
+  trees with no slack-0 root: 0; non-anchors with a leaf neighbour: 0; degrees of non-anchors: 34 20 0 0 0 0 0 0 0
+  of the slack>=1 pairs: r is an anchor of T+leaf(r): 50, is not: 4
+
+real	0m12.842s
+user	0m12.803s
+sys	0m0.056s

@@ -1,0 +1,6 @@
+n=21 diameter-4 trees=607 without all-up comb at largest hub=0 nodes=5475328 worst=803654 (3 3 3 3 3 )
+n=22 diameter-4 trees=771 without all-up comb at largest hub=0 nodes=16887790 worst=1206296 (3 3 2 2 2 0 0 0 0 )
+n=23 diameter-4 trees=980 without all-up comb at largest hub=0 nodes=47820547 worst=2883583 (1 1 1 1 1 1 1 1 1 0 0 0 0 )
+n=24 diameter-4 trees=1232 without all-up comb at largest hub=0 nodes=172193130 worst=15550731 (3 3 2 2 2 2 0 0 0 )
+n=25 diameter-4 trees=1551 without all-up comb at largest hub=0 nodes=774116311 worst=198608704 (2 2 2 2 2 2 2 2 )
+n=26 diameter-4 trees=1933 without all-up comb at largest hub=0 nodes=2510662343 worst=198608704 (3 2 2 2 2 2 2 2 )

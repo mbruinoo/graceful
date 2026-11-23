@@ -1,0 +1,42 @@
+n=9 mode=search trees=47 pairs=423 verify_failures=0
+  least slack (per vertex): 0:412 1:11
+  least slack (per root orbit): 0:277 1:9
+  trees all-slack-0=40  trees with no slack-0 root=0  leaf-neighbour roots=136 needing slack=2
+  degree of roots needing slack: deg1:6 deg2:5  search_nodes=9273
+  seconds=0
+n=10 mode=search trees=106 pairs=1060 verify_failures=0
+  least slack (per vertex): 0:1041 1:19
+  least slack (per root orbit): 0:706 1:13
+  trees all-slack-0=95  trees with no slack-0 root=0  leaf-neighbour roots=340 needing slack=3
+  degree of roots needing slack: deg1:13 deg2:6  search_nodes=31113
+  seconds=0
+n=11 mode=search trees=235 pairs=2585 verify_failures=0
+  least slack (per vertex): 0:2564 1:21
+  least slack (per root orbit): 0:1824 1:18
+  trees all-slack-0=218  trees with no slack-0 root=0  leaf-neighbour roots=823 needing slack=1
+  degree of roots needing slack: deg1:16 deg2:4 deg3:1  search_nodes=103750
+  seconds=1
+n=12 mode=search trees=551 pairs=6612 verify_failures=0
+  least slack (per vertex): 0:6575 1:37
+  least slack (per root orbit): 0:4734 1:32
+  trees all-slack-0=525  trees with no slack-0 root=0  leaf-neighbour roots=2097 needing slack=0
+  degree of roots needing slack: deg1:21 deg2:16  search_nodes=366706
+  seconds=0
+n=13 mode=search trees=1301 pairs=16913 verify_failures=0
+  least slack (per vertex): 0:16859 1:54
+  least slack (per root orbit): 0:12436 1:50
+  trees all-slack-0=1258  trees with no slack-0 root=0  leaf-neighbour roots=5333 needing slack=0
+  degree of roots needing slack: deg1:34 deg2:20  search_nodes=1303796
+  seconds=0
+n=14 mode=search trees=3159 pairs=44226 verify_failures=0
+  least slack (per vertex): 0:44142 1:84
+  least slack (per root orbit): 0:32899 1:74
+  trees all-slack-0=3092  trees with no slack-0 root=0  leaf-neighbour roots=13896 needing slack=6
+  degree of roots needing slack: deg1:54 deg2:29 deg3:1  search_nodes=5001897
+  seconds=2
+n=15 mode=search trees=7741 pairs=116115 verify_failures=0
+  least slack (per vertex): 0:115998 1:117
+  least slack (per root orbit): 0:87707 1:104
+  trees all-slack-0=7648  trees with no slack-0 root=0  leaf-neighbour roots=36330 needing slack=3
+  degree of roots needing slack: deg1:86 deg2:31  search_nodes=19645798
+  seconds=5

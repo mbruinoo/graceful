@@ -1,0 +1,14 @@
+prufer n=200 policy=1 root=c trials=60  least slack: min=16 q25=23 median=25 q75=30 q90=36 max=49 mean=26.4  verify_failures=0
+prufer n=500 policy=1 root=c trials=60  least slack: min=44 q25=64 median=69 q75=74 q90=81 max=99 mean=69.5  verify_failures=0
+prufer n=1000 policy=1 root=c trials=60  least slack: min=88 q25=126 median=136 q75=148 q90=161 max=168 mean=136.2  verify_failures=0
+prufer n=2000 policy=1 root=c trials=60  least slack: min=237 q25=264 median=285 q75=297 q90=315 max=333 mean=281.9  verify_failures=0
+prufer n=200 policy=5 root=c trials=60  least slack: min=10 q25=16 median=19 q75=21 q90=25 max=28 mean=18.6  verify_failures=0
+prufer n=500 policy=5 root=c trials=60  least slack: min=24 q25=44 median=48 q75=53 q90=58 max=63 mean=47.4  verify_failures=0
+prufer n=1000 policy=5 root=c trials=60  least slack: min=64 q25=88 median=97 q75=102 q90=114 max=129 mean=95.9  verify_failures=0
+prufer n=2000 policy=5 root=c trials=60  least slack: min=128 q25=188 median=200 q75=210 q90=225 max=241 mean=198.6  verify_failures=0
+prufer n=4000 policy=6 root=c trials=40  least slack: min=254 q25=301 median=320 q75=346 q90=385 max=396 mean=323.8  verify_failures=0
+prufer n=4000 policy=1 root=c trials=30  least slack: min=512 q25=557 median=576 q75=614 q90=647 max=681 mean=585.5  verify_failures=0
+
+real	0m59.371s
+user	0m58.892s
+sys	0m0.008s

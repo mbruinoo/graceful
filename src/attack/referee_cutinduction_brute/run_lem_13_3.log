@@ -1,0 +1,16 @@
+n=3 growth=2 cleansets=4 disjointpairs(ordered)=0 t1checks=4 convchecks=4 nonorderGrowthRestr=0 staircases=2 (2^(n-2)=2) primitive=0 core:
+n=4 growth=4 cleansets=22 disjointpairs(ordered)=16 t1checks=22 convchecks=22 nonorderGrowthRestr=0 staircases=4 (2^(n-2)=4) primitive=0 core:
+n=5 growth=12 cleansets=120 disjointpairs(ordered)=152 t1checks=120 convchecks=120 nonorderGrowthRestr=0 staircases=8 (2^(n-2)=8) primitive=0 core:
+n=6 growth=32 cleansets=382 disjointpairs(ordered)=1092 t1checks=382 convchecks=382 nonorderGrowthRestr=0 staircases=16 (2^(n-2)=16) primitive=0 core:
+n=7 growth=116 cleansets=1384 disjointpairs(ordered)=5812 t1checks=1384 convchecks=1384 nonorderGrowthRestr=16 staircases=32 (2^(n-2)=32) primitive=0 core:
+n=8 growth=412 cleansets=4960 disjointpairs(ordered)=27140 t1checks=4960 convchecks=4960 nonorderGrowthRestr=140 staircases=64 (2^(n-2)=64) primitive=0 core:
+n=9 growth=1764 cleansets=18706 disjointpairs(ordered)=119256 t1checks=18706 convchecks=18706 nonorderGrowthRestr=830 staircases=128 (2^(n-2)=128) primitive=0 core:
+n=10 growth=7888 cleansets=73826 disjointpairs(ordered)=511632 t1checks=73826 convchecks=73826 nonorderGrowthRestr=5480 staircases=256 (2^(n-2)=256) primitive=0 core:
+n=11 growth=40220 cleansets=311168 disjointpairs(ordered)=2189672 t1checks=311168 convchecks=311168 nonorderGrowthRestr=31940 staircases=512 (2^(n-2)=512) primitive=0 core:
+n=12 growth=214600 cleansets=1389762 disjointpairs(ordered)=9430064 t1checks=1389762 convchecks=1389762 nonorderGrowthRestr=179632 staircases=1024 (2^(n-2)=1024) primitive=0 core:
+n=13 growth=1275368 cleansets=6701996 disjointpairs(ordered)=41642612 t1checks=6701996 convchecks=6701996 nonorderGrowthRestr=1039644 staircases=2048 (2^(n-2)=2048) primitive=0 core:
+violations T1=0 conv=0 T2=0 T4=0 T3=0
+
+real	2m35.309s
+user	2m33.799s
+sys	0m0.077s

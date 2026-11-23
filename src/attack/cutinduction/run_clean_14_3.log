@@ -1,0 +1,18 @@
+n=2 growth=1 trees=1 | K1: 1 pl, 1 trees | K2: 1 pl, 1 trees | K3: 1 pl, 1 trees | smallest growth-restriction step: 1:0 2:0 3:49 none<=3:0
+n=3 growth=2 trees=1 | K1: 2 pl, 1 trees | K2: 2 pl, 1 trees | K3: 2 pl, 1 trees | smallest growth-restriction step: 1:2 2:0 3:0 none<=3:0
+n=4 growth=4 trees=2 | K1: 4 pl, 2 trees | K2: 4 pl, 2 trees | K3: 4 pl, 2 trees | smallest growth-restriction step: 1:4 2:0 3:0 none<=3:0
+n=5 growth=12 trees=3 | K1: 10 pl, 3 trees | K2: 12 pl, 3 trees | K3: 12 pl, 3 trees | smallest growth-restriction step: 1:10 2:2 3:0 none<=3:0
+n=6 growth=32 trees=6 | K1: 24 pl, 6 trees | K2: 32 pl, 6 trees | K3: 32 pl, 6 trees | smallest growth-restriction step: 1:32 2:0 3:0 none<=3:0
+n=7 growth=116 trees=11 | K1: 66 pl, 10 trees | K2: 116 pl, 11 trees | K3: 116 pl, 11 trees | smallest growth-restriction step: 1:92 2:24 3:0 none<=3:0
+n=8 growth=412 trees=23 | K1: 178 pl, 21 trees | K2: 398 pl, 23 trees | K3: 412 pl, 23 trees | smallest growth-restriction step: 1:348 2:50 3:14 none<=3:0
+n=9 growth=1764 trees=47 | K1: 502 pl, 43 trees | K2: 1600 pl, 47 trees | K3: 1748 pl, 47 trees | smallest growth-restriction step: 1:1334 2:328 3:86 none<=3:16
+n=10 growth=7888 trees=106 | K1: 1408 pl, 93 trees | K2: 6284 pl, 105 trees | K3: 7602 pl, 106 trees | smallest growth-restriction step: 1:5830 2:1216 3:628 none<=3:214
+   K2 misses (((()))((()))((())))
+n=11 growth=40220 trees=235 | K1: 4064 pl, 205 trees | K2: 26698 pl, 235 trees | K3: 36540 pl, 235 trees | smallest growth-restriction step: 1:27122 2:7018 3:3732 none<=3:2348
+n=12 growth=214600 trees=551 | K1: 11600 pl, 474 trees | K2: 111854 pl, 551 trees | K3: 178924 pl, 551 trees | smallest growth-restriction step: 1:138480 2:35448 3:22002 none<=3:18670
+n=13 growth=1275368 trees=1301 | K1: 33644 pl, 1112 trees | K2: 489592 pl, 1301 trees | K3: 927572 pl, 1301 trees | smallest growth-restriction step: 1:749138 2:215626 3:137232 none<=3:173372
+n=14 growth=7926160 trees=3159 | K1: 96768 pl, 2663 trees | K2: 2122632 pl, 3159 trees | K3: 4850496 pl, 3159 trees | smallest growth-restriction step: 1:4404782 2:1238532 3:850250 none<=3:1432596
+
+real	4m59.316s
+user	4m30.560s
+sys	0m0.539s

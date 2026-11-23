@@ -1,0 +1,8 @@
+n=17 variant=A(root label 1) trees=48629 rooted pairs (tree,vertex)=826693  verify_failures=0
+  least slack 0: 826495 (tree,root) pairs;  trees whose best root needs it: 48629
+  least slack 1: 198 (tree,root) pairs;  trees whose best root needs it: 0
+  least slack 2: 0 (tree,root) pairs;  trees whose best root needs it: 0
+  least slack >2: 0 (tree,root) pairs;  trees whose best root needs it: 0
+  trees with every vertex at slack 0: 48462
+  roots having a leaf neighbour: 256975, of which need slack > 0: 1
+  degree of roots needing slack > 0: deg1:148 deg2:50 deg3:0 deg4:0 deg5:0 deg6:0 deg7:0 deg8:0 deg9:0

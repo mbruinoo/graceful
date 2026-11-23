@@ -1,0 +1,2 @@
+all free trees n=2..12, all roots, 3 queue orders: 33015 runs pass; max N/n = 1.833
+random trees 13..400: 1200 runs pass

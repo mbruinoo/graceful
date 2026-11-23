@@ -1,0 +1,91 @@
+SUMMARY
+No counterexample to Conjecture B was found. Exact growth-placement counts never decrease to zero or stay bounded on any non-caterpillar family examined: the scarcest family (README family A) grows roughly like 4n, reaching 270 at n=70. About 1.15 million structured trees with 26<=n<=70 (all diameter-4 trees to n=42, all diameter-5 trees to n=32, equal-branch, spherically symmetric and spider families to n=70) all received machine-checked growth placements. The most useful outcome is a restriction on where a counterexample can live: any tree with a vertex whose non-leaf remainder has at most 20 vertices has a growth placement (Lemma 6 plus certificates), and every vertex of degree >=4 is an anchor in all trees on n<=20 vertices. One tooling finding: exact-cover (fewest-options-first) search solves instances instantly that the length-ordered search cannot.
+
+DEAD ENDS
+1. Looking for a family with bounded or decreasing count. None exists among those examined: adding leaves to one hub gives counts that grow at least linearly (slowest: family A, about 4n with a period-6 wobble and no zeros through n=70); several equal hubs give exponential growth with a parity wobble (three hubs: 18, 60, 370, 2284 for odd hub size at n=13, 19, 25, 31). The hub theorem explains why one-hub families cannot fail.
+2. An explicit construction of zigzag deals for the spider with k legs of length 2. A zigzag deal is a set O of k numbers in 1..2k with a permutation pi of O such that the sums b+pi(b) are exactly the complement of O. An odd interval [c,c+2t] with a cyclic shift produces the sum interval [2c+t,2c+3t], which gives a correct step 'deal for k' implies deal for 5k'+1' (machine-checked for the 100 available k'<=150, and iterated twice for the 20 available k'<=30), but an exhaustive search over tilings by such blocks finds nothing else (blocks.py: from prefix k' only 5k'+1 and its iterates, up to 2k<=120). Windows of arbitrary structure above a solved prefix exist only for k>=5k'+1 (window.cpp, k<=15). Smallest obstruction: k=3, whose only deal O={1,2,4} is not a union of such blocks. The step yields only sparse sequences such as 1, 6, 31, 156.
+3. Length-ordered randomised DFS (the repo's method) as a hunting tool beyond n about 45: it leaves 'unresolved' trees that are in fact easy, e.g. the spider with 27 legs of length 2 (n=55) and three hubs of 17 leaves (n=55). Unresolved outputs from that solver are search weakness, not evidence. Exact cover with fewest-options-first solves the same instances in milliseconds. An ordered exhaustive length-first search for zigzag deals of S(2^k) already stalls at k=18.
+4. Exhaustive minimum count over all trees at n=16 was started and stopped after exceeding the time budget; no result. The first two-stage hub solver (random skeleton labels, then exact cover for leaves) found 15 of 56 hard trees and then stalled until the skeleton stage was made longest-length-first with deferred leaf lengths.
+5. Not attempted: exhaustive non-existence proofs for any tree with n>=26 (none was needed, every tree tested had a placement), all trees at n=26, diameter 6, and a general exact-cover solver for arbitrary trees.
+
+FILES
+/home/user/graceful/src/attack/counterexample/gcount.cpp
+/home/user/graceful/src/attack/counterexample/gsolve.cpp
+/home/user/graceful/src/attack/counterexample/hubsolve3.cpp
+/home/user/graceful/src/attack/counterexample/hubsolve.cpp
+/home/user/graceful/src/attack/counterexample/spdlx.cpp
+/home/user/graceful/src/attack/counterexample/zz2dlx.cpp
+/home/user/graceful/src/attack/counterexample/verify.py
+/home/user/graceful/src/attack/counterexample/hubthm.py
+/home/user/graceful/src/attack/counterexample/hubsharp.py
+/home/user/graceful/src/attack/counterexample/hubcert.py
+/home/user/graceful/src/attack/counterexample/deg4.py
+/home/user/graceful/src/attack/counterexample/lemma6_check.py
+/home/user/graceful/src/attack/counterexample/s2k_check.py
+/home/user/graceful/src/attack/counterexample/spcert.py
+/home/user/graceful/src/attack/counterexample/blocks.py
+/home/user/graceful/src/attack/counterexample/window.cpp
+/home/user/graceful/src/attack/counterexample/gen_struct.py
+/home/user/graceful/src/attack/counterexample/gen_diam.py
+/home/user/graceful/src/attack/counterexample/scan_hub.py
+/home/user/graceful/src/attack/counterexample/scan_hubs.py
+/home/user/graceful/src/attack/counterexample/scarcest.py
+/home/user/graceful/src/attack/counterexample/fam.py
+/home/user/graceful/src/attack/counterexample/alltrees.cpp
+/home/user/graceful/src/attack/counterexample/run_famA.log
+/home/user/graceful/src/attack/counterexample/run_hubthm_20.log
+/home/user/graceful/src/attack/counterexample/run_hubthm_18_19.log
+/home/user/graceful/src/attack/counterexample/run_hubthm_14_17.log
+/home/user/graceful/src/attack/counterexample/run_hubthm_10_13.log
+/home/user/graceful/src/attack/counterexample/run_deg4_5_16.log
+/home/user/graceful/src/attack/counterexample/run_deg4_17_19.log
+/home/user/graceful/src/attack/counterexample/run_deg4_20.log
+/home/user/graceful/src/attack/counterexample/run_diam4.log
+/home/user/graceful/src/attack/counterexample/run_diam5.log
+/home/user/graceful/src/attack/counterexample/run_eq.log
+/home/user/graceful/src/attack/counterexample/run_eqp.log
+/home/user/graceful/src/attack/counterexample/run_eq2.log
+/home/user/graceful/src/attack/counterexample/run_sym.log
+/home/user/graceful/src/attack/counterexample/run_spider.log
+/home/user/graceful/src/attack/counterexample/run_comb.log
+/home/user/graceful/src/attack/counterexample/unresolved_all.txt
+/home/user/graceful/src/attack/counterexample/run_unresolved_hubsolve3.log
+/home/user/graceful/src/attack/counterexample/run_spdlx_72.log
+/home/user/graceful/src/attack/counterexample/run_spdlx_105.log
+/home/user/graceful/src/attack/counterexample/run_zz2dlx.log
+/home/user/graceful/src/attack/counterexample/scan_hub_d7.log
+/home/user/graceful/src/attack/counterexample/scan_hub_d8.log
+/home/user/graceful/src/attack/counterexample/scan_hubs_d6_h2.log
+
+
+===== CLAIM 0 [proved]
+STATEMENT
+Hub theorem. Let T be a tree with a vertex v such that deleting all leaf neighbours of v leaves a tree D with at most 20 vertices (v kept). Then T has a growth placement. Equivalently: for every rooted tree D on d<=20 vertices and every m>=0, the tree T(D,m) obtained by adding m new leaves at the root of D has a growth placement. Moreover for every such D the root of T(D,m) is an anchor (can carry label 1) for all m>=3. Consequence for the hunt: a counterexample to Conjecture B cannot be 'a tree on at most 20 vertices plus one hub of leaves', which is exactly the shape of the scarcest non-caterpillars.
+
+EVIDENCE
+Computer-assisted base cases. For each d=2..20 and every rooted tree D on d vertices (counts 1, 2, 4, 9, 20, 48, 115, 286, 719, 1842, 4766, 12486, 32973, 87811, 235381, 634847, 1721159, 4688676, 12826228; d=1 is the star) the search found a growth placement of T(D,m0) with the root labelled 1 for some m0<=3. At d=20: m0=0 for 12,825,837 trees, 1 for 385, 2 for 6. The largest m0 found is 3 (d=9, 17, 19). The members T(D,m) with m<m0 (at most 22 vertices; 397 trees at d=20, 315 at d=19) were solved without the root restriction, none failing. Every placement is re-checked inside gsolve.cpp from the definition (labels 1..n once, lengths 1..n-1 once, brackets of length >=k connected for every k, root label 1). An independent Python checker (verify.py) re-checked all certificates for d=6, 9, 12, 14 (20, 286, 4766, 32973 certificates, 0 bad); for other d only the C++ check was run. Exact least m (exhaustive, hubsharp.py, d<=12): m=2 first needed at d=8, m=3 at d=9 (D = spider S(3,3,2) rooted at the tip of the leg of length 2). Logs: run_hubthm_10_13.log, run_hubthm_14_17.log, run_hubthm_18_19.log, run_hubthm_20.log (d=2..9 were printed to the terminal only; rerun 'python3 hubthm.py d').
+
+PROOF
+Step (README Lemma 6, case of the vertex labelled 1): if a tree on n vertices has a growth placement with vertex r labelled 1, keep all labels and add the bracket {1,n+1}. The new bracket is the longest, the old brackets do not touch label n+1, so for every k the brackets of length >=k are still connected (the old ones form a connected set containing label 1, and the new bracket hangs on label 1). The result is a growth placement of the tree plus one leaf at r, and r is still labelled 1. By induction on m: if the root of T(D,m0) is an anchor then the root of T(D,m) is an anchor, in particular T(D,m) has a growth placement, for every m>=m0. Base: for every rooted D with at most 20 vertices a certificate with root label 1 was found for some m0<=3 and verified from the definition; the finitely many members with m<m0 have verified certificates of their own. D on one vertex gives stars, which have the star placement. Given T and v as in the statement, T = T(D,m) with D = T minus the leaf neighbours of v, rooted at v. The proof is complete only modulo the correctness of the certificate checks (C++ check for all d; independent Python check for d=6,9,12,14). The step itself was brute-forced from the definition for every growth placement on n<=8 vertices (lemma6_check.py: 4, 12, 32, 116, 412 placements, all extend).
+
+
+===== CLAIM 1 [conjecture]
+STATEMENT
+Degree-4 anchor conjecture (D4): in every tree, every vertex of degree at least 4 is an anchor, i.e. the tree has a growth placement in which that vertex carries label 1. D4 implies Conjecture B for every tree with maximum degree at least 4, so it would reduce Conjecture B to trees of maximum degree 3. The degree bound is sharp in this sense: a vertex of degree 3 need not be an anchor even with two leaf neighbours. Smallest such example found: the 11-vertex tree made from the spider S(3,3,2) by adding two leaves at the tip of the leg of length 2; that tip (degree 3) is not an anchor.
+
+EVIDENCE
+Exhaustive for all trees on n<=20 vertices. Every rooted tree with root degree >=4 on d=5..20 vertices was tested (1, 2, 5, 12, 31, 77, 202, 524, 1390, 3695, 9929, 26792, 72791, 198553, 544155, 1496620 trees; 2,354,779 vertex-tree pairs in total) and the root is an anchor in every case, with each placement re-checked from the definition including root label 1. The README had this observation only for n<=14. The sharpness example was confirmed by exhaustive ordered search (hubsharp.py reports exact least m=3 for d=9, D=(((((()))((()))))) ), so with two added leaves the root has degree 3 and no growth placement puts label 1 on it. Supporting data from the hub theorem runs: for every rooted D on at most 20 vertices, three added leaves at the root always suffice. Logs: run_deg4_5_16.log, run_deg4_17_19.log, run_deg4_20.log.
+
+PROOF
+
+
+
+===== CLAIM 2 [verified-only]
+STATEMENT
+Negative result of the counterexample hunt. (a) No non-caterpillar family examined has a growth-placement count that decreases or stays bounded. (b) Every structured tree tested with 26<=n<=70 has a growth placement. (c) Every spider whose legs all have length at most 3, with at most 105 vertices in legs of length 2 and 3 and any number of legs of length 1, has a growth placement anchored at the centre (Conjecture S for this class); the only exception is the middle of the path on 7 vertices, which is not a spider. In particular the spider with k legs of length 2 has a zigzag deal for every k<=150 with k not congruent to 2 mod 3.
+
+EVIDENCE
+Exact counts (gcount.cpp; per-tree counts match src/growcount as multisets for all trees n=8..12, and match src/famcount times the automorphism count on family A, n=8..13). Minimum count over all non-caterpillar trees, exhaustive: 8, 14, 16, 18, 18, 24 for n=10..15 (the n=16 run was stopped unfinished). README family A (centre with a hub of m leaves and two legs of length 2), exact for every n=8..70: 10, 16, 12, 14, 16, 24, 18, 24, 28, 28, 28, 38, ... 52 at n=26 (the minimum over 26<=n<=70), 106 at n=40, 150 at n=50, 206 at n=60, 270 at n=70. One-hub families over all rooted decorations with 7 and 8 vertices, hub size 16..22: family A is the scarcest, the next has counts 120..232, all increasing. Two-hub families over skeletons on 5 and 6 vertices, hub sizes 7..10: minimum 106. Three equal hubs round a centre: 370, 4300, 2284, 25286 at n=25, 28, 31, 34. Existence, each placement machine-checked from the definition: all 251,992 diameter-4 trees with 26<=n<=42 (the n=43..46 part of that run was killed by the time limit); all 885,122 diameter-5 trees with 26<=n<=32; 12,348 trees with 26<=n<=70 in six families (1180 with k>=3 equal branches of every rooted shape on 2..8 vertices, 1881 of those plus a pendant path, 312 two-centre equal-branch, 6814 spherically symmetric, 2025 spiders with legs L and L+1, 136 combs). The length-ordered search left 502 of the 12,348 unresolved (many legs of length 2, or large equal hubs); all 502 were then solved by the exact-cover solver hubsolve3.cpp and re-checked by the independent verify.py. Spiders: spdlx.cpp found centre-anchored deals for all 970 pairs (n2,n3) with 2*n2+3*n3<=105 except (0,2); all certificates re-checked by verify.py; S(3,3,1), S(3,3,1,1), S(3,3,1,1,1) also found. zz2dlx.cpp found zigzag deals of S(2^k) for the 100 values k<=150 with k not 2 mod 3 in 7 seconds; for k=2 mod 3 the README gluing step gives a (not centre-anchored) growth placement, 50 certificates checked.
+
+PROOF
+Only one step is proved rather than computed: legs of length 1 can be added at a centre labelled 1 by README Lemma 6, which is why (c) holds for any number of legs of length 1. Everything else is search output with each placement checked from the definition.

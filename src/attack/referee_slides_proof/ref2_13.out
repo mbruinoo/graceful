@@ -1,0 +1,12 @@
+n=13 tree placements=8733628
+local minima=954376 shapes=1301 shapes with no local minimum=0
+unit only: components=34181
+unit + slide-by-2: components=379
+unit + reflect through foot: components=149
+unit + two-at-once: components=1
+unit + two-at-once same direction: components=467
+unit + two-at-once consecutive lengths: components=4315
+
+real	3m48.268s
+user	3m46.178s
+sys	0m0.383s

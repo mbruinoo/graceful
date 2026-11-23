@@ -1,0 +1,76 @@
+SUMMARY
+Line "gamestrategy": no rule for all diameter-4 trees was found. What was found is a search-free normal form, the all-up comb (largest hub at label 0, centre at y, every other hub's leaves above the hub and below the centre, the root hub's leaves as fillers), plus a one-paragraph criterion for it. With it I proved explicit growth placements for two infinite families: every tree made of three stars joined to a centre, and every centre with d equal hubs plus one hub of at least d−1 leaves. Both rules are machine-checked from the README §1 definitions for all members with n ≤ 60. Exhaustively, every diameter-4 tree with n ≤ 23 has an all-up comb rooted at a largest hub (conjecture, not proved). Diameter 5 and lobsters were not attempted. Novelty against the literature was not checked.
+
+DEAD ENDS
+1. Centre as root. Not universal: D(8,1,1) (n=14) and D(12,1,1) (n=18) have no growth placement with the centre at label 1, nor do many two-hub trees, e.g. D(2,1), D(4,1), D(3,2). D(3,3,3) has exactly one. Exhaustive DFS in explore.py / centre_scan.py, hubs all non-trivial, n <= 18.
+2. Gluing (README section 7) reduces "largest hub is an anchor" only to "centre is an anchor of the tree minus one star", which fails as in 1.
+3. Centre at 0 with hubs on the top block of labels: the map length -> T+1-label is a permutation with values <= the argument, hence the identity, so only one hub can have leaves. Same rigidity with hubs on a bottom block.
+4. Interval combs. If each hub takes one interval of lengths mapped to an interval of cells, the shift equals (#hub cells passed − #hub lengths passed) <= number of hubs. That forces hub labels to be exactly 1..d, and the build collapses to the staircase caterpillar. Smallest obstruction: three non-trivial hubs. Interleaved blocks (pairs at labels e−1, e+1; residue dealing; the 3-cycle "two leaves plus one filler" of pattern B) are what escapes this.
+5. Plateau design (hubs on a contiguous block of labels, all leaves at one shift) spends at least d−1 root leaves and forces congruences between hub sizes. It cannot cover small root hubs such as D(1^k), although search finds combs there.
+6. Hrnčiar–Haviar transfer labelings (hubs alternating m, 1, m−1, 2, ...) violate the heap condition of Theorem 7: a hub with a small label gets far-away leaves.
+7. Bounded skips. Using the repo's existing runsolve128 (not re-implemented by me), diameter-4 trees needing one skip: 1, 0, 2, 3, 8, 15 for n = 9..14; needing two: 1, 1, 4, 6, 16, 20 for n = 15..20; none needs three for n <= 20. I found no rule within a bounded number of skips and no proof that the number is unbounded.
+8. "Smallest non-trivial hub is an anchor" fails: D(8,1,1) and D(5,4,1) at n=14, D(7,4,1) at n=16 (hub_scan.py).
+Not attempted: diameter 5, lobsters, three hubs plus leaves on the centre, and a proof of the all-up comb conjecture for general hub sizes.
+Housekeeping: early exploratory runs wrote temporary files (out.txt, cur.txt, next_*.txt, d4_*.txt) into the shared scratchpad root rather than a private subfolder; nothing in the repository outside src/attack/gamestrategy/ was touched.
+
+FILES
+/home/user/graceful/src/attack/gamestrategy/comb_rules.py
+/home/user/graceful/src/attack/gamestrategy/au_scan.cpp
+/home/user/graceful/src/attack/gamestrategy/au_scan_17_40.log
+/home/user/graceful/src/attack/gamestrategy/au_crosscheck.py
+/home/user/graceful/src/attack/gamestrategy/allup.py
+/home/user/graceful/src/attack/gamestrategy/allup_H.py
+/home/user/graceful/src/attack/gamestrategy/allup_ap.py
+/home/user/graceful/src/attack/gamestrategy/allup_ap2.py
+/home/user/graceful/src/attack/gamestrategy/allup_scan.py
+/home/user/graceful/src/attack/gamestrategy/k3.py
+/home/user/graceful/src/attack/gamestrategy/k3show.py
+/home/user/graceful/src/attack/gamestrategy/explore.py
+/home/user/graceful/src/attack/gamestrategy/centre_scan.py
+/home/user/graceful/src/attack/gamestrategy/hub_scan.py
+/home/user/graceful/src/attack/gamestrategy/cpos_scan.py
+/home/user/graceful/src/attack/gamestrategy/show.py
+/home/user/graceful/src/attack/gamestrategy/d4edges.py
+/home/user/graceful/src/attack/gamestrategy/desc.py
+
+
+===== CLAIM 0 [proved]
+STATEMENT
+Three-hub theorem. Let T = D(a1;p,q) be the tree with a centre c adjacent to exactly three vertices (hubs) carrying a1 >= p >= q >= 1 leaves (n = a1+p+q+4). Then T has a growth placement with the largest hub at label 1, given by a closed-form rule with no search. In labels 0..m (m = n-1; add 1 for README labels): root hub at 0, centre at y, the other two hubs at h and h', each leaf of a hub at (hub label)+u for u in that hub's set U, and the root hub's leaves at the cells of W and at y+1..m. Rule: (A) p = q (mod 2): hubs 1 (q leaves) and 3 (p leaves); U_1 = odd numbers <= 2q-1. If p = q: U_3 = even numbers <= 2q, W = {2q+2}, y = 2q+4. If p = q+2J+2 (J >= 0), with t_j = 2q+2+3j: U_3 = {evens <= 2q} + {2q+1} + {t_j+1, t_j+2 : j<J} + {t_J+1}, W = {t_0..t_J, t_J+3}, y = t_J+5. (B) otherwise let Q = 2r be the even one of p,q and P the odd one: hubs 2 (P leaves) and 3 (Q leaves); U_2 = [2..P+1], U_3 = {P+2+3j, P+3+3j : j<r}, W = {1} + {P+4+3j : 0<=j<=r}, y = P+3r+5. Sole exception (a1,p,q) = (2,2,1): hubs 1 with U={1,2} and 4 with U={3}, W={5,6}, y=8.
+
+EVIDENCE
+comb_rules.py builds the labeling from the rule and checks it from README section 1 (one bracket of each length 1..n-1; brackets taken longest first each have exactly one foot already used), checks the tree is isomorphic to D(a1;p,q) by canonical form, and checks label 1 has degree a1+1. Run `python3 comb_rules.py 60`: all 5,004 triples a1>=p>=q>=1 with n <= 60 pass. No claim of novelty: the literature was not searched beyond what README section 5 records (diameter <= 5 graceful by Hrnciar-Haviar; no explicit growth construction known there).
+
+PROOF
+Comb Lemma. Let y >= 1, distinct h_1..h_d in [1,y-1], sets U_i within [1, y-1-h_i] with |U_i| = s_i, and W within [1,y-1] with |W| <= a1, such that (L) {y-h_i}, U_1..U_d, W partition [1,y-1] and (C) {h_i}, h_1+U_1..h_d+U_d, W partition [1,y-1]. Put root hub at 0, centre at y, hub i at h_i, leaves of hub i at h_i+U_i, root leaves at W and at [y+1,m], where m = d+1+a1+sum s_i (counting (C) gives m-y = a1-|W| >= 0). Labels: 0, y, [y+1,m] and by (C) each of 1..y-1 once, so 0..m bijectively. Lengths: root edges y, W, [y+1,m]; hub edges y-h_i; leaf edges U_i; by (L) each of 1..m once. So the labeling is graceful with the root hub at 0. Along root->centre->hub i->leaf the lengths are y > y-h_i > u because u <= y-1-h_i; by README Theorem 7 it is a growth placement. QED.
+
+Case A, p=q=s: hubs 1,3, y=2s+4, T = {y-1,y-3} = {2s+3,2s+1}. Lengths: U_1+U_3 = [1,2s], W = {2s+2}, T: union [1,2s+3]. Cells: hubs 1,3; 1+U_1 = evens 2..2s; 3+U_3 = odds 5..2s+3; W = 2s+2: union [1,2s+3]. Bounds: max U_1 = 2s-1 <= y-2, max U_3 = 2s = y-4. |W| = 1.
+Case A, p = s+2J+2 (s=q): y = t_J+5, T = {t_J+4, t_J+2}. Lengths: [1,2s+1] from U_1, the evens and 2s+1; for j<J the triple t_j (W), t_j+1, t_j+2 (U_3) covers [t_0, t_J-1]; then t_J (W), t_J+1 (U_3), t_J+2 (T), t_J+3 (W), t_J+4 (T). Cells: [1,2s+4] = hubs 1,3; evens 2..2s (hub 1); odds 5..2s+3 (hub 3, even lengths); 2s+2 = t_0 (W); 2s+4 (hub 3, length 2s+1). For j<J the cells t_j+3 = t_{j+1} (W), t_j+4, t_j+5 (hub 3) cover [2s+5, t_J+2]; then t_J+3 (W), t_J+4 (hub 3, length t_J+1). Bound: max U_3 = t_J+1 = y-4. |U_3| = s+1+2J+1 = p. |W| = J+2 = (p-q)/2+1.
+Case B: y = P+3r+5, T = {y-2,y-3} = {P+3r+3, P+3r+2}. Lengths: 1 (W); [2,P+1] (U_2); triples P+2+3j, P+3+3j (U_3), P+4+3j (W) for j<r cover [P+2, P+3r+1]; T; P+3r+4 = y-1 (W). Cells: 1 (W); 2,3 hubs; [4,P+3] (hub 2); triples P+4+3j (W), P+5+3j, P+6+3j (hub 3) for j<r cover [P+4, P+3r+3]; P+3r+4 (W). Bounds: max U_2 = P+1 <= y-3; max U_3 = P+3r <= y-4. |W| = r+2.
+Exception: T = {7,4}; lengths 1,2 | 3 | 5,6 | 4,7; cells 1,4 hubs; 2,3; 7; 5,6. Bounds 2 <= 6, 3 <= 3.
+|W| <= a1 in every case: same parity: (p-q)/2+1 <= p <= a1. p odd, q even (so p >= 3): q/2+2 <= (p+3)/2 <= p. p even, q odd: p/2+2 <= a1 holds when a1 >= p >= 4, or p = 2 and a1 >= 3; the remaining tree is (2,2,1). The Comb Lemma then gives the placement. QED.
+
+
+===== CLAIM 1 [proved]
+STATEMENT
+Equal-hub theorem. Let d >= 1, a >= 1, a1 >= d-1. The tree D(a1; a^d) (a centre adjacent to d hubs with a leaves each and to one more hub with a1 leaves; n = d(a+1)+a1+2) has a growth placement with the a1-hub at label 1, by this rule (labels 0..m): root hub 0; centre y = d(a+2); hubs at the odd labels h_i = 2i+1, i = 0..d-1; hub i's leaves at h_i + s_i + d*j for j = 0..a-1, where for d odd s_i = 2i+d if 2i+d <= 2d-1 and s_i = 2i-d otherwise, and for d even s_i = d-1-i (i even), s_i = 2d-1-i (i odd). Root leaves: inside at W = {even x : 2 <= x <= d-1} + {da + x : x even, d < x < 2d} (d odd), or W = {even x : 2 <= x <= d-2} + {da + x : x even, d <= x <= 2d-2} (d even); the remaining a1-(d-1) root leaves at y+1..m. In particular D(a^k), k equal hubs, is covered whenever a >= k-2.
+
+EVIDENCE
+`python3 comb_rules.py 60` checks all 4,120 parameter triples (d,a,a1) with d>=1, a>=1, a1>=d-1 and n <= 60 from the README section 1 definitions, with tree isomorphism and root degree, as for claim 1. The rule was found by searching residue-dealt all-up combs (allup_ap.py, allup_ap2.py) and then generalised. The hypothesis a1 >= d-1 is what this rule needs (it spends exactly d-1 root leaves inside); trees with smaller a1 still have all-up combs by search (claim 3), but not of this form. Novelty not checked against the literature.
+
+PROOF
+Use the Comb Lemma of claim 1 with H' = {1,3,..,2d-1}, T = y-H' = da + {odd numbers in [1,2d-1]}. Let S = {s_i} and E = {h_i+s_i}; leaf lengths are L = S + d*[0,a-1], leaf cells are G = E + d*[0,a-1].
+d odd. S = all odd numbers in [1,2d-1] (i -> s_i is a bijection), a complete residue system mod d since two of them differ by an even number of absolute value < 2d. E = {d+1, d+3, .., 3d-1} = S+d, so G = L+d. For x write o(x) for the element of S congruent to x; x is in L iff o(x) <= x <= o(x)+d(a-1). For x in [1,y-1]: x < o(x) forces o = x+d, i.e. x even, x <= d-1: these are W_lo. x >= o+da forces x-da in {o, o+d} within [1,2d-1]: x-da = o gives T; x-da = o+d (o <= d-1) gives da + evens in (d,2d): W_hi. So [1,y-1] = L + T + W (disjoint): (L) holds. No element of L exceeds da+d-1 (da+x' with d <= x' <= 2d-1 lies in T or W_hi), so G = L+d lies in [d+1,y-1], and its complement there is [1,d] + (W_lo+d) + ((T within [1,da+d-1])+d) = (odds <= d, evens < d) + (odds in [d+2,2d-1]) + (da + evens in (d,2d)) = H' + W: (C) holds.
+d even. S = {odd numbers in [1,d-1]} + {even numbers in [d,2d-2]} and E = {even numbers in [d,2d-2]} + {odd numbers in [2d+1,3d-1]} (i even gives s_i = d-1-i, h_i+s_i = d+i; i odd gives 2d-1-i and 2d+i); both are complete residue systems mod d. Lengths: for x in [1,y-1] with residue r, o = r if r is odd and r+d if r is even. x < o happens only for x even, 2 <= x <= d-2 (W_lo). x >= o+da: with x' = x-da in [1,2d-1], r odd gives x' in {r, r+d}, i.e. every odd x', which is T; r even gives x' = r+d, the evens in [d,2d-2] (W_hi). So (L) holds. Cells: for z with residue r, e = r+d (r even) or r+2d (r odd). z < e: r even gives z = r in [2,d-2] (W_lo); r odd gives z in {r, r+d}, all odd numbers of [1,2d-1] = H'. z >= e+da: r even gives z-da = r+d (W_hi); r odd impossible since r+2d > 2d-1. So (C) holds.
+In both cases every leaf cell is <= y-1, i.e. u <= y-1-h_i, the cells of different (i,j) are distinct because E is a complete residue system, each hub gets a leaves, and |W| = d-1 <= a1. The Comb Lemma gives a growth placement with the a1-hub at label 0 (README label 1). QED.
+
+
+===== CLAIM 2 [conjecture]
+STATEMENT
+All-up comb conjecture (strengthens Conjecture B on diameter-4 trees; falsifiable). Let T be any tree of diameter 4: a centre with k >= 2 neighbours carrying s_1 >= ... >= s_k >= 0 leaves, at least two s_i > 0. Then T has a growth placement in labels 0..m with a hub of largest size s_1 at 0, the centre at some y, every other neighbour i of the centre at a label h_i < y, and every leaf of hub i (i >= 2) at h_i + u with 0 < u < y - h_i, i.e. above its hub and below the centre. Equivalently there are y, distinct h_2..h_k in [1,y-1], disjoint sets U_i with |U_i| = s_i and a set W with |W| <= s_1 such that {y-h_i}, U_i, W partition [1,y-1] and {h_i}, h_i+U_i, W partition [1,y-1]. In particular the largest hub would always be an anchor.
+
+EVIDENCE
+Exhaustive: au_scan.cpp finds such a comb, rooted at a largest hub, for every diameter-4 tree with 5 <= n <= 23: 14, 21, 32, 45, 65, 88, 121, 161, 215, 280, 367, 471, 607, 771, 980 trees for n = 9..23 (980 of 980 at n = 23). The run for n >= 24 was stopped for time (search nodes grow from 1.5e9 at n = 22 to 4.1e9 at n = 23). Cross-check with different code: au_crosscheck.py finds a comb with allup.py for every diameter-4 tree with n <= 13 and re-verifies each resulting labeling from the README section 1 definitions and against the tree. Claims 1 and 2 prove the conjecture for two infinite families. A necessary condition for any comb: sum over i>=2 of (s_i+2)*h_i = (k-1)*y.
+
+PROOF
+

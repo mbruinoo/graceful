@@ -1,0 +1,82 @@
+SUMMARY
+GTC and Conjecture B remain open; nothing here proves them. I generalised the clean leaf (README Lemma 8) to a "clean set" of labels and proved: deleting a clean set preserves growth; disjoint clean sets stay clean; clean-leaf peeling has a unique core, so "greedily peelable" is the largest property closed under one leaf step back (it breaks at S(2,2,2), n=7). I then measured the hierarchy C(K) = placements dismantlable by clean sets of size at most K. C(2) contains every tree on n <= 17 except three (S(3,3,3); S(10,3,3) and one double-branch tree at n=17). Most important outcome: no fixed K survives. The step number of S(L,L,L) is 1,2,3,2,2,5,3,6,6 for L=1..9, so S(6,6,6) (n=19) is outside C(4) and S(8,8,8) (n=25) outside C(5). The cut induction therefore needs unbounded step size on equal-leg spiders.
+
+DEAD ENDS
+1. Any property P for single clean-leaf insertion (Lemma 8). By the unique-core theorem the largest P closed under one step back is 'greedily peelable' = the closure from K2. It breaks at n=7: S(2,2,2) has 36 vertex-labelled growth labelings, none peelable. Smallest obstruction: the two primitive placements of the path on 5 vertices, brackets 1-5 1-4 3-5 2-3 and its mirror (no clean leaf). The fraction of primitive placements grows (0.17, 0.21, 0.24, 0.26, 0.33, 0.35 for n=7..12), so there is no finite basis of cores.
+2. The candidate properties named in the brief, tested on all growth placements n <= 12 (props.cpp; 'exist' = trees with a P-placement, 'chain' = trees reached by insertions staying inside P; out of 551 trees at n=12): every leaf clean: exist 272, chain 272, and proved equivalent to staircase, i.e. caterpillars only (first failure S(2,2,2), n=7). At least two clean leaves: exist 548, chain 464 (first existence failure n=7). Clean cut next to every vertex of degree >= 3: exist 551, chain 441 (chain already worse than unrestricted peelable from n=9: 42 vs 43). At least 3 clean interior cuts of distinct heights: exist 551, chain 472. At least half the interior cuts clean: exist 550, chain 452. None beats unrestricted peelability (474), as the maximality statement predicts; restricting P only loses trees.
+3. Hoped-for rescue by pair steps: C(2) looked universal apart from S(3,3,3) through n=16 (19,320 trees), then failed for 2 of 48,629 trees at n=17 and for S(6,6,6) at n=19. C(3) and C(4) fail at S(6,6,6); C(5) at S(8,8,8). Same pattern as the skip rules of README section 11: each fixed bound fails at a larger size, on trees with equal branches.
+4. Allowing deletions that do not preserve the length order (any growth restriction of <= K labels) enlarges the classes but does not change which trees are reached for n <= 13 with K=2 (still only S(3,3,3) missing).
+5. Not attempted: combining clean sets with the gap-split (edge-contraction) move of README section 10; C(3) exhaustively beyond n=14; step numbers for non-spider trees beyond n=17. Leg patterns with kappa >= 3 show no rule I could state ((3,3,3), (10,3,3), (13,3,3), (6,6,6), (12,5,4), (9,6,6), (7,7,7), (8,8,8), (9,9,9), (5,5,5,5)).
+6. No literature check was done for the clean-set notion or the step number; novelty is unverified. Nothing in the repository's README, INTUITION.md or web/ was edited; the README numbers quoted (93/106, 474/551, 1112/1301, 2663/3159 for the Lemma 8 closure) were reproduced.
+
+FILES
+/home/user/graceful/src/attack/cutinduction/enum.h
+/home/user/graceful/src/attack/cutinduction/lemma_check.cpp
+/home/user/graceful/src/attack/cutinduction/confluence.cpp
+/home/user/graceful/src/attack/cutinduction/closure.cpp
+/home/user/graceful/src/attack/cutinduction/show.cpp
+/home/user/graceful/src/attack/cutinduction/props.cpp
+/home/user/graceful/src/attack/cutinduction/restrict.cpp
+/home/user/graceful/src/attack/cutinduction/fwd.cpp
+/home/user/graceful/src/attack/cutinduction/fwd2.cpp
+/home/user/graceful/src/attack/cutinduction/alltrees.cpp
+/home/user/graceful/src/attack/cutinduction/tree_c2.cpp
+/home/user/graceful/src/attack/cutinduction/spider_c2.cpp
+/home/user/graceful/src/attack/cutinduction/spider_ck.cpp
+/home/user/graceful/src/attack/cutinduction/spider_kappa.cpp
+/home/user/graceful/src/attack/cutinduction/spider_minstep.cpp
+/home/user/graceful/src/attack/cutinduction/spider_scan.py
+/home/user/graceful/src/attack/cutinduction/kappa_scan.py
+/home/user/graceful/src/attack/cutinduction/c2_missed_17.txt
+/home/user/graceful/src/attack/cutinduction/run_clean_14_3.log
+/home/user/graceful/src/attack/cutinduction/run_fwd_15.log
+/home/user/graceful/src/attack/cutinduction/run_fwd2_16.log
+/home/user/graceful/src/attack/cutinduction/run_fwd2_17_0.log
+/home/user/graceful/src/attack/cutinduction/run_fwd2_17_1.log
+/home/user/graceful/src/attack/cutinduction/run_kappa.log
+/home/user/graceful/src/attack/cutinduction/run_kappa_scan3.log
+/home/user/graceful/src/attack/cutinduction/run_spiders.log
+/home/user/graceful/src/attack/cutinduction/run_spiders_k.log
+/home/user/graceful/src/attack/cutinduction/run_scan2_19.log
+/home/user/graceful/src/attack/cutinduction/run_scan3_even.log
+/home/user/graceful/src/attack/cutinduction/run_scan3_odd.log
+
+
+===== CLAIM 0 [proved]
+STATEMENT
+Setting: placements as in README section 1 (labels 1..n, bracket k = {p_k, p_k+k}); growth placement as in README section 2 (for every k the brackets n-1..k form a connected tree). DEFINITION. For a growth placement p on n labels and a set R of labels with n-|R| >= 2, call a bracket an R-bracket if it has a foot in R. R is a CLEAN SET if (1) exactly |R| brackets are R-brackets, and (2) every other bracket has strictly between its feet exactly as many labels of R as there are R-brackets shorter than it. (|R|=1 is exactly the clean leaf of README section 9.) Write p\R for: delete the labels of R and the R-brackets, relabel the rest order-preservingly.
+(T1) If R is clean then p\R is a growth placement of T-R, and kept brackets keep their order by length. Conversely if (1) holds and p\R is a placement in which kept brackets keep their length order, then (2) holds.
+(T2) If R1, R2 are disjoint clean sets of p and n-|R1|-|R2| >= 2, then the image of R2 is a clean set of p\R1 (so the union is clean and the two deletions commute).
+(T3) Unique core: repeatedly deleting clean leaves until none is left (or 2 labels remain) ends in the same placement whatever order is used. Hence 'peelable to the single edge by clean leaves' (the closure of Lemma 8 insertion from K2) is decided greedily, and it is the largest class P of growth placements in which every member on >= 3 vertices has a clean leaf whose deletion stays in P.
+(T4) For n >= 3 the following are equivalent for a growth placement: every leaf is clean; the leaf end of the shortest bracket is clean; the placement is a staircase.
+
+EVIDENCE
+lemma_check.cpp, brute force from the definitions: T1, its converse, T2 and T4 have 0 violations over all growth placements with n <= 9 and ALL label sets R (83,486 clean sets, 246,224 disjoint clean pairs at n=9), and for n <= 12 with |R| <= 3 (214,600 placements, 1,389,762 clean sets, 9,430,064 disjoint pairs at n=12). confluence.cpp: T3 has 0 violations for all growth placements n <= 12 (384,608 ordered pairs of clean leaves at n=12; core computed along every first step and compared). Non-order-preserving growth restrictions do exist (16 at n=7, 179,632 at n=12 with |R|<=3), so the converse of T1 needs the order hypothesis. Core statistics (n=12): 214,600 growth placements, 76,120 primitive (no clean leaf); core sizes 2:11600 5:5992 7:8464 8:11274 9:18740 10:30398 11:52012 12:76120. Primitive counts n=5..12: 2, 0, 24, 64, 430, 2058, 13098, 76120.
+
+PROOF
+T1. By (1) the kept brackets are n-1-|R| edges of the tree T on the n-|R| kept labels: a forest with (vertices - 1) edges, hence the tree T[S], S = complement of R. A kept bracket of length l has new length l - #(labels of R strictly between its feet) = l - #(R-brackets shorter than it) by (2). Since lengths 1..l all occur, this equals the number of kept brackets of length <= l, i.e. its rank among kept brackets. So new lengths are 1..n-|R|-1, each once (a placement), and the length order is preserved. Growth: fix m and let k be the old length of the kept bracket of rank m. Kept brackets of new length >= m are exactly the edges lying in both G_k (the brackets of old length >= k, a connected subtree by the definition of growth) and T[S]. For two such edges, the unique path of T joining them lies in G_k and in T[S] (a connected subgraph of a tree contains the path between any two of its vertices), so these edges form a connected graph. This holds for every m, which is the definition of growth. Converse: if kept brackets keep their order and the new lengths are 1..n-|R|-1, the new length of a kept bracket is its rank, so the number of R-labels it jumps is l - rank = #(R-brackets shorter than it).
+T2. Let S1, S2 be the complements and S their intersection, |S| >= 2. T[S1], T[S2] are subtrees by (1); for u, v in S the T-path between them lies in both, so T[S] is a tree with |S|-1 edges. Hence the number of brackets with a foot in R1 or R2 is n-1-(|S|-1) = |R1|+|R2|; as there are |R1| R1-brackets and |R2| R2-brackets, no bracket is both. So all R2-brackets survive in p\R1 and are exactly its brackets with a foot in the image of R2: condition (1). A bracket of p\R1 that is not one of them jumps the same number of image-R2 labels as it jumped R2 labels in p (relabelling is order-preserving on labels), namely #(R2-brackets shorter than it in p), and by T1 length order among kept brackets is unchanged in p\R1: condition (2).
+T3. For n >= 4 and two distinct clean leaves L1, L2, T2 with singletons gives: L2 is still a clean leaf after deleting L1 and vice versa, and both orders give p\{L1,L2}. For n = 3 both growth placements have only clean leaves and every deletion gives the single edge. Deletion strictly decreases n, so the process terminates and is locally confluent; by Newman's lemma the terminal placement is unique. Maximality: if P is closed under one clean-leaf step back, induction on n shows every member peels to the single edge.
+T4. Staircase => every leaf clean: in a staircase the brackets are nested intervals I_1 in I_2 in ... each sharing a foot with the next. A leaf L is a foot of exactly one bracket I_j; shorter brackets lie inside I_j and do not jump its endpoint L; longer ones contain I_j and do not have L as a foot, so L is interior to them. Every leaf clean => the leaf end of bracket 1 is clean (bracket 1 is pendant in a growth placement). If the leaf end L of bracket 1 is clean, every other bracket jumps L; deleting L gives (README Lemma 8) a growth placement all of whose brackets jump one common point, a staircase by README Theorem 9. Re-opening the gap keeps left feet and the nesting of brackets 2..n-1; bracket 2 jumps L with length 2, so it is {L-1, L+1}, and bracket 1 is {L-1,L} or {L,L+1}: p_1 - p_2 is 0 or 1, so p is a staircase.
+
+
+===== CLAIM 1 [verified-only]
+STATEMENT
+Define C(K) as the smallest class of growth placements that contains the single edge and contains p whenever p has a clean set R (definition in claim 1) with |R| <= K and p\R in C(K). Forwards: p is obtained from a member of C(K) by opening at most K gaps and adding one new vertex per gap so that old brackets keep their length order. C(1) is the Lemma 8 closure of README section 9; by claim 1 (T1) every member of every C(K) is a growth placement. OBSERVATION (exhaustive, n <= 17). C(1) first misses a tree at n=7 (spider S(2,2,2)) and reaches 10/11, 93/106, 474/551, 1112/1301, 2663/3159 trees at n=7,10,12,13,14. C(2) contains a growth placement of EVERY tree on n <= 17 vertices except exactly three: S(3,3,3) (n=10), S(10,3,3) (n=17), and the 17-vertex tree with edges 0-1 1-2 2-3 3-4 4-5 2-6 6-7 7-8 0-9 9-10 10-11 11-12 12-13 10-14 14-15 15-16 (two branch vertices, each carrying two legs of length 3, joined by a path of 4 edges). C(3) contains a growth placement of every tree on n <= 14 vertices and of every 3-legged spider on n <= 18 vertices.
+
+EVIDENCE
+Backward computation (restrict.cpp, mode 1: every growth placement enumerated, all label sets of size <= 3 tested, n <= 14; 7,926,160 growth placements at n=14): placements in C(1)/C(2)/C(3) = 33,644 / 489,592 / 927,572 at n=13 (of 1,275,368) and 96,768 / 2,122,632 / 4,850,496 at n=14; trees reached by C(2): 23, 47, 105, 235, 551, 1301, 3159 of 23, 47, 106, 235, 551, 1301, 3159 for n=8..14; C(3): all of them for n <= 14. Independent forward computation (fwd.cpp, fwd2.cpp) gives the same C(2) placement counts 398, 1600, 6284, 26698, 111854, 489592, 2122632 for n=8..14, then 9,423,972 placements / 7,741 of 7,741 trees at n=15 and 41,572,830 placements / 19,320 of 19,320 trees at n=16. n=17: 455,069,405 generated children, 48,627 of 48,629 tree shapes reached (tree list from src/treegen.h); the two missing shapes are in c2_missed_17.txt. Both were confirmed outside C(2) by a third, top-down program that enumerates all growth placements of the tree (tree_c2.cpp: 0 of 4,784 labelings of the double-branch tree; spider_kappa.cpp: step number 3 for S(10,3,3)), and S(10,3,3) also by the restricted closure spider_ck.cpp. Caveat for n=17: the final level used a lossy 64-bit-hash de-duplication cache, which can only lose placements, never add them, so 'reached' is sound and the two misses rest on the independent checks. Dropping the order-preserving requirement (any deletion of <= 2 labels that leaves a growth placement) changes counts (6,562 vs 6,284 placements at n=10; 604,094 vs 489,592 at n=13) but still misses S(3,3,3) and nothing else for n <= 13. Tree-level steps at n=12 (props.cpp): of 1,842 pairs (tree minus a leaf, tree), 1,839 are realised by a clean leaf in some growth placement, 1,837 inside C(2), 1,502 inside C(1).
+
+PROOF
+
+
+
+===== CLAIM 2 [counterexample]
+STATEMENT
+No fixed step size works: for each K <= 5 there is a spider that has growth placements but none in C(K) (C(K) as in claim 2). Define the step number kappa(T) as the least K such that T has a growth placement in C(K). Then kappa(S(2,2,2)) = 2 (n=7), kappa(S(3,3,3)) = 3 (n=10), kappa(S(6,6,6)) = 5 (n=19), kappa(S(8,8,8)) = 6 (n=25), kappa(S(9,9,9)) = 6 (n=28). So 'every tree has a growth placement in C(K)' is false for K=1 (n=7), K=2 (n=10), K=3 and K=4 (n=19 at the latest; no failure of K=3 for all trees n <= 14 and all 3-legged spiders n <= 18), and K=5 (n=25 at the latest). Full list for three equal legs of length L=1..9: kappa = 1, 2, 3, 2, 2, 5, 3, 6, 6. Whether kappa is unbounded over all trees is not proved; the data suggests it grows irregularly.
+
+EVIDENCE
+spider_kappa.cpp (top-down: enumerates every growth labeling of the spider, then kappa(p) = min over clean sets R of max(|R|, kappa(p\R)), memoised): S(6,6,6) has 2,544 vertex-labelled growth labelings (424 placements) with kappa distribution 5:24 6:132 7:300 8:492 9:624 10:588 11:348 12:36; S(8,8,8) has 23,016 with minimum 6 (6:24); S(9,9,9) 67,212 with minimum 6; S(3,3,3) 48 with 3:24 4:12 5:12; S(7,7,7) 7,752 with minimum 3; S(5,5,5,5) 346,896 with minimum 3; S(4,4,4), S(5,5,5), S(k legs of length 2..4, k=4) have kappa 2. Independent bottom-up check (spider_ck.cpp: exhaustive closure restricted to sub-spiders, no cap hit): S(6,6,6) NOT REACHED in C(2), C(3), C(4); S(8,8,8) NOT REACHED in C(3), C(4); S(3,3,3) not in C(2) but in C(3); S(7,7,7) and S(5,5,5,5) not in C(2) but in C(3). The two methods agree on every spider tried. kappa over all 3-legged spiders, n=7..22 (kappa_scan.py): the only ones with kappa >= 3 are (3,3,3), (10,3,3), (6,6,6) with kappa 5, (13,3,3), (12,5,4), (9,6,6), (7,7,7). S(6,6,6) does have a growth placement (repo's growsolve finds one; 424 enumerated here). In its 424 placements a clean leaf exists in 42 of them (252/6), but peeling always gets stuck: a single step back is not the obstruction, chaining is.
+
+PROOF
+

@@ -1,0 +1,23 @@
+n=16 mode=search trees=19320 pairs=309120 verify_failures=0
+  least slack (per vertex): 0:308966 1:154
+  least slack (per root orbit): 0:235240 1:141
+  trees all-slack-0=19195  trees with no slack-0 root=0  leaf-neighbour roots=96401 needing slack=1
+  degree of roots needing slack: deg1:114 deg2:40  search_nodes=87253588
+  seconds=21
+n=17 mode=search trees=48629 pairs=826693 verify_failures=0
+  least slack (per vertex): 0:826495 1:198
+  least slack (per root orbit): 0:634659 1:188
+  trees all-slack-0=48462  trees with no slack-0 root=0  leaf-neighbour roots=256975 needing slack=1
+  degree of roots needing slack: deg1:148 deg2:50  search_nodes=389651228
+  seconds=93
+n=18 mode=search trees=123867 pairs=2229606 verify_failures=0
+  least slack (per vertex): 0:2229342 1:264
+  least slack (per root orbit): 0:1720911 1:248
+  trees all-slack-0=123646  trees with no slack-0 root=0  leaf-neighbour roots=691147 needing slack=6
+  degree of roots needing slack: deg1:200 deg2:63 deg3:1  search_nodes=2071957941
+  seconds=466
+Traceback (most recent call last):
+  File "/home/user/graceful/src/attack/referee_asymptotic_brute/trees.py", line 9, in <module>
+    print(n, " ".join(f"{u} {v}" for u, v in T.edges()))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BrokenPipeError: [Errno 32] Broken pipe

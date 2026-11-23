@@ -1,0 +1,17 @@
+prufer n=1000 policy=1 slack=0 success 0/100 verify_failures=0 | failed runs 100: stalled parents 4938 (outer10% 42.4%, outer20% 69.2%), free labels 5154 (outer10% 0.35%, outer20% 4.8%), median unplaced 51
+prufer n=1000 policy=1 slack=50 success 0/100 verify_failures=0 | failed runs 100: stalled parents 1571 (outer10% 78.0%, outer20% 98.5%), free labels 6633 (outer10% 0.02%, outer20% 3.9%), median unplaced 17
+prufer n=1000 policy=1 slack=100 success 8/100 verify_failures=0 | failed runs 92: stalled parents 391 (outer10% 95.7%, outer20% 100.0%), free labels 9598 (outer10% 0.11%, outer20% 9.3%), median unplaced 4
+prufer n=1000 policy=1 slack=150 success 70/100 verify_failures=0 | failed runs 30: stalled parents 45 (outer10% 100.0%, outer20% 100.0%), free labels 4546 (outer10% 0.35%, outer20% 12.6%), median unplaced 1
+prufer n=1000 policy=1 slack=200 success 100/100 verify_failures=0
+prufer n=1000 policy=1 slack=300 success 100/100 verify_failures=0
+prufer n=1000 policy=0 slack=0 success 0/100 verify_failures=0 | failed runs 100: stalled parents 1309 (outer10% 43.2%, outer20% 85.4%), free labels 82879 (outer10% 9.81%, outer20% 28.8%), median unplaced 866
+prufer n=1000 policy=0 slack=50 success 1/100 verify_failures=0 | failed runs 99: stalled parents 517 (outer10% 48.9%, outer20% 68.7%), free labels 12577 (outer10% 4.32%, outer20% 6.1%), median unplaced 55
+prufer n=1000 policy=0 slack=100 success 8/100 verify_failures=0 | failed runs 92: stalled parents 343 (outer10% 64.7%, outer20% 85.1%), free labels 13713 (outer10% 2.73%, outer20% 4.1%), median unplaced 37
+prufer n=1000 policy=0 slack=150 success 15/100 verify_failures=0 | failed runs 85: stalled parents 296 (outer10% 65.2%, outer20% 93.6%), free labels 16127 (outer10% 2.05%, outer20% 3.1%), median unplaced 24
+prufer n=1000 policy=0 slack=200 success 29/100 verify_failures=0 | failed runs 71: stalled parents 228 (outer10% 67.1%, outer20% 95.6%), free labels 16449 (outer10% 1.92%, outer20% 2.8%), median unplaced 20
+prufer n=1000 policy=0 slack=300 success 48/100 verify_failures=0 | failed runs 52: stalled parents 135 (outer10% 64.4%, outer20% 97.0%), free labels 16971 (outer10% 1.77%, outer20% 2.5%), median unplaced 16
+prufer n=1000 policy=1 slack=50 success 0/250 verify_failures=0 | failed runs 250: stalled parents 3929 (outer10% 78.6%, outer20% 97.7%), free labels 16605 (outer10% 0.01%, outer20% 3.4%), median unplaced 16
+
+real	0m4.302s
+user	0m4.265s
+sys	0m0.006s

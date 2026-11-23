@@ -1,0 +1,13 @@
+n=3 growth=2 shapes=1 | C1: 2 pl 1 trees | C2: 2 pl 1 trees | C3: 2 pl 1 trees
+n=4 growth=4 shapes=2 | C1: 4 pl 2 trees | C2: 4 pl 2 trees | C3: 4 pl 2 trees
+n=5 growth=12 shapes=3 | C1: 10 pl 3 trees | C2: 12 pl 3 trees | C3: 12 pl 3 trees
+n=6 growth=32 shapes=6 | C1: 24 pl 6 trees | C2: 32 pl 6 trees | C3: 32 pl 6 trees
+n=7 growth=116 shapes=11 | C1: 66 pl 10 trees | C2: 116 pl 11 trees | C3: 116 pl 11 trees
+n=8 growth=412 shapes=23 | C1: 178 pl 21 trees | C2: 398 pl 23 trees | C3: 412 pl 23 trees
+n=9 growth=1764 shapes=47 | C1: 502 pl 43 trees | C2: 1600 pl 47 trees | C3: 1748 pl 47 trees
+n=10 growth=7888 shapes=106 | C1: 1408 pl 93 trees | C2: 6284 pl 105 trees | C3: 7602 pl 106 trees
+   missing from C2: (((()))((()))((())))
+n=11 growth=40220 shapes=235 | C1: 4064 pl 205 trees | C2: 26698 pl 235 trees | C3: 36540 pl 235 trees
+n=12 growth=214600 shapes=551 | C1: 11600 pl 474 trees | C2: 111854 pl 551 trees | C3: 178924 pl 551 trees
+n=13 growth=1275368 shapes=1301 | C1: 33644 pl 1112 trees | C2: 489592 pl 1301 trees | C3: 927572 pl 1301 trees
+n=14 growth=7926160 shapes=3159 | C1: 96768 pl 2663 trees | C2: 2122632 pl 3159 trees | C3: 4850496 pl 3159 trees

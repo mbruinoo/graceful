@@ -1,0 +1,8 @@
+n=9 mode=brute trees=47 pairs=423 verify_failures=0 search_vs_brute_mismatch=0 labelings=1414178 window_failures=0
+  least slack (per vertex): 0:412 1:11
+  least slack (per root orbit): 0:277 1:9
+  trees all-slack-0=40  trees with no slack-0 root=0  leaf-neighbour roots=136 needing slack=2
+  degree of roots needing slack: deg1:6 deg2:5  search_nodes=14217
+real	1m24.663s
+user	1m24.204s
+sys	0m0.033s

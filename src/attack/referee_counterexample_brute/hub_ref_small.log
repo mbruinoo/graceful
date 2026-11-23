@@ -1,0 +1,22 @@
+mode=hub d=2 part=0/1 rooted trees total=1 tested=1 first-found m0 hist: 0:1 unresolved=0 smaller members checked=0 failing=0
+mode=hub d=3 part=0/1 rooted trees total=2 tested=2 first-found m0 hist: 0:2 unresolved=0 smaller members checked=0 failing=0
+mode=hub d=4 part=0/1 rooted trees total=4 tested=4 first-found m0 hist: 0:4 unresolved=0 smaller members checked=0 failing=0
+mode=hub d=6 part=0/1 rooted trees total=20 tested=20 first-found m0 hist: 0:19 1:1 unresolved=0 smaller members checked=1 failing=0
+mode=hub d=7 part=0/1 rooted trees total=48 tested=48 first-found m0 hist: 0:45 1:3 unresolved=0 smaller members checked=3 failing=0
+mode=hub d=8 part=0/1 rooted trees total=115 tested=115 first-found m0 hist: 0:110 1:4 2:1 unresolved=0 smaller members checked=6 failing=0
+mode=hub d=11 part=0/1 rooted trees total=1842 tested=1842 first-found m0 hist: 0:1824 1:18 unresolved=0 smaller members checked=18 failing=0
+mode=hub d=13 part=0/1 rooted trees total=12486 tested=12486 first-found m0 hist: 0:12436 1:46 2:4 unresolved=0 smaller members checked=54 failing=0
+mode=hub d=15 part=0/1 rooted trees total=87811 tested=87811 first-found m0 hist: 0:87707 1:103 2:1 unresolved=0 smaller members checked=105 failing=0
+mode=hub d=16 part=0/1 rooted trees total=235381 tested=235381 first-found m0 hist: 0:235214 1:166 2:1 unresolved=0 smaller members checked=168 failing=0
+mode=hub d=17 part=0/1 rooted trees total=634847 tested=634847 first-found m0 hist: 0:634595 1:247 2:4 3:1 unresolved=0 smaller members checked=258 failing=0
+mode=hub d=18 part=0/1 rooted trees total=1721159 tested=1721159 first-found m0 hist: 0:1719944 1:1183 2:32 unresolved=0 smaller members checked=1247 failing=0
+
+real	2m15.988s
+user	2m14.110s
+sys	0m0.335s
+mode=hub d=1 part=0/1 rooted trees total=1 tested=1 first-found m0 hist: 0:1 unresolved=0 smaller members checked=0 failing=0
+mode=hub d=5 part=0/1 rooted trees total=9 tested=9 first-found m0 hist: 0:9 unresolved=0 smaller members checked=0 failing=0
+mode=hub d=9 part=0/1 rooted trees total=286 tested=286 first-found m0 hist: 0:277 1:8 3:1 unresolved=0 smaller members checked=11 failing=0
+mode=hub d=10 part=0/1 rooted trees total=719 tested=719 first-found m0 hist: 0:706 1:12 2:1 unresolved=0 smaller members checked=14 failing=0
+mode=hub d=12 part=0/1 rooted trees total=4766 tested=4766 first-found m0 hist: 0:4734 1:32 unresolved=0 smaller members checked=32 failing=0
+mode=hub d=14 part=0/1 rooted trees total=32973 tested=32973 first-found m0 hist: 0:32899 1:72 2:2 unresolved=0 smaller members checked=76 failing=0

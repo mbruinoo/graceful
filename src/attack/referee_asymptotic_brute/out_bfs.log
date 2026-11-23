@@ -1,0 +1,8 @@
+n=2 all labelled trees x roots: 2 checked, fails so far 0, cases with N=2n-2 so far 2
+n=3 all labelled trees x roots: 9 checked, fails so far 0, cases with N=2n-2 so far 8
+n=4 all labelled trees x roots: 64 checked, fails so far 0, cases with N=2n-2 so far 56
+n=5 all labelled trees x roots: 625 checked, fails so far 0, cases with N=2n-2 so far 476
+n=6 all labelled trees x roots: 7776 checked, fails so far 0, cases with N=2n-2 so far 5636
+n=7 all labelled trees x roots: 117649 checked, fails so far 0, cases with N=2n-2 so far 83126
+n=8 all labelled trees x roots: 2097152 checked, fails so far 0, cases with N=2n-2 so far 1447622
+random/family rooted trees checked: 24000, total fails 0, max N/n 1.9950

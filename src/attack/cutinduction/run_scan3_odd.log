@@ -1,0 +1,3 @@
+K=3 n=15 legs=3: spiders=16 not_in_C(K)=0 [] undecided=0 []
+K=3 n=17 legs=3: spiders=21 not_in_C(K)=0 [] undecided=0 []
+K=3 n=19 legs=3: spiders=27 not_in_C(K)=1 [[6, 6, 6]] undecided=0 []

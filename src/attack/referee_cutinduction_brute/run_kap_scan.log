@@ -1,0 +1,42 @@
+n=5: 1 three-legged spiders scanned (memo 3)
+n=6: 2 three-legged spiders scanned (memo 7)
+n=7: 3 three-legged spiders scanned (memo 11)
+n=8: 4 three-legged spiders scanned (memo 21)
+n=9: 5 three-legged spiders scanned (memo 39)
+n=10 S(3,3,3) kappa=3  labelings=48 placements=8
+n=10: 7 three-legged spiders scanned (memo 85)
+n=11: 8 three-legged spiders scanned (memo 135)
+n=12: 10 three-legged spiders scanned (memo 232)
+n=13: 12 three-legged spiders scanned (memo 656)
+n=14: 14 three-legged spiders scanned (memo 1105)
+n=15: 16 three-legged spiders scanned (memo 2023)
+n=16: 19 three-legged spiders scanned (memo 4181)
+n=17 S(10,3,3) kappa=3  labelings=340 placements=170
+n=17: 21 three-legged spiders scanned (memo 8048)
+n=18: 24 three-legged spiders scanned (memo 13588)
+n=19 S(6,6,6) kappa=5  labelings=2544 placements=424
+n=19: 27 three-legged spiders scanned (memo 21166)
+n=20 S(13,3,3) kappa=3  labelings=388 placements=194
+n=20: 30 three-legged spiders scanned (memo 34944)
+n=21: 33 three-legged spiders scanned (memo 55877)
+n=22 S(12,5,4) kappa=3  labelings=1978 placements=1978
+n=22 S(9,6,6) kappa=3  labelings=5672 placements=2836
+n=22 S(7,7,7) kappa=3  labelings=7752 placements=1292
+n=22: 37 three-legged spiders scanned (memo 89373)
+n=23 S(13,5,4) kappa=3  labelings=2298 placements=2298
+n=23 S(9,9,4) kappa=3  labelings=4716 placements=2358
+n=23: 40 three-legged spiders scanned (memo 138463)
+n=24 S(17,3,3) kappa=3  labelings=548 placements=274
+n=24 S(10,9,4) kappa=3  labelings=6104 placements=6104
+n=24 S(8,8,7) kappa=3  labelings=15252 placements=7626
+n=24: 44 three-legged spiders scanned (memo 222099)
+n=25 S(15,5,4) kappa=3  labelings=2940 placements=2940
+n=25 S(12,6,6) kappa=4  labelings=10200 placements=5100
+n=25 S(10,10,4) kappa=3  labelings=7656 placements=3828
+n=25 S(9,9,6) kappa=3  labelings=17108 placements=8554
+n=25 S(8,8,8) kappa=6  labelings=23016 placements=3836
+n=25: 48 three-legged spiders scanned (memo 353142)
+
+real	0m22.687s
+user	0m22.139s
+sys	0m0.061s

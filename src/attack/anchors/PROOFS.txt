@@ -1,0 +1,196 @@
+ANCHORS: statements, proofs, and what was only verified
+========================================================
+Conventions.  Labels 0..m (m = number of edges), the root v carries 0 (README: label 1).  By README Theorem 7
+a growth placement anchored at v is a graceful labelling in which edge lengths strictly decrease along every
+path away from v.  "Length of x" means the length of the edge from x to its parent.  A child of the root has
+label = length.  Status words as in CLAUDE.md.  Nothing here proves the Graceful Tree Conjecture.
+
+---------------------------------------------------------------------------------------------------------
+0. Leaf absorption (Proved; elementary)
+---------------------------------------------------------------------------------------------------------
+Let T' be a tree, v a vertex, m' = |E(T')|.  Call a labelling f of T' a SELF-LABELLING with top M if
+f(v)=0, f is injective into [0,M], edge lengths are distinct and decrease away from v, and
+      { f(x) : x != v }  =  { edge lengths }   (as sets),  with largest element M.
+Lemma 0.  v is an anchor of T' + (d leaves at v) for every d >= M - m'.  Conversely, if v is an anchor of
+T' + (d leaves at v) then T' has a self-labelling with top M <= m' + d.
+Proof.  Given the self-labelling, give the new leaves the numbers of [1,M] that are not labels; each new leaf
+edge then has length = its label, and those numbers are exactly the lengths not yet used.  Labels 0..M and
+lengths 1..M are each used once and leaf edges at the root do not affect the decreasing condition: a growth
+placement anchored at v with M - m' leaves; further leaves by README Lemma 6.  Conversely delete the d leaves
+from a growth placement: each deleted leaf removes the same number from the label set and the length set. []
+
+---------------------------------------------------------------------------------------------------------
+1. Theorem M (mirror labelling; Proved).  Enough leaves make any vertex an anchor, with an explicit number.
+---------------------------------------------------------------------------------------------------------
+Let T' be a tree and v a vertex all of whose r >= 1 neighbours are non-leaves; D >= 2 the eccentricity of v;
+for j = 2..D let q_j be the smallest odd number >= the largest number of children of a vertex at depth j-1
+(T' rooted at v), Q = q_2 q_3 ... q_D, and
+                         M = 2^(D-1) * ((2r+1) Q - 2).
+Then for every d >= M - m', v is an anchor of T' + (d leaves at v).
+(So: in ANY tree, a vertex with at least 2^(D-1)((2r+1)Q-2) leaf neighbours is an anchor, where r, D, Q are
+read off the tree with those leaves removed.)
+
+General principle (mirror rule).  Suppose every non-root vertex x gets an odd positive integer S(x) with
+ (a) S is injective on each depth level;
+ (b) for every non-root u, the set { S(x) : x child of u } is symmetric about S(u)  (s -> 2S(u)-s);
+     write x* for the sibling of x with S(x*) = 2S(u) - S(x); for a child x of the root put x* = x;
+ (c) S(x) < 2 S(u*) for every non-root u and every child x of u.
+Put f(x) = 2^(D-depth(x)) S(x).  Then f is a self-labelling with top 2^(D-1) max{S(x): depth(x)=1}.
+Proof.  For x at depth j >= 2 with parent u:  f(u) - f(x) = 2^(D-j) (2S(u) - S(x)) = 2^(D-j) S(x*) = f(x*) > 0.
+So the length of x equals the LABEL of its mirror sibling x*, and the length of a root child is its own label.
+Hence on each depth level the set of lengths equals the set of labels.  Numbers on level j have 2-adic
+valuation exactly D-j (S odd), so levels are disjoint, and (a) makes labels (hence lengths) distinct on a
+level.  Decreasing: length(x) < length(u) reads 2^(D-j) S(x*) < 2^(D-j+1) S(u*), i.e. (c) applied to x*.
+Labels decrease with depth along every path (f(x) = f(u) - length), so the top is on level 1. []
+
+Explicit S.  g_j = q_{j+1} ... q_D (g_D = 1, g_1 = Q).  i-th child of v: S = (2i+1)Q - 2.  If u at depth
+j-1 >= 1 has k children, they get S(u) + 2 g_j tau, tau in {-h..h}, h = floor(k/2), tau = 0 used iff k odd.
+ * all S are odd (Q odd, offsets even);  (b) holds by construction.
+ * For x below the root child p:  |S(x) - S(p)| <= sum_{j>=2} (q_j - 1) g_j = sum (g_{j-1} - g_j) = Q - 1.
+ * (a): two vertices at the same depth below the same p have different offset sequences; at the first index
+   i where they differ the difference is a non-zero multiple of 2 g_i, the rest is at most
+   2 sum_{j>i}(q_j - 1) g_j = 2(g_i - 1) < 2 g_i.  Below different p, p': |S(p)-S(p')| >= 2Q > 2(Q-1).
+ * (c): S(x) <= S(p)+Q-1 and 2S(u*) >= 2(S(p)-Q+1); S(p) >= 3Q-2 gives S(p)+Q-1 < 2S(p)-2Q+2.  Positivity too.
+Top = 2^(D-1) ((2r+1)Q - 2) = M.  Lemma 0 finishes. []
+Machine check: mirror.py builds the labelling plus leaves for every rooted tree with <= 11 vertices and no
+leaf at the root (1,841 rooted trees) and checks the definition of a growth placement directly.
+Remark.  The bound is crude (exponential in the depth).  Section 4 shows that SOME dependence on the rest of
+the tree is unavoidable: no fixed number of leaves works.
+
+---------------------------------------------------------------------------------------------------------
+2. Theorem H2 (double hubs; Proved).  Exact arithmetic rule for a family of degree-2 vertices.
+---------------------------------------------------------------------------------------------------------
+DH(p,q): path c1 - v - c2, c1 has p leaf children, c2 has q, p,q >= 0, m = p+q+2 edges.
+v is an anchor of DH(p,q)  iff  for x = p or x = q there is a divisor s >= 2 of m, t = m/s, such that
+        j := x - (s-2)  satisfies  0 <= j <= t-1,  and  (t is even or j is even).
+Corollary.  If m = p+q+2 is prime and p,q >= 1, v is not an anchor (only s = m, t = 1, x = m-2 is possible).
+So there are infinitely many primitive (non-leaf) non-anchors of degree 2.
+
+Proof.  All non-root, non-hub vertices are leaves, so the only order condition is: a leaf's length is smaller
+than its hub's length.  The length m is on a root edge; call the hub labelled m the m-hub and let the other
+hub have label (= length) b and x leaves.  Put t = m - b, N = b.
+(1) The lengths b+1..m-1 can only be leaves of the m-hub, at labels m-w, i.e. 1..t-1.  So b >= t (label b
+    must stay free).  Remaining: lengths w in [1,N-1], labels [t,m-1] \ {b}.  Write a label L as y = m - L:
+    y ranges over [1,N] \ {t}.  A length w has the options
+        alpha (m-hub):        y = w        (w != t)
+        beta  (b-hub, down):  y = w + t    (w <= N-t)
+        gamma (b-hub, up):    y = t - w    (w <= t-1).
+(2) N = t (m = 2t, s = 2).  No beta.  For each pair {w,t-w}: both alpha or both gamma; w = t/2 (t even):
+    either.  So x = j with 0 <= j <= t-1, j even if t is odd, arbitrary if t is even.
+(3) N > t.  Length t cannot use alpha or gamma, so it uses beta (y = 2t <= N).  Then length 2t (if <= N-1)
+    cannot use alpha (y = 2t is taken) nor gamma: beta again, and so on.  With i = floor((N-1)/t) this forces
+    (i+1)t <= N, hence (i+1)t = N: t | N, m = st with s >= 3, and lengths t,2t,..,(s-2)t all use beta.
+    Residue class r (1 <= r <= t-1): lengths and y-values are both {r, r+t, .., r+(s-2)t}.  No length of the
+    class uses beta: if w does, w+t must (alpha is blocked, gamma is for w<t only), up to the top of the
+    class, where beta leaves the range.  So everything is alpha except bottoms: r uses gamma iff t-r does
+    (y = r can be hit only by r via alpha or by t-r via gamma); r = t/2 is free.  So x = (s-2) + j, same j.
+(4) Conversely every such choice is a bijection satisfying all conditions. []
+Machine check: hub_check.py compares the rule with the generic search (anchq) and the exact depth-2 search
+(d2); ranges are printed by the script and quoted in the summary below.
+
+---------------------------------------------------------------------------------------------------------
+3. Theorem H3 (three hubs 1,1,k; Proved).  Infinitely many primitive non-anchors of degree 3.
+---------------------------------------------------------------------------------------------------------
+H(1,1,k): v has exactly three neighbours; two of them have one leaf child each, the third has k leaf children;
+m = k+5.  For odd m >= 11:   v is an anchor  iff  3 | m  or  5 | m  or  m = 3 (mod 4).
+In particular v is not an anchor for m = 60i + 13 (i >= 0): degree-3 non-anchors on 14, 74, 134, ... vertices.
+
+Notation: "big" = the hub with k leaves.  A leaf of a hub with label B and length w<B sits at B-w or B+w.
+W = Y = [1,m-1] \ {labels of the two hubs other than the m-hub}: lengths and labels still to be matched.
+
+Case A: the big hub has label m; small hubs b, c with leaves of length w1 (at b +- w1), w2 (at c +- w2).
+Big leaves sit at m-w; w -> m-w is a fixed-point-free involution of [1,m-1] (m odd).  The big leaves cover
+[1,m-1] \ {m-b, m-c, m-w1, m-w2}, which must avoid b and c.
+ (i) b+c = m.  The two small leaves must take {m-w1, m-w2}.  b+-w1 = m-w1 forces 2w1 = c, then 2w2 = b and m
+     is even.  Otherwise b+s1 w1 = m-w2, c+s2 w2 = m-w1; adding, (1+s1)w1 + (1+s2)w2 = m, impossible (m odd,
+     the left side is even or 0).
+ (ii) b+c != m.  Then {w1,w2} = {m-b, m-c} and the small leaves must take the labels {m-b, m-c}.
+     w1 = m-b, w2 = m-c: labels 2b-m, 2c-m (the + signs give m): 3b = 2m = 3c or 2b+c = 2m = 2c+b; both b = c.
+     w1 = m-c, w2 = m-b: labels b+-(m-c), c+-(m-b).  Checking the four sign choices against {m-b,m-c}: the only
+     consistent ones are c = 2b, 5b = 2m and b = 2c, 5c = 2m.  So 5 | m.
+Case B: a small hub has label m (one leaf, length w0, label m-w0); the other small hub has label b (leaf w1 < b
+at b +- w1); the big hub has label c, t = m - c.  Lengths in (c,m) other than b are not big leaves, so they
+are w0 or w1.
+ B1 (b < c): w1 < c, so t-1 <= 1.
+  t = 1, c = m-1 (even).  Big leaves sit at c-w (c+w is too large); iota(w) = c-w permutes [1,m-2].  The big
+  leaves cover [1,m-2] \ {c-b, c-w0, c-w1}, which must avoid b.
+   - c = 2b: the small leaves take {c-w0, c-w1}: m-w0 = c-w1 gives w1 = w0-1, and b+-w1 = c-w0 gives
+     2w1 = b-1 (sign +; sign - gives b = 1 < w1+1).  So b is odd and m = 2b+1 = 3 (mod 4).
+   - c != 2b: c-b is w0 or w1, the small leaves take {c-b, c-s} (s the other one).
+       w0 = c-b: labels b+1 and b+-w1.  b+1 = c-b makes c odd, impossible.  b+1 = c-w1 and b-w1 = c-b give
+       3b = 2c-1 = 2m-3, so 3 | m  (b+w1 = c-b gives b = 1).
+       w1 = c-b: labels m-w0 and 2b-c:  w0 = b+1 and 2b-c = c-b-1, again 3b = 2m-3, 3 | m.
+  t = 2, c = m-2: w0 = m-1 at label 1.  Length m-3, if a length, would be a big leaf at label 1 or a leaf of
+   hub b < c; so b = m-3.  Length 1 cannot go down (label b); if it goes up (label m-1) the lengths 2..m-4
+   must take labels 2..m-4 by w -> c-w, but w1 sits at m-3+-w1 != m-2-w1; if length 1 is w1 nobody reaches
+   label m-1.  Impossible.
+ B2 (b > c): t-2 <= 2.
+  t = 2: c = m-2, b = m-1.  All big leaves go down, covering [1,m-3] \ {c-w0, c-w1}; the small leaves sit at
+   m-w0 and m-1-w1: m-w0 = m-2-w1 and m-1-w1 = m-2-w0 contradict each other.
+  t = 3: c = m-3, {b,z} = {m-2,m-1}, z is w0 or w1; iota(w) = c-w permutes [1,m-4]; the only up-leaf is
+   u = z-c at label z.
+   z = w0 (label m-z <= 2).  Label z is taken by u (then {c-u, c-w1} = {m-z, label of w1}; c-u = 2m-6-z
+   >= m-5 > m-z, so w1 = z-3 and its label is 2m-2z <= 4 < c-u) or by w1 = 1 (then the big leaves 2..m-4
+   cover [1,m-5] but must cover [1,m-4] \ {m-z}).  Impossible for m >= 11.
+   z = w1 (b = m-1, z = m-2, label 1).  Label z is taken by u = 1 (then {m-4, m-3-w0} = {1, m-w0}, forcing
+   m = 8) or by w0 = 2 (then the big leaves miss m-5 but must miss 1).  Impossible for m >= 11.
+  t = 4: c = m-4; the two numbers of {m-3,m-2,m-1} other than b are w0 and w1, with labels m-w0 <= 3 and
+   b-w1 <= 2.  So both of these labels above c are taken by up-leaves u1,u2 <= 3 of the big hub and the other
+   big leaves cover [1,m-5] \ {c-u1, c-u2}, which must be [1,m-5] minus two numbers <= 3: c <= 6.  Impossible.
+So for odd m >= 11 an anchor forces 5 | m (A) or 3 | m or m = 3 mod 4 (B1).  Conversely:
+   m = 3 (mod 4): hubs m, b = (m-1)/2, big c = m-1; w1 = (b-1)/2 at b+w1, w0 = w1+1 at m-w0, all others at c-w.
+   3 | m:         hubs m, b = (2m-3)/3, big c = m-1; w1 = m/3 at b-w1 = m/3-1, w0 = b+1 at m/3, others at c-w.
+   5 | m:         big hub m, b = 2m/5, c = 4m/5; length m/5 at b+m/5, length 3m/5 at c-3m/5, others at m-w.
+(each is checked by hub_check.py from the definition of a growth placement). []
+
+---------------------------------------------------------------------------------------------------------
+4. "Every vertex of degree >= 4 is an anchor" FAILS (computer search, two independent programs)
+---------------------------------------------------------------------------------------------------------
+L(l; h1, h2): v has l leaf neighbours and one more neighbour c; c has two further neighbours g1, g2; g_i has
+h_i leaf children.  n = l + h1 + h2 + 4 vertices, deg(v) = l + 1.
+Fails: in L(3; 8, 9) (24 vertices) the vertex v has degree 4 and is not an anchor.
+  edges: 0-1, 1-2, 1-3, 2-{4..11}, 3-{12..20}, 0-{21,22,23};  v = 0.
+  Exhausted by anchq (longest-first search of the definition) and by lch (exact cover on the root form).
+Observation (exact search, ranges in the summary): for h1 even, h2 odd, h1 < h2, the least number of leaves
+at v that makes v an anchor of L(.; h1, h2) is exactly h1/2.  If this persists, non-anchors of every degree
+exist (degree l+1 in L(l; 2l+2, 2l+3), 5l+9 vertices) and no fixed number of leaves can replace the bound of
+Theorem M.  This is NOT proved; a proof would need the case analysis of section 3 with gaps allowed.
+What is known about a proof: with d root leaves counted as gaps, the hub with the longer edge sits at a
+label e <= d+1, every label above (its edge length) is a gap, and the leaf edges form two increasing chains
+plus cycles under the four maps u -> u+e, e-u, g+u, g-u; the parity condition has not been derived from this.
+
+---------------------------------------------------------------------------------------------------------
+5. Exhaustive data and how to reproduce (every number below comes from a command in this directory)
+---------------------------------------------------------------------------------------------------------
+Build:  g++ -O2 -o anch anch.cpp; g++ -O2 -o anchq anchq.cpp; g++ -O2 -o d2 d2.cpp; g++ -O2 -o lch lch.cpp;
+        g++ -O2 -o anch2 anch2.cpp
+All trees, all vertices (./anch n part 2 > out_n_part.txt ; python3 table.py).  Agrees with README section 7
+for n <= 14 (non-anchors 6, 19, 37, 84 at n = 8, 10, 12, 14; primitive kinds 14, 18, 24 at n = 12, 13, 14).
+  n   trees    vertices   non-anchors (leaf, internal)   kinds (leaf, internal)   by degree d1,d2,d3,d>=4
+  15    7,741    116,115   117 ( 86, 31)                  ( 74, 30)                 86, 31, 0, 0
+  16   19,320    309,120   154 (114, 40)                  (104, 37)                114, 40, 0, 0
+  17   48,629    826,693   198 (148, 50)                  (141, 47)                148, 50, 0, 0
+  18  123,867  2,229,606   264 (200, 64)                  (188, 60)                200, 63, 1, 0
+  19  317,955  6,041,145   324 (263, 61)                  (248, 58)                263, 60, 1, 0
+Observation (all trees, n <= 19): every non-anchor has degree <= 3; every tree has an anchor of maximum
+degree; every tree has an anchor.  Degree-3 non-anchors for n <= 19: one kind each at n = 11, 14, 18, 19
+(n = 14, 18 are H(1,1,8), H(1,1,12) of Theorem H3; n = 19 is L(2;6,7)).  Trees with no anchor leaf: one at
+n = 15 and one at n = 19 (and none at 16, 17, 18).  Leaf-rule cross-check: non-anchor leaf kinds at n equal
+all non-anchor kinds at n-1 for n = 17, 18, 19 (141, 188, 248).
+The first vertex of degree >= 4 that is not an anchor therefore has 20 <= n <= 24.  n = 20 was NOT completed:
+a run restricted to degree >= 4 was stopped after 21 CPU-minutes per half (a few slow successful searches).
+Hub theorems:  python3 hub_check.py 18 60 151
+  H2: all DH(p,q) with m <= 60 (900 trees, 397 non-anchors) rule = d2; rule = anchq for m <= 18.
+  H3: odd 11 <= m <= 151: rule = d2 (= anchq for m <= 31); non-anchors m = 13,17,29,37,41,49,53,61,73,77,89,
+      97,101,109,113,121,133,137,149.   d2 = anchq on all 682 hub trees with m <= 15 (d2scan.py validate 15).
+Section 4:  ./lch 3 8 9 -> NOT (15,402 nodes);  anchq on the same tree -> NOT (38,697 nodes).
+  lch = anchq on 1,000 trees L(l;h1,h2[,h3]) with n <= 21 (lch_scan.py validate 9 21).
+  python3 delta_table.py 17: least l for all 1 <= h1 <= h2 <= 17 (delta_table_17.txt); = h1/2 in all 36 cases
+  with h1 even < h2 odd.  L(l; 2l+2, 2l+3) is a non-anchor and L(l+1; 2l+2, 2l+3) an anchor for l = 1..8
+  (degrees 2..9, n = 14..49), by lch.  For l = 3,4,5 and h <= 20 the non-anchor pairs are exactly
+  h1 even, h2 odd, h1 < h2, h1 >= 2l+2 (lch_scan.py scan l 20); for l = 2, h <= 22 likewise; l = 0, 1 have
+  further sporadic non-anchors (lscan_a.txt).
+Other scans (d2scan.py, scanbig.sh): among depth-2 trees whose root has 3 hubs, sizes (a,b,k), a,b <= 4,
+  k <= 80, the root is a non-anchor only for (1,1,k) as in H3; with 4 hubs (three of size <= 3, k <= 60), or a
+  leaf plus hubs (1,1,k), k <= 140, or hubs (1,1,1,k), k <= 100: the root is always an anchor.
+Theorem M:  python3 mirror.py 11   (1,841 rooted trees; up to 7,702 leaves used).

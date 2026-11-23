@@ -1,0 +1,6 @@
+n<= 3 triples 21939 case1 260 case2 21679 fails 0
+n<= 4 triples 107133 case1 1020 case2 106113 fails 0
+
+real	0m38.917s
+user	0m38.554s
+sys	0m0.004s

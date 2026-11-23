@@ -1,0 +1,7 @@
+diam5 n=26 trees=39830 found=39830 none=0 unresolved=0; [12s]
+diam5 n=27 trees=55473 found=55473 none=0 unresolved=0; [19s]
+diam5 n=28 trees=76875 found=76875 none=0 unresolved=0; [30s]
+diam5 n=29 trees=105692 found=105692 none=0 unresolved=0; [50s]
+diam5 n=30 trees=144629 found=144629 none=0 unresolved=0; [78s]
+diam5 n=31 trees=196585 found=196585 none=0 unresolved=0; [119s]
+diam5 n=32 trees=266038 found=266038 none=0 unresolved=0; [192s]
