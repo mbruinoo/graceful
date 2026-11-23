@@ -11,7 +11,12 @@ if sys.argv[2] == "merge":
     k = int(sys.argv[3]); a = array.array("Q")
     for i in range(k):
         with open(f"out/hash_{n}_{i}.bin", "rb") as f: a.frombytes(f.read())
-    total = len(a); distinct = len(set(a))
+    total = len(a)
+    try:
+        import numpy as np
+        distinct = int(np.unique(np.frombuffer(a, dtype=np.uint64)).size)
+    except ImportError:
+        distinct = len(set(a))
     print(f"n={n}: {total} trees, {distinct} distinct canonical codes (by 64-bit hash): {'OK' if total == distinct else 'DUPLICATES'}")
 else:
     part, parts = map(int, os.environ.get("PART", "0/1").split("/"))

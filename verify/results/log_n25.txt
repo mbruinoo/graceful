@@ -1,0 +1,4 @@
+{"n": 25, "fast": true, "part": "2/4", "trees": 26159222, "R": "3", "B": "inf", "result": {"OK": 26159222}, "none": []}
+{"n": 25, "fast": true, "part": "3/4", "trees": 26159222, "R": "3", "B": "inf", "result": {"OK": 26159222}, "none": []}
+{"n": 25, "fast": true, "part": "1/4", "trees": 26159223, "R": "3", "B": "inf", "result": {"OK": 26159223}, "none": []}
+{"n": 25, "fast": true, "part": "0/4", "trees": 26159223, "R": "3", "B": "inf", "result": {"OK": 26159223}, "none": []}

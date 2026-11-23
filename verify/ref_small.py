@@ -108,6 +108,22 @@ def slide(n):
         if deg == 0:
             nolegal += 1
     comps = len({find(i) for i in range(len(tp))})
+    # Observation D: a bracket may jump to any position on its rail in one move
+    jpar = list(range(len(tp)))
+    def jfind(x):
+        while jpar[x] != x:
+            jpar[x] = jpar[jpar[x]]
+            x = jpar[x]
+        return x
+    for i, p in enumerate(tp):
+        for k in range(n - 1):
+            for pos in range(p[k] + 1, n - k):          # rail of bracket k+1 has positions 1..n-(k+1)
+                j = idx.get(p[:k] + (pos,) + p[k + 1:])
+                if j is not None:
+                    ri, rj = jfind(i), jfind(j)
+                    if ri != rj:
+                        jpar[ri] = rj
+    jcomps = len({jfind(i) for i in range(len(tp))})
     star = idx[tuple([1] * (n - 1))]
     rs = find(star)
     in_star = sum(1 for i in range(len(tp)) if find(i) == rs)
@@ -123,7 +139,7 @@ def slide(n):
     rshapes = {canon(n, edges_of(tp[i])) for i in seen}
     print(json.dumps(dict(n=n, tree_shapes=len(shapes), tree_placements=len(tp), components=comps,
                           in_star_component=in_star, shapes_by_right_slides=len(rshapes),
-                          placements_by_right_slides=len(seen), placements_with_no_legal_slide=nolegal)))
+                          placements_by_right_slides=len(seen), placements_with_no_legal_slide=nolegal, jump_components=jcomps)))
 
 def is_staircase(n, edges):
     pos = {abs(a - b): min(a, b) for a, b in edges}

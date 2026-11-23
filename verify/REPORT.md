@@ -70,7 +70,7 @@ fast certificate check used for `n ≥ 23` agrees with the definitional one on
 | 22 | 5,623,756 | = | 5,623,756 | all | yes |
 | 23 | 14,828,074 | = | 14,828,074 | all (`growsolve`, `n ≤ 23`) | yes |
 | 24 | 39,299,897 | = | 39,299,897 | all (via three runs, `n ≤ 25`) | yes |
-| 25 | 104,636,890 | = | N25_OK | all (via three runs, `n ≤ 25`) | N25_AGREE |
+| 25 | 104,636,890 | = | 104,636,890 | all (via three runs, `n ≤ 25`) | yes |
 
 Number of growth placements for `n = 4..13` (README §4): mine
 4, 12, 32, 116, 412, 1764, 7888, 40220, 214600, 1275368 — all `=`. Further:
@@ -88,7 +88,7 @@ again for `n = 15..18`) the search was under plain three runs.
 | claim | README | mine | agree? |
 |---|---|---|---|
 | every tree has a three-run growth placement, `n ≤ 16` | yes | yes, `n ≤ 21` by certificates; `n ≤ 16` also by full enumeration | yes |
-| same, `n = 22..25` | yes (`n ≤ 25`) | N22_25_R3 | N22_25_R3_AGREE |
+| same, `n = 22..25` | yes (`n ≤ 25`; 104,636,890 trees at `n = 25`) | yes: 5,623,756; 14,828,074; 39,299,897; 104,636,890 trees, every certificate checked (`results/log_n22.txt` … `log_n25.txt`) | yes |
 | `R = 1`: first tree without one | `S(2,2,2,2)`, `n = 9` | `S(2,2,2,2)`, `n = 9`; none for `n ≤ 8` | yes |
 | `R = 1`: trees without one, `n = 15` | 724 of 7,741 | 724 of 7,741 (enumerator and searcher) | yes |
 | `R = 2`: trees without one, `n ≤ 15` | 0 | 0 | yes |
@@ -223,7 +223,9 @@ Slide graph (Python, all tree placements; `results/log_slide.txt`):
 | 12 | 551 | 1,112,032 | 4,987 | 1,067,746 | 551 | yes |
 
 Also `=`: the slide graph is connected for `n ≤ 6`; every tree placement has
-a legal slide for `3 ≤ n ≤ 12` (Observation C, README bound `n ≤ 14`).
+a legal slide for `3 ≤ n ≤ 12` (Observation C, README bound `n ≤ 14`); with
+jumps along a rail allowed, all tree placements form one component for
+`3 ≤ n ≤ 12` (Observation D, README bound `n ≤ 14`).
 
 ### (f) Theorem 9 and Lemma 10
 
@@ -249,7 +251,7 @@ ending in hubs of `m` leaves": 1 run for `m = 2, 4, 6, 8`, 3 runs for
 * The other three rows of the §13 "what does not work" table; spherically symmetric trees on 40, 63, 94
   vertices; equal-leg spiders on 41 and 49 vertices; spiders beyond the sizes
   listed above.
-* Observations C and D beyond `n = 12`; slide table for `n = 13, 14`.
+* Observations C and D beyond the sizes just stated; slide table for `n = 13, 14`.
 * Random-tree spot checks at `n = 30..60`.
 
 ## 4. Discrepancy and remarks
@@ -358,7 +360,7 @@ for n in 8 10 12 14; do ./rs/gsearch anchors < out/trees_$n.txt | tr -cd '-' | w
 for n in 19 20 21 22; do python3 gen.py $n check > out/trees_$n.txt; ./run_big.sh $n 3 1; done
 ./followup.sh 22                                                             # the one two-skip failure, with three runs
 python3 gen.py 23 check > out/trees_23.txt; FAST=1 ./run_big.sh 23 3 1       # ~45 min in all on 4 cores
-for n in 24 25; do                                                           # ~1 h and ~3 h; ~35 GB in out/
+for n in 24 25; do                                                           # ~1 h and ~2 h on 4 cores; ~35 GB in out/
   python3 gen.py $n > out/trees_$n.txt; FAST=1 ./run_big.sh $n 3 inf
   for i in 0 1 2 3; do PART=$i/4 python3 distinct.py $n out/trees_$n.txt & done; wait; python3 distinct.py $n merge 4
 done
