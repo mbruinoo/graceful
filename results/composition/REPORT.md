@@ -21,15 +21,15 @@ Vocabulary and notation are those of `README.md`. Labels are `0..m`
 | Rule N | **nesting at a clean cut**: a whole truncated growth placement, not just one leaf, can be inserted in the gap (contains README Lemma 8) | Proved |
 | Rule B | **block designs**: multiply all lengths by `t` and fill the freed residues with leaves, by a finite recipe that does not depend on `t` | Proved |
 | Rule D | **mirror windows**: the growth version of the Stanton–Zarnke / Koh–Rogers–Tan Δ-construction with a star; an explicit special case of B | Proved |
-| closure | C + T + B, started from staircases, reaches **every tree on `n ≤ 15` vertices**; C + T + (README Lemma 8) reaches every tree on `n ≤ 14` | Observation |
+| closure | C + T + B, started from staircases, reaches **every tree on `n ≤ 16` vertices**; C + T + (README Lemma 8) reaches every tree on `n ≤ 14` | Observation |
 | | C + P + T alone never leave the caterpillars | Proved |
 | F1 | "identify an anchor of `T` with an anchor of `T'`: the merged vertex is an anchor" | Fails, `n = 6` |
 | F2 | "join an anchor of `T` to an anchor of `T'` by an edge: both (or one) of the two ends is an anchor" | Fails, `n = 6` (`n = 7`) |
-| F3 | "the classical Δ-labelling of `T` by `T'` is a growth placement" | Fails for every `T'` that is not a star, smallest `K_2`, `P_3` |
+| F3 | "the classical Δ-labelling of `T` by `T'` is a growth placement" | Fails unless `T'` is a star centred at the joining vertex (Proved); smallest `K_2`, `P_3` |
 
 The honest reading of the closure result: rules T and P are bookkeeping (they
 recombine pieces that already exist), so "everything is reached" does not
-tell us *how* to label a given tree. What it does say is that for `n ≤ 15`
+tell us *how* to label a given tree. What it does say is that for `n ≤ 16`
 no tree needs a growth placement that is unrelated to the others: every tree
 has one that is assembled from staircases by scaling (B) and by cutting and
 pasting at moments when the patterns of used cells agree (T).
@@ -240,7 +240,8 @@ The leaf label itself is new. ∎
    `(t − 1)λ(v)` leaves on `v` has one for every `t ≥ 2`.**
 2. The band `0` leaves are placed last and fill one block, a run with a
    vertex of `T` on each side. By Rule P that hub of `t − 1` leaves can be
-   replaced by any anchored tree on `t` vertices, glued at either neighbour.
+   replaced by any anchored tree on `t` vertices, glued by its anchor at either
+   of the two vertices of `T` next to that block.
 3. Leaves at the root can always be added afterwards (Lemma 6), so the
    number of vertices is not tied to `(p − 1)t + 1`.
 4. Designs that hand a block out offset by offset, or hang a residue on
@@ -334,9 +335,15 @@ for all 361 pairs of placements with `p, q ≤ 5`. It is a growth placement in
 28 of them, and in each of those `T'` is a star centred at `v'` (Rule D).
 Smallest failure: `T = K_2`, `T'` the path on 3 vertices rooted at an end;
 the labelling is `0-5 1-5 0-3 2-4 2-3` and the bracket `2-4` has no used foot.
-Reason: in copy `i` and in its mirror copy the same edges of `T'` appear with
-lengths `ct + s` and `ct − s`, so their orders along `T'` are opposite, and
-only a star is a heap in both orders.
+**Proposition 2 (Proved).** For `p ≥ 2` this labelling is a growth placement
+only if `T'` is a star centred at `v'`. *Proof.* For an edge `e` of `T'` let
+`s(e)` be the label of its end at odd distance from `v'` minus the label of
+its other end. In copy `0` the edge `e` has length `(p − 1)q + s(e)`, in copy
+`p − 1` it has length `(p − 1)q − s(e)`. Both copies hang from their vertex
+`v'`, so lengths must decrease away from `v'` in both (README Theorem 7). For
+two edges `e_1, e_2` in a row on a path leaving `v'` that needs
+`s(e_1) > s(e_2)` and `s(e_1) < s(e_2)`. So no vertex of `T'` is at distance
+2 from `v'`. ∎
 
 ## 4. Closure
 
@@ -370,6 +377,7 @@ matches the runs matches `a` and `b`. ∎
 | 13 | 1,301 | 528 | 528 | 879 | 1,059 | 1,112 | 1,288 | 1,298 | 1,301 | 1,301 |
 | 14 | 3,159 | 1,056 | 1,056 | 1,851 | 2,276 | 2,663 | 3,128 | 3,141 | 3,159 | 3,159 |
 | 15 | 7,741 | 2,080 | | | | | | | 7,741 | |
+| 16 | 19,320 | 4,160 | | | | | | | 19,320 | |
 
 As fractions: C P D 100, 100, 95.7, 88.7, 83.0, 76.0, 67.6, 58.6 % for
 `n = 7..14`; C P B 100, 100, 95.7, 89.6, 90.2, 81.7, 81.4, 72.0 %;
@@ -387,10 +395,10 @@ no entry. The column "C + Lemma 8" is README §9's closure.)
 | C + Lemma 8 (README) | `n = 7`: `S(2,2,2)` |
 | C, P + Lemma 8 (also with B) | `n = 10`: `S(3,3,3)`, the only one below `n = 12` |
 | C, T, D | `n = 13`, three trees: `S(2,2,2,2,2,2)`; a centre with four neighbours, each carrying two leaves; the path on 5 vertices with two pendant paths of length 2 on each end vertex |
-| C, T, B | none for `n ≤ 15` |
+| C, T, B | none for `n ≤ 16` |
 | C, T + Lemma 8 | none for `n ≤ 14` |
 
-**Observation (`n ≤ 15`).** Every tree on at most 15 vertices has a growth
+**Observation (`n ≤ 16`).** Every tree on at most 16 vertices has a growth
 placement derived from staircases by Rules C, T and B.
 **Observation (`n ≤ 14`).** The same with README Lemma 8 in place of B.
 
@@ -408,7 +416,7 @@ beyond:
 | 14 | 7,926,160 | 7,820,452 |
 
 With C, T, B alone far fewer placements are derived (983,056 at `n = 14`,
-4,227,136 at `n = 15`) and still every tree is reached.
+4,227,136 at `n = 15`, 14,256,216 at `n = 16`) and still every tree is reached.
 
 **Two derivations** (`TRACE=… ./closure`), to show what a derived placement
 looks like. Brackets are listed longest first.
@@ -448,7 +456,7 @@ one gap split from any smaller growth placement):
   placement of every tree as far as could be computed.
 * **Does not.** Give a rule that says which pieces to use for a given tree.
   T does not create anything: it needs a second placement whose pattern of
-  used cells matches. The closure being everything for `n ≤ 15` could fail
+  used cells matches. The closure being everything for `n ≤ 16` could fail
   later, as the two-run and two-skip rules of README §11 did.
 * **Dead ends.** Anchor-level statements (F1, F2). Δ with a copy that is not
   a star (F3). Nesting whole pieces at a clean cut: correct, but it produced
@@ -477,7 +485,7 @@ g++ -O2 -o closure closure.cpp
 ./closure 14 0 2 0 0        # C N            (same numbers)
 ./closure 14 1 1 0 0        # C P + Lemma 8
 ./closure 14 0 0 1 1        # C T D
-./closure 15 0 0 2 1        # C T B          (n = 15: about 4 minutes, 3 GB)
+./closure 16 0 0 2 1        # C T B          (n = 15 after about 2 minutes; n = 16 within 15 minutes on a 16 GB machine)
 ./closure 14 0 1 0 1        # C T + Lemma 8  (about 2 minutes)
 ./closure 14 0 1 2 1        # everything     (about 3 minutes)
 TRACE='((())(())(()))' ./closure 7 0 0 2 1            # a derivation of S(2,2,2)
