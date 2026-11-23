@@ -12,7 +12,7 @@ and `src/treegen.h` was not read. Trees come from
 **One descriptive sentence of the README is wrong** (§4.1 below): README §11
 says of the two-run rule that "all its known failures are trees with three or
 more equal branches"; one of the two 16-vertex failures has only two equal
-branches and a longer third one. Three further remarks that are not
+branches and a longer third one. Four further remarks that are not
 discrepancies are in §4.2–4.5.
 
 Status words follow `CLAUDE.md`: everything below is an **Observation** with
@@ -20,7 +20,7 @@ the stated bound, unless it says otherwise.
 
 ## 1. How the checks are built
 
-Four independent pieces, so that a bug in one is caught by another.
+Five pieces, so that a bug in one is caught by another.
 
 | piece | file | what it is | used for |
 |---|---|---|---|
@@ -40,8 +40,11 @@ definitional test to every 100th tree. The searcher's correctness is irrelevant 
 positive claims, because every answer it gives is re-checked.
 
 What a negative claim ("this tree has no such placement") rests on: an
-exhaustive search. Each one below is confirmed by at least two of
-{enumerator, searcher, SAT, Python reference}.
+exhaustive search. The negative claims of (c), the run and skip tables for
+all trees, the anchor table and the zigzag list are each confirmed by at least
+two of {enumerator, searcher, SAT, Python reference}. Where only the searcher
+was used (least skips of spiders on 16, 20, 24 vertices; the equal-leg table;
+the extras), the table says so.
 
 Self-tests (`python3 ref_small.py selftest`): for `n ≤ 8` the two forms of the
 growth definition (connected for every `k`; one used foot per bracket) give
@@ -76,10 +79,11 @@ gives no value for these.
 
 ### (b) Three runs (README §11)
 
-The certificates in (a) were searched under the *two-skip* rule (at most three
-runs, at most one of them longer than one cell), which is stronger than three
-runs, and re-checked as such. Separately, for `n = 15..18` under plain three
-runs.
+For `n ≤ 23` the certificates in (a) were searched under the *two-skip* rule
+(at most three runs, at most one of them longer than one cell), which is
+stronger than three runs, and re-checked as such; the one tree at `n = 22`
+that fails it has a separate three-run certificate. For `n = 24, 25` (and
+again for `n = 15..18`) the search was under plain three runs.
 
 | claim | README | mine | agree? |
 |---|---|---|---|
@@ -114,7 +118,7 @@ The two 16-vertex trees (networkx vertex numbers):
 | 22-vertex tree of §11: at most two single skips | none | none | UNSAT (16 s) | — | yes |
 | 22-vertex tree: three single skips | exists | found, checked | SAT | — | yes |
 | 22-vertex tree: three runs of any size | exists | found, checked | SAT | — | yes |
-| two-skip rule holds for every tree, `n ≤ 21` | yes | yes (certificates, all trees `n = 5..21`) | — | `n ≤ 16` | yes |
+| two-skip rule holds for every tree, `n ≤ 21` | yes | yes (certificates, all trees `n = 5..21`) | — | `n ≤ 16`, and `n = 18` | yes |
 | two-skip rule fails for exactly one tree at `n = 22` | 1 of 5,623,756 | 1 of 5,623,756, and it is the README's tree (same edge list); the other 5,623,755 have checked certificates | UNSAT for that tree | — | yes |
 
 Least number of skips, tree by tree (README §12 table):
@@ -145,8 +149,9 @@ independently in Python and compared (`results/log_spiders.txt`).
 | Lemma 11: `S(2^k)` has no zigzag deal for `k ≡ 2 (mod 3)` | proved | `k = 5, 8`: none; `k = 3, 4, 6, 7, 9, 10`: a zigzag deal exists | consistent |
 
 My complete list of spiders on `n ≤ 22` vertices without a zigzag deal
-(exhaustive search; for `n ≤ 13` also confirmed by a second, plain Python
-search):
+(exhaustive Rust search over all spiders; for `n ≤ 13` every spider, and for
+`n ≥ 14` every spider in the list, was also put through a second, plain Python
+search, `results/log_zig_negatives.txt`):
 
 | n | spiders without a zigzag deal |
 |---|---|
@@ -170,7 +175,8 @@ stated range for this list. My zigzag search for `n = 24, 25` did not finish
 within 10 minutes per size and was stopped; no result for those.)
 
 Least skips over all spiders (README §12): `n = 16`: 143 / 24 / 1;
-`n = 20`: 378 / 102 / 0; `n = 24`: 888 / 343 / 12 — all `=`. The table for
+`n = 20`: 378 / 102 / 0; `n = 24`: 888 / 343 / 12 — all `=` (searcher only
+for the lower bounds). The table for
 equal-leg spiders (`k` legs of length `L`) agrees in all 28 entries with
 `n ≤ 40` (`results/log_extras.txt`); the two entries with `n = 41, 49` were not
 run.
@@ -187,7 +193,9 @@ exhaustive search):
 | 12 | 6,612 | 37 | 525 / 551 | = | yes |
 | 14 | 44,226 | 84 | 3,092 / 3,159 | = | yes |
 
-Also `=`: every tree on `n ≤ 14` has an anchor; non-anchors have degree ≤ 3 for
+Also `=`: the smallest non-anchor is at `n = 6` (one vertex, in the tree `1-0 1-2 1-3 0-4 4-5`, vertex 0; no
+non-anchors for `n ≤ 5`); the three middle vertices of the path on 7 vertices are non-anchors and its other four
+vertices are anchors; every tree on `n ≤ 14` has an anchor; non-anchors have degree ≤ 3 for
 `n ≤ 14` (and ≤ 2 at `n = 15, 16`); exactly one tree at each of
 `n = 10, 12, 15` has no anchor leaf, none at the other `n ≤ 16`. Beyond the
 README: 117 non-anchors among 116,115 vertices at `n = 15`, 154 among 309,120
@@ -214,7 +222,7 @@ a legal slide for `3 ≤ n ≤ 12` (Observation C, README bound `n ≤ 14`).
 | Theorem 9: growth placements whose brackets all jump one common point are staircases, and there are `2^(n−2)` of them | proved; checked `n ≤ 12` | true for every `n = 3..13` (2, 4, …, 2048 placements, all staircases, equal to the set of staircases) | yes |
 | Lemma 10: the balance game produces exactly the growth placements | proved; checked `n ≤ 9` | set equality for every `n = 3..10` (7,888 placements at `n = 10`) | yes |
 
-### Extras from §11 (single trees, exhaustive search, `results/log_extras.txt`)
+### Extras from §11 (single trees, searcher only, `results/log_extras.txt`)
 
 Least number of runs: spherically symmetric `(2,2,2)`: 2; `(4,4)`: 3;
 `(2,2,2,2)`: 2; `(5,5)`: 3 — as in the README. "Centre, three arms of length 2
@@ -345,6 +353,7 @@ for n in $(seq 4 22); do for kind in free zig; do                            # (
 done; done
 for n in 16 20 24; do python3 spider_trees.py $n > out/sp_$n.txt; ./rs/gsearch minskip < out/sp_$n.txt > out/sp_minskip_$n.txt
   python3 check_cert.py $n out/sp_$n.txt out/sp_minskip_$n.txt; done
+python3 zig_negatives.py                                                     # second search for the zigzag failures
 python3 extras.py 300
 ```
 
