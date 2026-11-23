@@ -33,3 +33,6 @@ src/spidercentre_*.txt
 # in-progress output of the multi-agent attack; vetted results are copied into the tracked tree by hand
 src/rules/
 src/attack/
+src/growfam
+src/growcheck
+src/hunt_*.log
