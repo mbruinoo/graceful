@@ -7,3 +7,6 @@
    600s
 {"n": 25, "kind": "free", "spiders": 1562, "with_deal": 1562, "none": []}
    1s
+   600s
+{"n": 26, "kind": "free", "spiders": 1945, "with_deal": 1945, "none": []}
+   0s

@@ -1,0 +1,3 @@
+N 16 placements 10254980 shapes 19318 rooted_at_1 230868
+N 17 placements 36170632 shapes 48629 rooted_at_1 621934
+N 18 placements 122707912 shapes 123866 rooted_at_1 1685583

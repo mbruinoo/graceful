@@ -298,7 +298,7 @@ fn run_stream(mode: &'static str, r: u32, b: u32, threads: usize) {
     let mut lines = stdin.lock().lines();
     loop {
         let mut chunk: Vec<String> = Vec::new();
-        while chunk.len() < 4096 {
+        while chunk.len() < 65536 {
             match lines.next() {
                 Some(Ok(l)) => {
                     if !l.trim().is_empty() {

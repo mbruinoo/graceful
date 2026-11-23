@@ -13,7 +13,7 @@ and `src/treegen.h` was not read. Trees come from
 says of the two-run rule that "all its known failures are trees with three or
 more equal branches"; one of the two 16-vertex failures has only two equal
 branches and a longer third one. Three further remarks that are not
-discrepancies are in §4.2–4.4.
+discrepancies are in §4.2–4.5.
 
 Status words follow `CLAUDE.md`: everything below is an **Observation** with
 the stated bound, unless it says otherwise.
@@ -61,7 +61,7 @@ fast certificate check used for `n ≥ 23` agrees with the definitional one on
 | 20 | 823,065 | = | 823,065 | all | yes |
 | 21 | 2,144,505 | = | 2,144,505 | all | yes |
 | 22 | 5,623,756 | = | 5,623,756 | all | yes |
-| 23 | 14,828,074 | = | N23_OK | all (`growsolve`, `n ≤ 23`) | N23_AGREE |
+| 23 | 14,828,074 | = | 14,828,074 | all (`growsolve`, `n ≤ 23`) | yes |
 | 24 | 39,299,897 | = | N24_OK | all (via three runs, `n ≤ 25`) | N24_AGREE |
 | 25 | 104,636,890 | = | N25_OK | all (via three runs, `n ≤ 25`) | N25_AGREE |
 
@@ -85,7 +85,9 @@ runs.
 | `R = 1`: trees without one, `n = 15` | 724 of 7,741 | 724 of 7,741 (enumerator and searcher) | yes |
 | `R = 2`: trees without one, `n ≤ 15` | 0 | 0 | yes |
 | `R = 2`: trees without one, `n = 16` | 2 of 19,320 | 2 of 19,320 (enumerator, searcher, SAT) | yes |
-| `R = 2`: trees without one, `n = 18` | 1 of 123,867 | 1 of 123,867 (searcher only) | yes |
+| `R = 2`: shapes found by enumerating two-run placements, `n = 16` | 19,318 of 19,320 | 19,318 (10,254,980 two-run growth placements) | yes |
+| `R = 2`: trees without one, `n = 17` | (not stated) | 0 of 48,629 (enumerator: 36,170,632 two-run placements) | — |
+| `R = 2`: trees without one, `n = 18` | 1 of 123,867 | 1 of 123,867 (searcher; enumerator: 123,866 shapes among 122,707,912 two-run placements) | yes |
 
 The two 16-vertex trees (networkx vertex numbers):
 `1-0 1-2 0-7 2-3 3-4 4-5 4-6 7-8 7-12 8-9 9-10 9-11 12-13 13-14 13-15` and
@@ -133,7 +135,8 @@ independently in Python and compared (`results/log_spiders.txt`).
 | claim | README | mine | agree? |
 |---|---|---|---|
 | Conjecture S: every spider has a valid deal, `4 ≤ n ≤ 22` | yes (`n ≤ 32`) | yes for every `n = 4..22` (781 spiders at `n = 22`); every deal re-checked in Python | yes |
-| Conjecture S, `n = 23..26` | yes | SPIDER_FREE_23_26 | SPIDER_FREE_AGREE |
+| Conjecture S, `n = 23..26` | yes | yes: 990, 1,243, 1,562, 1,945 spiders, every deal re-checked (`results/log_spiders_23_26.txt`) | yes |
+| `S(2^11)` (`n = 23`) has no zigzag deal | stated, "outside the fully checked range" | none; and it is the only spider on 23 vertices without one | yes |
 | spiders with no zigzag deal, `n ≤ 21` | three-legged with a leg of length 1; `S(3,3,3)`; `S(2,…,2)` with 5 and 8 legs | exactly the list below | yes |
 | Lemma 11: `S(2^k)` has no zigzag deal for `k ≡ 2 (mod 3)` | proved | `k = 5, 8`: none; `k = 3, 4, 6, 7, 9, 10`: a zigzag deal exists | consistent |
 
@@ -158,7 +161,9 @@ search):
 | 4, 5, 7, 9, 15, 19, 20 | none |
 
 Every entry is either three-legged with a leg of length 1, or `S(3,3,3)`, or
-`S(2^5)`, `S(2^8)`, as the README says.
+`S(2^5)`, `S(2^8)`, as the README says. (`n = 22` is beyond the README's
+stated range for this list. My zigzag search for `n = 24, 25` did not finish
+within 10 minutes per size and was stopped; no result for those.)
 
 Least skips over all spiders (README §12): `n = 16`: 143 / 24 / 1;
 `n = 20`: 378 / 102 / 0; `n = 24`: 888 / 343 / 12 — all `=`. The table for
@@ -276,7 +281,18 @@ form more than **two** runs (labels for the README's vertices `0..21`:
 defeats the two-skip rule but not the two-run rule; the README's sentence is
 true but weaker than it could be.
 
-### 4.4 Smallest spider without a zigzag deal
+### 4.4 New data point: the two-skip rule holds again at `n = 23`
+
+Not in the README. Every one of the 14,828,074 trees on 23 vertices has a
+growth placement with at most two single skips (certificates checked in
+Python, `results/log_n23.txt`). So the rule fails for exactly one tree at
+`n = 22` and for none at `n = 23`: like the one-skip rule at `n = 10..13`, it
+is not monotone in `n`. The README's sentence "the number of single skipped
+cells needed therefore grows with the size of the tree" should be read with
+that in mind. **Observation**, `n = 23` only; because it is a positive
+statement it rests on the certificate checker, not on the search.
+
+### 4.5 Smallest spider without a zigzag deal
 
 The README's examples of three-legged failures start at `S(3,3,1)`; the
 smallest is `S(2,2,1)` on 6 vertices (also a caterpillar, so it has a
