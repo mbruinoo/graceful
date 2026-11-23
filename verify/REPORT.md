@@ -31,8 +31,12 @@ Four independent pieces, so that a bug in one is caught by another.
 | SAT | `sat_check.py` | PySAT/CaDiCaL; labels, lengths, "used after step `s`" and run-start variables with cardinality constraints | the specific failures in (c); validated against the reference on all trees with `n = 9, 10` |
 
 What a positive claim rests on: the networkx generator (count compared with
-OEIS A000055 and, for `n ≤ 23`, all canonical codes pairwise different) and
-the Python certificate checker. The searcher's correctness is irrelevant for
+OEIS A000055; all canonical codes pairwise different, compared directly for
+`n ≤ 23` and through 64-bit hashes for `n = 24, 25`) and the Python
+certificate checker. For `n ≤ 22` the checker tests the definition as written
+(for every `k`, brackets of length `≥ k` form a connected tree); for
+`n ≥ 23` it uses the equivalent one-used-foot form and applies the
+definitional test to every 100th tree. The searcher's correctness is irrelevant for
 positive claims, because every answer it gives is re-checked.
 
 What a negative claim ("this tree has no such placement") rests on: an
@@ -122,7 +126,7 @@ Least number of skips, tree by tree (README §12 table):
 | 12 | 531 | 20 | 0 | = | yes (same three) |
 | 14 | 2,926 | 232 | 1 | = | yes (enumerator, searcher) |
 | 16 | 17,132 | 2,177 | 11 | = | yes (enumerator, searcher) |
-| 18 | 103,980 | 19,837 | 50 | = | yes (searcher only) |
+| 18 | 103,980 | 19,837 | 50 | = | yes (searcher; enumerator restricted to two-skip placements, 670,659,276 of them) |
 
 Also `=`: the first row of the §11 rule table ("one run, at most one single
 skipped cell": 1 tree at `n = 10`, none at 11 and 12, 1 at 13).
@@ -323,7 +327,14 @@ for n in 9 10 12 14 16 18; do ./run_trees.sh $n minskip; done                # s
 for n in 8 10 12 14; do ./rs/gsearch anchors < out/trees_$n.txt | tr -cd '-' | wc -c; done
 
 for n in 19 20 21 22; do python3 gen.py $n check > out/trees_$n.txt; ./run_big.sh $n 3 1; done
-for n in 23 24 25; do python3 gen.py $n > out/trees_$n.txt; FAST=1 ./run_big.sh $n 3 1; done   # hours; ~25 GB in out/
+./followup.sh 22                                                             # the one two-skip failure, with three runs
+python3 gen.py 23 check > out/trees_23.txt; FAST=1 ./run_big.sh 23 3 1       # ~45 min in all on 4 cores
+for n in 24 25; do                                                           # ~1 h and ~3 h; ~35 GB in out/
+  python3 gen.py $n > out/trees_$n.txt; FAST=1 ./run_big.sh $n 3 inf
+  for i in 0 1 2 3; do PART=$i/4 python3 distinct.py $n out/trees_$n.txt & done; wait; python3 distinct.py $n merge 4
+done
+for n in 16 17 18; do ./rs/gsearch enum $n 2 inf | head -1; done             # two-run placements, shapes reached
+./rs/gsearch enum 18 3 1 > out/enum_18_31.txt; python3 cmp_enum.py 18 out/enum_18_31.txt   # skip table at 18 (ignore the anchor fields)
 
 python3 claims_c.py                                                          # (c): searcher and SAT
 for rb in "1 inf" "2 1"; do python3 sat_check.py $rb < out/trees_10.txt | sort | uniq -c; done

@@ -1,0 +1,1 @@
+gen n=25: 104636890 trees, known 104636890, distinct codes n/a: OK
