@@ -1,0 +1,16 @@
+hubleaflegs(1,5,2) n=12 count=178 nodes=4705 hits=58 t=0.0s non_anchors=0/12 orbits[deg x size: placements with it at label 1]: [6 x1: 65] [1 x1: 11] [2 x5: 78] [1 x5: 24]
+hubleaflegs(2,5,2) n=13 count=782 nodes=20598 hits=432 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [7 x1: 309] [1 x2: 65] [2 x5: 326] [1 x5: 82]
+hubleaflegs(3,5,2) n=14 count=1944 nodes=59660 hits=1760 t=0.1s non_anchors=0/14 orbits[deg x size: placements with it at label 1]: [8 x1: 795] [1 x3: 309] [2 x5: 663] [1 x5: 177]
+hubleaflegs(4,5,2) n=15 count=4948 nodes=152644 hits=6689 t=0.1s non_anchors=0/15 orbits[deg x size: placements with it at label 1]: [9 x1: 2074] [1 x4: 795] [2 x5: 1679] [1 x5: 400]
+hubleaflegs(5,5,2) n=16 count=9738 nodes=326608 hits=16635 t=0.2s non_anchors=0/16 orbits[deg x size: placements with it at label 1]: [10 x1: 4172] [1 x5: 2074] [2 x5: 2795] [1 x5: 697]
+hubleaflegs(6,5,2) n=17 count=19308 nodes=663348 hits=40651 t=0.2s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [11 x1: 8420] [1 x6: 4172] [2 x5: 5482] [1 x5: 1234]
+hubleaflegs(7,5,2) n=18 count=32078 nodes=1212406 hits=78721 t=0.3s non_anchors=0/18 orbits[deg x size: placements with it at label 1]: [12 x1: 14152] [1 x7: 8420] [2 x5: 7619] [1 x5: 1887]
+hubleaflegs(8,5,2) n=19 count=55820 nodes=2164803 hits=155939 t=0.5s non_anchors=0/19 orbits[deg x size: placements with it at label 1]: [13 x1: 24943] [1 x8: 14152] [2 x5: 13758] [1 x5: 2967]
+hubleaflegs(9,5,2) n=20 count=84358 nodes=3616878 hits=264369 t=0.8s non_anchors=0/20 orbits[deg x size: placements with it at label 1]: [14 x1: 38021] [1 x9: 24943] [2 x5: 17236] [1 x5: 4158]
+hubleaflegs(10,5,2) n=21 count=132992 nodes=5982955 hits=450572 t=1.6s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [15 x1: 60444] [1 x10: 38021] [2 x5: 28475] [1 x5: 6052]
+hubleaflegs(11,5,2) n=22 count=189050 nodes=9569493 hits=670383 t=2.3s non_anchors=0/22 orbits[deg x size: placements with it at label 1]: [16 x1: 86492] [1 x11: 60444] [2 x5: 34081] [1 x5: 8033]
+hubleaflegs(12,5,2) n=23 count=279582 nodes=15508822 hits=948569 t=3.7s non_anchors=0/23 orbits[deg x size: placements with it at label 1]: [17 x1: 128765] [1 x12: 86492] [2 x5: 53299] [1 x5: 11026]
+hubleaflegs(13,5,2) n=24 count=377882 nodes=24818237 hits=1086741 t=6.1s non_anchors=0/24 orbits[deg x size: placements with it at label 1]: [18 x1: 174811] [1 x13: 128765] [2 x5: 60176] [1 x5: 14130]
+hubleaflegs(14,5,2) n=25 count=ABORTED(budget) nodes=40000001 t=9.2s
+hubleaflegs(15,5,2) n=26 count=ABORTED(budget) nodes=40000001 t=8.9s
+# stopped after 2 trees over budget in a row

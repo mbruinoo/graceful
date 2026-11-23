@@ -1,0 +1,6 @@
+hublegs(1,5,3) n=18 count=59738 nodes=2042981 hits=145981 t=0.8s non_anchors=0/18 orbits[deg x size: placements with it at label 1]: [6 x1: 23329] [2 x1: 3340] [1 x1: 623] [2 x5: 25352] [2 x5: 5917] [1 x5: 1177]
+hublegs(2,5,3) n=19 count=167388 nodes=7994720 hits=457230 t=2.3s non_anchors=0/19 orbits[deg x size: placements with it at label 1]: [6 x1: 65338] [3 x1: 11878] [1 x2: 3340] [2 x5: 68998] [2 x5: 15016] [1 x5: 2818]
+hublegs(3,5,3) n=20 count=341664 nodes=22291987 hits=833909 t=6.2s non_anchors=0/20 orbits[deg x size: placements with it at label 1]: [6 x1: 130926] [4 x1: 29279] [1 x3: 11878] [2 x5: 136798] [2 x5: 28028] [1 x5: 4755]
+hublegs(4,5,3) n=21 count=ABORTED(budget) nodes=40000001 t=11.1s
+hublegs(5,5,3) n=22 count=ABORTED(budget) nodes=40000001 t=10.7s
+# stopped after 2 trees over budget in a row
