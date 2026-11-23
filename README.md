@@ -561,6 +561,52 @@ yet reached.
 each ending in a hub of `m` leaves", one run suffices when `m` is even and
 three are needed when `m` is odd (`m = 2..8`). Unexplained.
 
+**Lemma 10 (balance rule; proved).** Play on a row of `n` cells with the two
+end cells used and joined. A move picks an unused cell `x` and a used cell `y`
+such that the number of used cells strictly between them equals the number of
+unused cells outside the interval from `x` to `y`; it marks `x` used and joins
+`x` to `y`. The trees obtained after `n − 2` moves, with cells as labels, are
+exactly the growth placements. Bracket lengths never need to be mentioned.
+
+*Proof.* When `k` cells are unused the next bracket in a growth placement has
+length `k`, so `k − 1` cells lie strictly between its feet. Of the `k` unused
+cells one is `x`; the others are between the feet or outside. Hence
+(used between) `= k − 1 −` (unused between) `=` (unused outside). The converse
+is the same count read backwards. ∎ (Checked for `n ≤ 9`,
+`src/balance_check.py`.)
+
+Equivalently: going right from `x`, the partner is the `(1 + j + b)`-th used
+cell, where `j` unused cells lie to the left of `x` and `b` to the right of
+the partner. With a single gap and no holes, an end cell of the gap attaches
+across the gap to the innermost cell of the opposite block (`j = b = 0`): a
+staircase step. Each outstanding hole shifts that target one cell deeper.
+
+**Conjecture B4 (two-skip conjecture).** Every tree has a growth placement in
+which, at every moment, the unused labels are one run together with at most
+two isolated single labels. In the picture: two blocks grow inward from the
+ends; a move may skip one cell, and at most two skipped cells are waiting to
+be filled at any time. B4 implies B3.
+
+| rule | first failure | exhaustive range with no failure |
+|---|---|---|
+| one run, at most one single skipped cell | 1 tree at `n = 13` | `n ≤ 12` |
+| one run, at most two single skipped cells (B4) | none found | `n ≤ 20` |
+| at most three runs of any sizes (B3) | none found | `n ≤ 25` |
+
+(`./holes n R HS` enumerates; `./runsolve_gen n 3 part parts 1` searches tree
+by tree. The two agree at `n = 15`.)
+
+In a B4 build each step has at most six candidate cells (either end of the
+main run, one cell in from either end, or a skipped cell) and two possible
+partners for each, and the state is the main run plus at most two positions.
+
+**Spherically symmetric trees** (every vertex at depth `i` has `d_i`
+children) are the natural stress test for these rules. With a 128-bit
+solver (`src/runsolve128.cpp`): three runs suffice, and are needed, for
+branching `(3,3,3)` on 40 vertices, `(4,4)` on 21, `(5,5)` on 31,
+`(2,2,2,2,2)` on 63 and `(3,3,3,2)` on 94; two runs suffice for `(2,2,2)` and
+`(2,2,2,2)`. None needed four.
+
 ## 12. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
