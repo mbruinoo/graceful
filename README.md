@@ -748,7 +748,7 @@ up, … (section 12).
 that is, a graceful labeling with the centre labelled 0 and edge lengths
 decreasing outward along every leg.
 
-Evidence: every spider on `4 ≤ n ≤ 32` vertices has one, with no
+Evidence: every spider on `4 ≤ n ≤ 37` vertices has one, with no
 exception (`FREE=1 ./spiderzig n`; exhaustive over all leg-length patterns
 with at least three legs). The spiders that have no zigzag deal (`S(3,3,3)`,
 legs of length 2 with `k ≡ 2 mod 3`, …) all have a valid deal once a leg may
