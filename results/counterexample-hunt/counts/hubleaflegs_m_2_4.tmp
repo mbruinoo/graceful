@@ -30,3 +30,5 @@ hubleaflegs(29,2,4) n=38 count=49676 nodes=4234418 hits=58955 t=4.0s non_anchors
 hubleaflegs(30,2,4) n=39 count=55418 nodes=4924194 hits=63807 t=5.0s non_anchors=0/39 orbits[deg x size: placements with it at label 1]: [32 x1: 27066] [1 x30: 24075] [2 x2: 3348] [2 x2: 458] [2 x2: 286] [1 x2: 185]
 hubleaflegs(31,2,4) n=40 count=62250 nodes=5656935 hits=60325 t=6.0s non_anchors=0/40 orbits[deg x size: placements with it at label 1]: [33 x1: 30265] [1 x31: 27066] [2 x2: 3577] [2 x2: 664] [2 x2: 482] [1 x2: 196]
 hubleaflegs(32,2,4) n=41 count=69528 nodes=6539188 hits=61558 t=7.3s non_anchors=0/41 orbits[deg x size: placements with it at label 1]: [34 x1: 34044] [1 x32: 30265] [2 x2: 4177] [2 x2: 512] [2 x2: 322] [1 x2: 208]
+hubleaflegs(33,2,4) n=42 count=77496 nodes=7452733 hits=60769 t=7.6s non_anchors=0/42 orbits[deg x size: placements with it at label 1]: [35 x1: 37786] [1 x33: 34044] [2 x2: 4164] [2 x2: 742] [2 x2: 540] [1 x2: 220]
+hubleaflegs(34,2,4) n=43 count=85910 nodes=8571987 hits=57086 t=8.8s non_anchors=0/43 orbits[deg x size: placements with it at label 1]: [36 x1: 42150] [1 x34: 37786] [2 x2: 4810] [2 x2: 573] [2 x2: 359] [1 x2: 232]
