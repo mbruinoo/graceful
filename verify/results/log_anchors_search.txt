@@ -1,0 +1,4 @@
+n=8 vertices 184 non-anchors 6 trees with every vertex an anchor 18 of 23
+n=10 vertices 1060 non-anchors 19 trees with every vertex an anchor 95 of 106
+n=12 vertices 6612 non-anchors 37 trees with every vertex an anchor 525 of 551
+n=14 vertices 44226 non-anchors 84 trees with every vertex an anchor 3092 of 3159

@@ -1,0 +1,7 @@
+gen n=19: 317955 trees, known 317955, distinct codes 317955: OK
+{"n": 19, "trees": 317955, "R": "3", "B": "1", "result": {"OK": 317955}, "none": []}
+  n=19 total 62s
+gen n=20: 823065 trees, known 823065, distinct codes 823065: OK
+{"n": 20, "trees": 823065, "R": "3", "B": "1", "result": {"OK": 823065}, "none": []}
+  n=20 total 166s
+gen n=21: 2144505 trees, known 2144505, distinct codes 2144505: OK

@@ -1,0 +1,12 @@
+S(2,2,2,2), n=9: zero skips (one run)         README: NONE  search: NONE  SAT: NONE (0s)  agree
+S(2,2,2,2), n=9: one skip                     README: OK    search: OK    SAT: OK   (0s)  agree
+S(3,3,3), n=10: zero skips                    README: NONE  search: NONE  SAT: NONE (0s)  agree
+S(3,3,3), n=10: one skip                      README: NONE  search: NONE  SAT: NONE (0s)  agree
+S(3,3,3), n=10: two skips                     README: OK    search: OK    SAT: OK   (0s)  agree
+16-vertex tree a: two runs                    README: NONE  search: NONE  SAT: NONE (1s)  agree
+16-vertex tree a: three runs                  README: OK    search: OK    SAT: OK   (0s)  agree
+16-vertex tree b: two runs                    README: NONE  search: NONE  SAT: NONE (3s)  agree
+16-vertex tree b: three runs                  README: OK    search: OK    SAT: OK   (0s)  agree
+22-vertex tree: at most two single skips      README: NONE  search: NONE  SAT: NONE (16s)  agree
+22-vertex tree: three single skips            README: OK    search: OK    SAT: OK   (1s)  agree
+22-vertex tree: three runs of any size        README: OK    search: OK    SAT: OK   (1s)  agree

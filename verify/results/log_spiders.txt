@@ -1,0 +1,38 @@
+{"n": 4, "kind": "free", "spiders": 1, "with_deal": 1, "none": [], "python_search_agrees": true}
+{"n": 4, "kind": "zig", "spiders": 1, "with_deal": 1, "none": [], "python_search_agrees": true}
+{"n": 5, "kind": "free", "spiders": 2, "with_deal": 2, "none": [], "python_search_agrees": true}
+{"n": 5, "kind": "zig", "spiders": 2, "with_deal": 2, "none": [], "python_search_agrees": true}
+{"n": 6, "kind": "free", "spiders": 4, "with_deal": 4, "none": [], "python_search_agrees": true}
+{"n": 6, "kind": "zig", "spiders": 4, "with_deal": 3, "none": ["S(2,2,1)"], "python_search_agrees": true}
+{"n": 7, "kind": "free", "spiders": 7, "with_deal": 7, "none": [], "python_search_agrees": true}
+{"n": 7, "kind": "zig", "spiders": 7, "with_deal": 7, "none": [], "python_search_agrees": true}
+{"n": 8, "kind": "free", "spiders": 11, "with_deal": 11, "none": [], "python_search_agrees": true}
+{"n": 8, "kind": "zig", "spiders": 11, "with_deal": 10, "none": ["S(3,3,1)"], "python_search_agrees": true}
+{"n": 9, "kind": "free", "spiders": 17, "with_deal": 17, "none": [], "python_search_agrees": true}
+{"n": 9, "kind": "zig", "spiders": 17, "with_deal": 17, "none": [], "python_search_agrees": true}
+{"n": 10, "kind": "free", "spiders": 25, "with_deal": 25, "none": [], "python_search_agrees": true}
+{"n": 10, "kind": "zig", "spiders": 25, "with_deal": 24, "none": ["S(3,3,3)"], "python_search_agrees": true}
+{"n": 11, "kind": "free", "spiders": 36, "with_deal": 36, "none": [], "python_search_agrees": true}
+{"n": 11, "kind": "zig", "spiders": 36, "with_deal": 35, "none": ["S(2,2,2,2,2)"], "python_search_agrees": true}
+{"n": 12, "kind": "free", "spiders": 50, "with_deal": 50, "none": [], "python_search_agrees": true}
+{"n": 12, "kind": "zig", "spiders": 50, "with_deal": 49, "none": ["S(5,5,1)"], "python_search_agrees": true}
+{"n": 13, "kind": "free", "spiders": 70, "with_deal": 70, "none": [], "python_search_agrees": true}
+{"n": 13, "kind": "zig", "spiders": 70, "with_deal": 69, "none": ["S(6,5,1)"], "python_search_agrees": true}
+{"n": 14, "kind": "free", "spiders": 94, "with_deal": 94, "none": []}
+{"n": 14, "kind": "zig", "spiders": 94, "with_deal": 92, "none": ["S(7,5,1)", "S(6,6,1)"]}
+{"n": 15, "kind": "free", "spiders": 127, "with_deal": 127, "none": []}
+{"n": 15, "kind": "zig", "spiders": 127, "with_deal": 127, "none": []}
+{"n": 16, "kind": "free", "spiders": 168, "with_deal": 168, "none": []}
+{"n": 16, "kind": "zig", "spiders": 168, "with_deal": 166, "none": ["S(8,6,1)", "S(7,7,1)"]}
+{"n": 17, "kind": "free", "spiders": 222, "with_deal": 222, "none": []}
+{"n": 17, "kind": "zig", "spiders": 222, "with_deal": 220, "none": ["S(8,7,1)", "S(2,2,2,2,2,2,2,2)"]}
+{"n": 18, "kind": "free", "spiders": 288, "with_deal": 288, "none": []}
+{"n": 18, "kind": "zig", "spiders": 288, "with_deal": 285, "none": ["S(13,3,1)", "S(11,5,1)", "S(9,7,1)"]}
+{"n": 19, "kind": "free", "spiders": 375, "with_deal": 375, "none": []}
+{"n": 19, "kind": "zig", "spiders": 375, "with_deal": 375, "none": []}
+{"n": 20, "kind": "free", "spiders": 480, "with_deal": 480, "none": []}
+{"n": 20, "kind": "zig", "spiders": 480, "with_deal": 480, "none": []}
+{"n": 21, "kind": "free", "spiders": 616, "with_deal": 616, "none": []}
+{"n": 21, "kind": "zig", "spiders": 616, "with_deal": 613, "none": ["S(17,2,1)", "S(16,3,1)", "S(11,8,1)"]}
+{"n": 22, "kind": "free", "spiders": 781, "with_deal": 781, "none": []}
+{"n": 22, "kind": "zig", "spiders": 781, "with_deal": 779, "none": ["S(17,3,1)", "S(10,10,1)"]}

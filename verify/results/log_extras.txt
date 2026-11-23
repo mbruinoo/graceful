@@ -1,0 +1,44 @@
+equal-leg spiders, least skips (README 12 table)
+  L=1 k=3 n=4: README 0  mine 0
+  L=1 k=4 n=5: README 0  mine 0
+  L=1 k=5 n=6: README 0  mine 0
+  L=1 k=6 n=7: README 0  mine 0
+  L=1 k=8 n=9: README 0  mine 0
+  L=2 k=3 n=7: README 0  mine 0
+  L=2 k=4 n=9: README 1  mine 1
+  L=2 k=5 n=11: README 1  mine 1
+  L=2 k=6 n=13: README 1  mine 1
+  L=2 k=8 n=17: README 1  mine 1
+  L=3 k=3 n=10: README 2  mine 2
+  L=3 k=4 n=13: README 2  mine 2
+  L=3 k=5 n=16: README 2  mine 2
+  L=3 k=6 n=19: README 2  mine 2
+  L=3 k=8 n=25: README 2  mine 2
+  L=4 k=3 n=13: README 0  mine 0
+  L=4 k=4 n=17: README 2  mine 2
+  L=4 k=5 n=21: README 1  mine 1
+  L=4 k=6 n=25: README 2  mine 2
+  L=4 k=8 n=33: README 2  mine 2
+  L=5 k=3 n=16: README 0  mine 0
+  L=5 k=4 n=21: README 1  mine 1
+  L=5 k=5 n=26: README 1  mine 1
+  L=5 k=6 n=31: README 2  mine 2
+  L=5 k=8 n=41: README 2  mine skipped (n > 40)
+  L=6 k=3 n=19: README 1  mine 1
+  L=6 k=4 n=25: README 1  mine 1
+  L=6 k=5 n=31: README 1  mine 1
+  L=6 k=6 n=37: README 1  mine 1
+  L=6 k=8 n=49: README 2  mine skipped (n > 40)
+spherically symmetric trees, least runs (README 11: (4,4),(5,5) need 3; (2,2,2),(2,2,2,2) need at most 2)
+  (2, 2, 2) n=15: least runs 2
+  (4, 4) n=21: least runs 3
+  (2, 2, 2, 2) n=31: least runs 2
+  (5, 5) n=31: least runs 3
+three arms of length 2 ending in hubs of m leaves, least runs (README 11: 1 if m even, 3 if m odd)
+  m=2 n=13: least runs 1
+  m=3 n=16: least runs 3
+  m=4 n=19: least runs 1
+  m=5 n=22: least runs 3
+  m=6 n=25: least runs 1
+  m=7 n=28: least runs 3
+  m=8 n=31: least runs 1
