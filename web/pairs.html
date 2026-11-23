@@ -1,0 +1,201 @@
+<title>Two Brackets at Once</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; push a blocked bracket on the bench, see the loop and the cut-off piece, pick the partner that repairs it. Same tokens as the Sliding Brackets page. */
+:root{
+  --bg:#f3f5f8; --panel:#ffffff; --ink:#18212f; --muted:#5b6678; --line:#d5dbe5; --rail:#e3e8ef;
+  --bracket:#1f5fd6; --hot:#d97a00; --bad:#cc2a5a; --good:#0b7f63; --pa:#c96a00; --pb:#7a3fd0; --pa-soft:#fbead2; --pb-soft:#ece2fb;
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#10151d; --panel:#18202b; --ink:#e6ebf2; --muted:#98a4b6; --line:#2c3746; --rail:#232d3a;
+  --bracket:#6ea3ff; --hot:#ffb347; --bad:#ff6b93; --good:#4fd1ae; --pa:#ffb347; --pb:#b792ff; --pa-soft:#3a2c17; --pb-soft:#2c2442; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#10151d; --panel:#18202b; --ink:#e6ebf2; --muted:#98a4b6; --line:#2c3746; --rail:#232d3a;
+  --bracket:#6ea3ff; --hot:#ffb347; --bad:#ff6b93; --good:#4fd1ae; --pa:#ffb347; --pb:#b792ff; --pa-soft:#3a2c17; --pb-soft:#2c2442; color-scheme:dark }
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-block:2.5rem 4rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
+section{display:flex;flex-direction:column;gap:1rem;min-width:0}
+h1{font:700 clamp(2.2rem,7vw,3.4rem)/1 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+h2{font:700 1.5rem/1.2 var(--display);margin:0;text-wrap:balance}
+h3{font:600 1.05rem/1.3 var(--body);margin:0}
+p{margin:0;max-width:64ch} .lede{font-size:1.2rem;color:var(--muted)}
+.bench{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1rem;display:flex;flex-direction:column;gap:.9rem;min-width:0}
+.benchrow{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.benchrow>.rails{flex:3 1 340px;min-width:0;overflow-x:auto} .benchrow>.shape{flex:1 1 170px;min-width:0;max-width:240px}
+.bench svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.92rem}
+button,select{font:500 .9rem var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.4em .75em;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--bracket)} button:disabled{opacity:.45;cursor:default}
+button:focus-visible,select:focus-visible,.br:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.cap{font-size:.9rem;color:var(--muted)}
+.rail{stroke:var(--rail);stroke-width:1} .raillab{font:10px var(--mono);fill:var(--muted)}
+.br{cursor:pointer} .br .bar{fill:none;stroke:var(--bracket);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.br .hit{fill:none;stroke:transparent;stroke-width:16}
+.br.A .bar{stroke:var(--pa)} .br.B .bar{stroke:var(--pb)}
+.br.lift .bar{stroke:var(--muted);stroke-dasharray:3 5;stroke-width:2.5}
+.ghost{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round} .ghost.ok{stroke:var(--good)} .ghost.no{stroke:var(--bad)}
+.vtx{fill:var(--panel);stroke:var(--ink);stroke-width:1.5} .vtx.A{fill:var(--pa);stroke:var(--pa)} .vtx.B{fill:var(--pb);stroke:var(--pb)}
+.vlab{font:12px var(--mono);fill:var(--ink);text-anchor:middle}
+.ring{fill:none;stroke-width:2} .ring.ok{stroke:var(--good)} .ring.no{stroke:var(--bad)}
+.tedge{stroke:var(--bracket);stroke-width:2} .tedge.A{stroke:var(--pa)} .tedge.B{stroke:var(--pb)} .tedge.lift{stroke:var(--muted);stroke-dasharray:3 4}
+.tedge.ghost.ok{stroke:var(--good);stroke-width:3} .tedge.ghost.no{stroke:var(--bad);stroke-width:3}
+.tlab{font:10px var(--mono);fill:var(--panel);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
+.verdict{border:1px solid var(--line);border-radius:6px;padding:.8rem .9rem;display:flex;flex-direction:column;gap:.5rem;min-width:0;background:var(--bg)}
+.verdict.sel{border-color:var(--ink)}
+.verdict .head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.pill{font:600 .78rem var(--body);letter-spacing:.04em;text-transform:uppercase;padding:.15em .6em;border-radius:99px;border:1.5px solid currentColor}
+.pill.ok{color:var(--good)} .pill.no{color:var(--bad)}
+.verdict p{font-size:.95rem}
+.pa,.pb{font-weight:600;white-space:nowrap;padding:0 .3em;border-radius:3px} .pa{color:var(--pa);background:var(--pa-soft)} .pb{color:var(--pb);background:var(--pb-soft)}
+.num{font-family:var(--mono)}
+.short{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.25rem}
+.short>div{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start;min-width:0}
+.short p{font-size:.97rem}
+ol.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.35rem;max-width:64ch}
+a{color:var(--bracket)}
+@media (prefers-reduced-motion:no-preference){.br{transition:transform .18s ease}}
+
+.br.loop .bar{stroke:var(--hot);stroke-width:4} .br.pushed .bar{stroke:var(--bad);stroke-width:4} .br.sel .bar{stroke-width:5}
+.old{fill:none;stroke:var(--muted);stroke-width:2;stroke-dasharray:3 5}
+.vtx.cut{fill:var(--pb);stroke:var(--pb)}
+.tedge.loop{stroke:var(--hot);stroke-width:4} .tedge.pushed{stroke:var(--bad);stroke-width:4}
+.tlab.dark{fill:var(--ink)}
+.panel{border-top:1px solid var(--line);padding-top:.9rem;display:flex;flex-direction:column;gap:.7rem}
+.lp{color:var(--hot);font-weight:600} .rd{color:var(--bad);font-weight:600}
+table{border-collapse:collapse;font-size:.95rem} th,td{padding:.35rem .8rem;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums} th:first-child,td:first-child{text-align:left} th{font-weight:600}
+.tablewrap{overflow-x:auto}
+</style>
+
+<main>
+  <section>
+    <h1>Two brackets at once</h1>
+    <p class="lede">A step that is blocked on its own can be fine as half of a pair. The first step closes a loop and cuts a piece off. The second takes a bracket out of that loop and uses it to reach the piece that was cut off.</p>
+  </section>
+
+  <section>
+    <h2>Try it</h2>
+    <p id="prompt"></p>
+    <div class="bench">
+      <div class="controls">
+        <label for="preset">Start from</label>
+        <select id="preset">
+          <option value="island">a stuck position</option>
+          <option value="island2">another stuck position</option>
+          <option value="mixed">a mixed tree</option>
+          <option value="star">the star</option>
+        </select>
+        <button id="reset" type="button">Start over</button>
+      </div>
+      <div class="benchrow">
+        <div class="rails" id="rails"></div>
+        <div class="shape" id="shape"></div>
+      </div>
+      <div class="panel" id="panel"></div>
+    </div>
+    <p class="cap">The two "stuck" positions have only one single step available, and it leads to a position with only the step back. With single steps you can never leave. Pairs get you out.</p>
+  </section>
+
+  <section>
+    <h2>The same rule, in pieces</h2>
+    <p>Lift one bracket and the tree falls into two pieces; the bracket must come down with a foot in each. Lift two brackets and it falls into three pieces. The two brackets must come down so that all three are tied together again: each joins two different pieces, and they do not both join the same two.</p>
+    <p>The loop picture above is this rule seen one step at a time. A loop means a bracket came down with both feet in one piece. The only repair is to take some other bracket out of that loop and put it down across the gap.</p>
+  </section>
+
+  <section>
+    <h2>Why it matters</h2>
+    <p>With single steps, the positions split into separate families that cannot reach each other. With pairs allowed as well, every position checked is in one family.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Dots</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th></tr></thead>
+        <tbody>
+          <tr><td>Families, single steps only</td><td>5</td><td>11</td><td>55</td><td>171</td><td>1,013</td><td>4,987</td><td>34,181</td></tr>
+          <tr><td>Families, pairs allowed too</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>Pairs, but only both in the same direction</td><td>1</td><td>1</td><td>1</td><td>5</td><td>19</td><td>89</td><td>467</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cap">Counted over every tree position with 7 to 13 dots (<span class="num">src/attack/slides/</span>). True at these sizes; not proved in general. The last row shows that the useful pairs are often one bracket going left while the other goes right.</p>
+    <p>A caution. A pair passes through a position that is not a tree, so this is a looser game than the original one-step game. It tells us the isolated families are an artefact of taking steps one at a time. It does not by itself show that every tree shape can be reached.</p>
+    <p class="cap">One of a set of short pages on the bracket picture: <a href="https://claude.ai/artifact/LCop1s61XFJeMnDGFXL9aE">Can This Bracket Move?</a> · <a href="https://claude.ai/artifact/5BT9afkdFTz6XyCgVLvkT9">Pick an Edit</a> · <a href="https://claude.ai/artifact/4nFfq3j1vKaK4atHKXyMgu">Sliding Brackets</a></p>
+  </section>
+</main>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a,par)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);par&&par.appendChild(e);return e};
+const PRESETS={island:[2,5,1,1,1,2,1],island2:[3,5,3,1,3,2,1],mixed:[3,4,2,3,2,1,1],star:[1,1,1,1,1,1,1]};
+const N=8,DX=46,PX=30,RH=19;
+let p=[],sel=0,push=0,presetKey='island',note='';
+const X=i=>PX+(i-1)*DX,Y=k=>18+(N-1-k)*RH,BASE=Y(0)+10;
+const staple=(x1,x2,y)=>`M${x1},${BASE-8} L${x1},${y} L${x2},${y} L${x2},${BASE-8}`;
+function isTree(q){const par=[...Array(N+1).keys()],f=x=>par[x]===x?x:par[x]=f(par[x]);
+  for(let k=1;k<N;k++){const a=f(q[k]),b=f(q[k]+k);if(a===b)return false;par[a]=b}return true}
+const inRange=(k,x)=>x>=1&&x<=N-k;
+function status(k,d){if(!inRange(k,p[k]+d))return'off';const q=p.slice();q[k]+=d;return isTree(q)?'ok':'blocked'}
+// after pushing bracket sel by push: which brackets are on the loop, which dots are cut off
+function broken(){const q=p.slice();q[sel]+=push;const deg=Array(N+1).fill(0),alive=Array(N).fill(true);
+  for(let k=1;k<N;k++){deg[q[k]]++;deg[q[k]+k]++}
+  let ch=true;while(ch){ch=false;for(let k=1;k<N;k++)if(alive[k]&&(deg[q[k]]===1||deg[q[k]+k]===1)){alive[k]=false;deg[q[k]]--;deg[q[k]+k]--;ch=true}}
+  const loop=[];for(let k=1;k<N;k++)if(alive[k])loop.push(k);
+  const adj=Array.from({length:N+1},()=>[]);for(let k=1;k<N;k++){adj[q[k]].push(q[k]+k);adj[q[k]+k].push(q[k])}
+  const seen=Array(N+1).fill(false),st=[q[sel]];seen[q[sel]]=true;while(st.length){const v=st.pop();for(const u of adj[v])if(!seen[u]){seen[u]=true;st.push(u)}}
+  const cut=[];for(let v=1;v<=N;v++)if(!seen[v])cut.push(v);
+  const fixes=[];for(const j of loop)if(j!==sel)for(const d of[-1,1]){const r=q.slice();r[j]+=d;if(inRange(j,r[j])&&isTree(r))fixes.push([j,d])}
+  return{q,loop,cut,fixes}}
+
+function treeLayout(){const adj=Array.from({length:N+1},()=>[]);for(let k=1;k<N;k++){adj[p[k]].push(p[k]+k);adj[p[k]+k].push(p[k])}
+  const deg=[];for(let v=1;v<=N;v++)deg[v]=adj[v].length;let layer=[],rem=N;const gone=new Set();
+  for(let v=1;v<=N;v++)if(deg[v]<=1)layer.push(v);
+  while(rem>2){const nx=[];for(const v of layer){gone.add(v);rem--;for(const u of adj[v])if(!gone.has(u)&&--deg[u]===1)nx.push(u)}layer=nx}
+  const pos={};let leafX=0,maxD=0;const size=(v,pa)=>1+adj[v].filter(u=>u!==pa).reduce((s,u)=>s+size(u,v),0);
+  (function place(v,pa,d){maxD=Math.max(maxD,d);const ch=adj[v].filter(u=>u!==pa).sort((a,b)=>size(a,v)-size(b,v));
+    if(!ch.length){pos[v]=[leafX++,d];return}ch.forEach(u=>place(u,v,d+1));pos[v]=[ch.reduce((s,u)=>s+pos[u][0],0)/ch.length,d]})(layer[0],0,0);
+  const W=220,H=170,m=18,sx=leafX>1?(W-2*m)/(leafX-1):0,sy=maxD?(H-2*m)/maxD:0;
+  return{W,H,P:v=>[leafX>1?m+pos[v][0]*sx:W/2,maxD?m+pos[v][1]*sy:H/2]}}
+
+function draw(){const B=push?broken():null,q=B?B.q:p;
+  const host=document.getElementById('rails');host.textContent='';const W=PX*2+(N-1)*DX,H=BASE+30;
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'group','aria-label':'Brackets above the number line'},host);svg.style.minWidth='300px';
+  for(let k=1;k<N;k++){el('line',{class:'rail',x1:X(1),x2:X(N),y1:Y(k),y2:Y(k)},svg);el('text',{class:'raillab',x:6,y:Y(k)+3},svg).textContent=k}
+  if(B)el('path',{class:'old',d:staple(X(p[sel]),X(p[sel]+sel),Y(sel))},svg);
+  for(let k=N-1;k>=1;k--){const cls='br'+(B&&k===sel?' pushed':B&&B.loop.includes(k)?' loop':'')+(!B&&k===sel?' sel':'');
+    const g=el('g',{class:cls,tabindex:0,role:'button','aria-label':`Bracket of length ${k}, on dots ${q[k]} and ${q[k]+k}`},svg);
+    const d=staple(X(q[k]),X(q[k]+k),Y(k)-(B&&k===sel?5:0));el('path',{class:'bar',d},g);el('path',{class:'hit',d},g);
+    const go=()=>{sel=k;push=0;note='';render()};g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})}
+  for(let i=1;i<=N;i++){if(B&&B.cut.includes(i))el('rect',{class:'vtx cut',x:X(i)-6,y:BASE-6,width:12,height:12},svg);else el('circle',{class:'vtx',cx:X(i),cy:BASE,r:6},svg);
+    el('text',{class:'vlab',x:X(i),y:BASE+24},svg).textContent=i}
+  const sh=document.getElementById('shape');sh.textContent='';const L=treeLayout();
+  const s2=el('svg',{viewBox:`0 0 ${L.W} ${L.H}`,role:'img','aria-label':'The same position as dots and lines'},sh);
+  for(let k=1;k<N;k++){if(B&&k===sel){const[a,b]=[L.P(p[k]),L.P(p[k]+k)];el('line',{class:'tedge lift',x1:a[0],y1:a[1],x2:b[0],y2:b[1]},s2)}
+    const[a,b]=[L.P(q[k]),L.P(q[k]+k)];el('line',{class:'tedge'+(B&&k===sel?' pushed':B&&B.loop.includes(k)?' loop':''),x1:a[0],y1:a[1],x2:b[0],y2:b[1]},s2)}
+  for(let v=1;v<=N;v++){const[x,y]=L.P(v),c=B&&B.cut.includes(v);
+    if(c)el('rect',{class:'vtx cut',x:x-9,y:y-9,width:18,height:18},s2);else el('circle',{class:'vtx',cx:x,cy:y,r:9},s2);
+    const t=el('text',{class:'tlab'+(c?'':' dark'),x,y},s2);t.textContent=v}
+  panel(B)}
+function btn(par,text,fn,dis){const b=document.createElement('button');b.type='button';b.textContent=text;b.disabled=!!dis;b.onclick=fn;par.appendChild(b);return b}
+function panel(B){const host=document.getElementById('panel'),pr=document.getElementById('prompt');host.textContent='';
+  const list=a=>a.length===1?a[0]:a.slice(0,-1).join(', ')+' and '+a[a.length-1];
+  if(!sel){pr.innerHTML='<strong>Step 1.</strong> Tap a bracket.';host.innerHTML=`<p class="cap">${note||'Nothing lifted yet.'}</p>`;return}
+  if(!B){pr.innerHTML=`<strong>Step 2.</strong> Push the length-${sel} bracket one step. Choose a push marked "blocked" to see what a partner can do.`;
+    const c=document.createElement('div');c.className='controls';host.appendChild(c);
+    for(const d of[-1,1]){const s=status(sel,d),name=d<0?'left':'right';
+      btn(c,`Push ${name}: ${s==='ok'?'allowed on its own':s==='off'?'no room':'blocked'}`,()=>{if(s==='ok'){p[sel]+=d;note=`The length-${sel} bracket moved ${name} on its own.`;sel=0}else push=d;render()},s==='off')}
+    return}
+  pr.innerHTML='<strong>Step 3.</strong> Choose the partner that repairs it.';
+  const others=B.loop.filter(k=>k!==sel);
+  const p1=document.createElement('p');
+  p1.innerHTML=`The <span class="rd">length-${sel} bracket</span> has been pushed ${push<0?'left':'right'}. Together with the <span class="lp">length-${list(others)} bracket${others.length>1?'s':''}</span> it now closes a loop, and ${B.cut.length>1?'dots':'dot'} <span class="pb">■ ${list(B.cut)}</span> ${B.cut.length>1?'are':'is'} cut off. A repair has to take one of the amber brackets out of the loop and land it with one foot on a square dot.`;
+  host.appendChild(p1);const c=document.createElement('div');c.className='controls';host.appendChild(c);
+  if(!B.fixes.length){const n=document.createElement('p');n.innerHTML='<span class="pill no">No partner</span> None of the amber brackets can reach a square dot in one step. This push stays blocked.';host.insertBefore(n,c)}
+  for(const[j,d]of B.fixes)btn(c,`Length ${j} one step ${d<0?'left':'right'}`,()=>{p=B.q.slice();p[j]+=d;note=`Done: length ${sel} went ${push<0?'left':'right'} and length ${j} went ${d<0?'left':'right'}. It is a tree again.`;sel=0;push=0;render()});
+  btn(c,'Take the push back',()=>{push=0;render()})}
+function render(){draw()}
+function load(key,k,d){presetKey=key;document.getElementById('preset').value=key;p=[0,...PRESETS[key]];sel=k||0;push=d||0;note='';render()}
+document.getElementById('preset').onchange=e=>load(e.target.value);
+document.getElementById('reset').onclick=()=>load(presetKey);
+load('island',4,1);
+</script>
