@@ -1,0 +1,220 @@
+<title>Pick an Edit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; pick an edit on the tree, the page answers with a numbering on the line. Same tokens as the Sliding Brackets page, plus two piece colours. */
+:root{
+  --bg:#f3f5f8; --panel:#ffffff; --ink:#18212f; --muted:#5b6678; --line:#d5dbe5; --rail:#e3e8ef;
+  --bracket:#1f5fd6; --hot:#d97a00; --bad:#cc2a5a; --good:#0b7f63; --pa:#c96a00; --pb:#7a3fd0; --pa-soft:#fbead2; --pb-soft:#ece2fb;
+  --display:"Bricolage Grotesque","Trebuchet MS",sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#10151d; --panel:#18202b; --ink:#e6ebf2; --muted:#98a4b6; --line:#2c3746; --rail:#232d3a;
+  --bracket:#6ea3ff; --hot:#ffb347; --bad:#ff6b93; --good:#4fd1ae; --pa:#ffb347; --pb:#b792ff; --pa-soft:#3a2c17; --pb-soft:#2c2442; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#10151d; --panel:#18202b; --ink:#e6ebf2; --muted:#98a4b6; --line:#2c3746; --rail:#232d3a;
+  --bracket:#6ea3ff; --hot:#ffb347; --bad:#ff6b93; --good:#4fd1ae; --pa:#ffb347; --pb:#b792ff; --pa-soft:#3a2c17; --pb-soft:#2c2442; color-scheme:dark }
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-block:2.5rem 4rem;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
+section{display:flex;flex-direction:column;gap:1rem;min-width:0}
+h1{font:700 clamp(2.2rem,7vw,3.4rem)/1 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+h2{font:700 1.5rem/1.2 var(--display);margin:0;text-wrap:balance}
+h3{font:600 1.05rem/1.3 var(--body);margin:0}
+p{margin:0;max-width:64ch} .lede{font-size:1.2rem;color:var(--muted)}
+.bench{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1rem;display:flex;flex-direction:column;gap:.9rem;min-width:0}
+.benchrow{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.benchrow>.rails{flex:3 1 340px;min-width:0;overflow-x:auto} .benchrow>.shape{flex:1 1 170px;min-width:0;max-width:240px}
+.bench svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.controls{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;font-size:.92rem}
+button,select{font:500 .9rem var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.4em .75em;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--bracket)} button:disabled{opacity:.45;cursor:default}
+button:focus-visible,select:focus-visible,.br:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.cap{font-size:.9rem;color:var(--muted)}
+.rail{stroke:var(--rail);stroke-width:1} .raillab{font:10px var(--mono);fill:var(--muted)}
+.br{cursor:pointer} .br .bar{fill:none;stroke:var(--bracket);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.br .hit{fill:none;stroke:transparent;stroke-width:16}
+.br.A .bar{stroke:var(--pa)} .br.B .bar{stroke:var(--pb)}
+.br.lift .bar{stroke:var(--muted);stroke-dasharray:3 5;stroke-width:2.5}
+.ghost{fill:none;stroke-width:3;stroke-linejoin:round;stroke-linecap:round} .ghost.ok{stroke:var(--good)} .ghost.no{stroke:var(--bad)}
+.vtx{fill:var(--panel);stroke:var(--ink);stroke-width:1.5} .vtx.A{fill:var(--pa);stroke:var(--pa)} .vtx.B{fill:var(--pb);stroke:var(--pb)}
+.vlab{font:12px var(--mono);fill:var(--ink);text-anchor:middle}
+.ring{fill:none;stroke-width:2} .ring.ok{stroke:var(--good)} .ring.no{stroke:var(--bad)}
+.tedge{stroke:var(--bracket);stroke-width:2} .tedge.A{stroke:var(--pa)} .tedge.B{stroke:var(--pb)} .tedge.lift{stroke:var(--muted);stroke-dasharray:3 4}
+.tedge.ghost.ok{stroke:var(--good);stroke-width:3} .tedge.ghost.no{stroke:var(--bad);stroke-width:3}
+.tlab{font:10px var(--mono);fill:var(--panel);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem}
+.verdict{border:1px solid var(--line);border-radius:6px;padding:.8rem .9rem;display:flex;flex-direction:column;gap:.5rem;min-width:0;background:var(--bg)}
+.verdict.sel{border-color:var(--ink)}
+.verdict .head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.pill{font:600 .78rem var(--body);letter-spacing:.04em;text-transform:uppercase;padding:.15em .6em;border-radius:99px;border:1.5px solid currentColor}
+.pill.ok{color:var(--good)} .pill.no{color:var(--bad)}
+.verdict p{font-size:.95rem}
+.pa,.pb{font-weight:600;white-space:nowrap;padding:0 .3em;border-radius:3px} .pa{color:var(--pa);background:var(--pa-soft)} .pb{color:var(--pb);background:var(--pb-soft)}
+.num{font-family:var(--mono)}
+.short{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.25rem}
+.short>div{display:flex;flex-direction:column;gap:.5rem;align-items:flex-start;min-width:0}
+.short p{font-size:.97rem}
+ol.steps{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.35rem;max-width:64ch}
+a{color:var(--bracket)}
+@media (prefers-reduced-motion:no-preference){.br{transition:transform .18s ease}}
+
+.tree svg{max-width:420px;margin:0 auto} .answer .rails svg{max-width:460px}
+.tedge{stroke-width:3} .thit{stroke:transparent;stroke-width:18;cursor:pointer}
+.tnode{cursor:pointer} .vtx.pick{stroke:var(--ink);stroke-width:3}
+.newedge{stroke:var(--good);stroke-width:3;stroke-dasharray:6 4} .newedge.no{stroke:var(--bad)}
+.answer{border-top:1px solid var(--line);padding-top:.9rem;display:flex;flex-direction:column;gap:.7rem}
+.answer h3 .pill{margin-left:.5rem;vertical-align:middle}
+table{border-collapse:collapse;font-size:.95rem} th,td{padding:.35rem .8rem;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums} th:first-child,td:first-child{text-align:left} th{font-weight:600}
+.tablewrap{overflow-x:auto}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem}
+.two>div{display:flex;flex-direction:column;gap:.5rem;min-width:0}
+</style>
+
+<main>
+  <section>
+    <h1>Pick an edit, find the numbering</h1>
+    <p class="lede">Start from the tree, not the line. Choose an edge to unhook and two dots to hook it between. The page looks for a way to number the dots so that your edit is one slide of one bracket.</p>
+  </section>
+
+  <section>
+    <h2>Try it</h2>
+    <p id="prompt"></p>
+    <div class="bench">
+      <div class="controls">
+        <label for="shape">Tree</label>
+        <select id="shape">
+          <option value="cat">a caterpillar</option>
+          <option value="path">a path</option>
+          <option value="spider">a spider</option>
+          <option value="star">the star</option>
+          <option value="rand">a random tree</option>
+        </select>
+        <button id="again" type="button">Start over</button>
+      </div>
+      <div class="tree" id="tree"></div>
+      <div class="answer" id="answer" hidden></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Two kinds of edit</h2>
+    <div class="two">
+      <div>
+        <h3>Both ends move</h3>
+        <p>The new edge shares no dot with the old one. A slide does exactly this: each foot goes to the next dot along the line. So you need a numbering where the two new ends carry the numbers just after (or just before) the two old ends.</p>
+        <p>This almost always exists.</p>
+      </div>
+      <div>
+        <h3>One end stays (re-hang)</h3>
+        <p>You keep one end and move the other, like moving a twig to a different branch. A slide moves both feet, so the only bracket that can do this is the shortest one, pivoting: the kept dot must sit between the old and new neighbours, with three numbers in a row.</p>
+        <p>This is much rarer.</p>
+      </div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Dots</th><th>Both ends move: possible</th><th>of</th><th>Re-hang: possible</th><th>of</th></tr></thead>
+        <tbody>
+          <tr><td>6</td><td>13</td><td>15</td><td>17</td><td>45</td></tr>
+          <tr><td>7</td><td>49</td><td>53</td><td>58</td><td>140</td></tr>
+          <tr><td>8</td><td>180</td><td>198</td><td>200</td><td>424</td></tr>
+          <tr><td>9</td><td>658</td><td>673</td><td>757</td><td>1,269</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cap">Every tree with that many dots, every edge, every place it could be re-hooked, counted once per genuinely different edit. Exhaustive for 6 to 9 dots (<span class="num">src/tree_edits.py</span>). Nothing here is proved beyond these sizes.</p>
+  </section>
+
+  <section>
+    <h2>What this says about the puzzle</h2>
+    <p>For the edit you have in mind there is usually a numbering that makes it a single step. The catch is the same as in a sliding-car puzzle: you are not free to renumber. Getting from the numbering you have to the one you need is itself a chain of slides, and whether that chain always exists is the open question.</p>
+    <p class="cap">One of a set of short pages on the bracket picture: <a href="https://claude.ai/artifact/LCop1s61XFJeMnDGFXL9aE">Can This Bracket Move?</a> · <a href="https://claude.ai/artifact/4nFfq3j1vKaK4atHKXyMgu">Sliding Brackets</a></p>
+  </section>
+</main>
+
+<script>
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a,par)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);par&&par.appendChild(e);return e};
+const N=8;
+const SHAPES={cat:[[0,1],[1,2],[2,3],[3,4],[1,5],[2,6],[3,7]],path:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7]],
+  spider:[[0,1],[1,2],[0,3],[3,4],[0,5],[5,6],[0,7]],star:[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[0,7]]};
+let E=[],cut=-1,pick=[-1,-1],sols=[],si=0,shapeKey='cat',note='';
+const tag=c=>c==='A'?'<span class="pa">● round</span>':'<span class="pb">■ square</span>';
+
+function randTree(){const pr=Array.from({length:N-2},()=>Math.floor(Math.random()*N)),deg=Array(N).fill(1),out=[];pr.forEach(v=>deg[v]++);
+  for(const v of pr){for(let u=0;u<N;u++)if(deg[u]===1){out.push([u,v]);deg[u]--;deg[v]--;break}}
+  const r=[];for(let u=0;u<N;u++)if(deg[u]===1)r.push(u);out.push(r);return out}
+function adjOf(skip){const a=Array.from({length:N},()=>[]);E.forEach(([x,y],i)=>{if(i!==skip){a[x].push(y);a[y].push(x)}});return a}
+function side(){if(cut<0)return null;const a=adjOf(cut),c=Array(N).fill('B'),st=[E[cut][0]];c[E[cut][0]]='A';
+  while(st.length){const v=st.pop();for(const u of a[v])if(c[u]!=='A'){c[u]='A';st.push(u)}}return c}
+function layout(){const adj=adjOf(-1),deg=adj.map(x=>x.length);let layer=[],rem=N;const gone=new Set();
+  for(let v=0;v<N;v++)if(deg[v]<=1)layer.push(v);
+  while(rem>2){const nx=[];for(const v of layer){gone.add(v);rem--;for(const u of adj[v])if(!gone.has(u)&&--deg[u]===1)nx.push(u)}layer=nx}
+  const pos={};let leafX=0,maxD=0;const size=(v,pa)=>1+adj[v].filter(u=>u!==pa).reduce((s,u)=>s+size(u,v),0);
+  (function place(v,pa,d){maxD=Math.max(maxD,d);const ch=adj[v].filter(u=>u!==pa).sort((a,b)=>size(a,v)-size(b,v));
+    if(!ch.length){pos[v]=[leafX++,d];return}ch.forEach(u=>place(u,v,d+1));pos[v]=[ch.reduce((s,u)=>s+pos[u][0],0)/ch.length,d]})(layer[0],-1,0);
+  const W=360,H=230,m=26,sx=leafX>1?(W-2*m)/(leafX-1):0,sy=maxD?(H-2*m)/maxD:0;
+  return{W,H,P:v=>[leafX>1?m+pos[v][0]*sx:W/2,maxD?m+pos[v][1]*sy:H/2]}}
+
+// every way to number the dots 1..8 so that the edge lengths are 1..7, each once
+function numberings(){const adj=adjOf(-1),order=[0],seen=new Set([0]),par=[-1];
+  for(let i=0;i<order.length;i++)for(const u of adj[order[i]])if(!seen.has(u)){seen.add(u);order.push(u);par.push(order[i])}
+  const f=Array(N).fill(0),out=[];let usedL=0,usedD=0;
+  (function go(i){if(i===N){out.push(f.slice());return}const v=order[i];
+    for(let l=1;l<=N;l++){if(usedL>>l&1)continue;let d=0;if(i){d=Math.abs(l-f[par[i]]);if(usedD>>d&1)continue}
+      f[v]=l;usedL|=1<<l;if(i)usedD|=1<<d;go(i+1);usedL&=~(1<<l);if(i)usedD&=~(1<<d)}f[v]=0})(0);
+  return out}
+function solve(){const[a,b]=E[cut],c=side();let[u,v]=pick;if(c[u]!=='A')[u,v]=[v,u];
+  const all=numberings();const hit=(f,d)=>(f[u]===f[a]+d&&f[v]===f[b]+d)||(f[u]===f[b]+d&&f[v]===f[a]+d);
+  sols=all.filter(f=>hit(f,1)||hit(f,-1)).map(f=>({f,a,b,u,v,d:hit(f,1)?1:-1}));
+  sols.total=all.length;sols.rehang=(u===a||v===b);si=0}
+
+function drawTree(){const host=document.getElementById('tree');host.textContent='';const{W,H,P}=layout(),c=side();
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'group','aria-label':'The tree'},host);
+  const f=sols.length?sols[si].f:null;
+  E.forEach(([x,y],i)=>{const[a,b]=[P(x),P(y)];
+    el('line',{class:'tedge'+(i===cut?' lift':c?' '+c[x]:''),x1:a[0],y1:a[1],x2:b[0],y2:b[1]},svg);
+    const h=el('line',{class:'thit',x1:a[0],y1:a[1],x2:b[0],y2:b[1],tabindex:0,role:'button','aria-label':'Unhook this edge'},svg);
+    const go=()=>{cut=i;pick=[-1,-1];sols=[];note='';render()};h.addEventListener('click',go);h.addEventListener('keydown',e=>{if(e.key==='Enter'){go()}})});
+  if(pick[0]>=0&&pick[1]>=0){const[a,b]=[P(pick[0]),P(pick[1])];el('line',{class:'newedge'+(sols.length?'':' no'),x1:a[0],y1:a[1],x2:b[0],y2:b[1]},svg)}
+  for(let v=0;v<N;v++){const[x,y]=P(v),pk=pick.includes(v);
+    const g=el('g',{class:'tnode',tabindex:cut>=0?0:-1,role:'button','aria-label':'Dot'},svg);
+    if(c&&c[v]==='B')el('rect',{class:'vtx B'+(pk?' pick':''),x:x-11,y:y-11,width:22,height:22},g);
+    else el('circle',{class:'vtx'+(c?' A':'')+(pk?' pick':''),cx:x,cy:y,r:11},g);
+    if(f){const t=el('text',{class:'tlab',x,y},g);t.textContent=f[v];t.style.fontSize='12px'}
+    const go=()=>{if(cut<0)return;const s=c[v]==='A'?0:1;pick[s]=v;sols=[];note='';
+      if(pick[0]>=0&&pick[1]>=0){const[a,b]=E[cut];if(pick[0]===a&&pick[1]===b){note='That is the edge you unhooked. Pick a different dot on at least one side.';pick=[-1,-1]}else solve()}render()};
+    g.addEventListener('click',go);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}})}
+}
+const DX=46,PX=30,RH=19,X=i=>PX+(i-1)*DX,Y=k=>18+(N-1-k)*RH,BASE=Y(0)+10;
+const staple=(x1,x2,y)=>`M${x1},${BASE-8} L${x1},${y} L${x2},${y} L${x2},${BASE-8}`;
+function drawLine(host,s){const W=PX*2+(N-1)*DX,H=BASE+30,c=side();
+  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'The numbering on the line, with the bracket that slides'},host);svg.style.minWidth='300px';
+  for(let k=1;k<N;k++){el('line',{class:'rail',x1:X(1),x2:X(N),y1:Y(k),y2:Y(k)},svg);el('text',{class:'raillab',x:6,y:Y(k)+3},svg).textContent=k}
+  const len=Math.abs(s.f[s.a]-s.f[s.b]),lo=Math.min(s.f[s.u],s.f[s.v]);
+  el('path',{class:'ghost ok',d:staple(X(lo),X(lo+len),Y(len)-5)},svg);
+  E.forEach(([x,y],i)=>{const p=Math.min(s.f[x],s.f[y]),k=Math.abs(s.f[x]-s.f[y]);
+    const g=el('g',{class:'br'+(i===cut?' lift':' '+c[x])},svg);g.style.cursor='default';el('path',{class:'bar',d:staple(X(p),X(p+k),Y(k))},g)});
+  const at=[];s.f.forEach((l,v)=>at[l]=v);
+  for(let i=1;i<=N;i++){if(c[at[i]]==='B')el('rect',{class:'vtx B',x:X(i)-6,y:BASE-6,width:12,height:12},svg);else el('circle',{class:'vtx A',cx:X(i),cy:BASE,r:6},svg);
+    el('text',{class:'vlab',x:X(i),y:BASE+24},svg).textContent=i}
+  for(const v of[s.u,s.v])el('circle',{class:'ring ok',cx:X(s.f[v]),cy:BASE,r:11},svg)}
+function drawAnswer(){const host=document.getElementById('answer');host.textContent='';
+  const pr=document.getElementById('prompt');
+  if(cut<0){pr.innerHTML='<strong>Step 1.</strong> Tap an edge of the tree to unhook it.';host.hidden=true;return}
+  if(pick[0]<0||pick[1]<0){pr.innerHTML=`<strong>Step 2.</strong> The tree is now two pieces, ${tag('A')} and ${tag('B')}. Tap one dot in each piece: the unhooked edge will be hooked between them. ${note}`;host.hidden=true;return}
+  host.hidden=false;const kind=sols.rehang?'a re-hang (one end stays)':'an edit where both ends move';
+  if(!sols.length){pr.innerHTML='<strong>Result.</strong> Tap other dots, or another edge, to try a different edit.';
+    host.innerHTML=`<h3>No numbering makes this one slide <span class="pill no">Not possible</span></h3><p>This tree can be numbered in ${sols.total} ways so that every bracket length is used once. In none of them is your edit a single step. It is ${kind}${sols.rehang?', so it would need the shortest bracket to pivot on the kept dot, with the three dots numbered in a row':''}.</p>`;return}
+  const s=sols[si],len=Math.abs(s.f[s.a]-s.f[s.b]);
+  pr.innerHTML='<strong>Result.</strong> The numbers on the dots are the numbering found.';
+  host.innerHTML=`<h3>One slide of the length-${len} bracket <span class="pill ok">Possible</span></h3><p>This is ${kind}. Number the dots as shown and the bracket on <span class="num">${Math.min(s.f[s.a],s.f[s.b])}</span> and <span class="num">${Math.max(s.f[s.a],s.f[s.b])}</span> slides one step ${s.d>0?'right':'left'}. ${sols.length} of this tree's ${sols.total} numberings allow it.</p><div class="rails" style="overflow-x:auto"></div><div class="controls"></div>`;
+  drawLine(host.querySelector('.rails'),s);const ctl=host.querySelector('.controls');
+  if(sols.length>1){const b=document.createElement('button');b.type='button';b.textContent=`Another numbering (${si+1} of ${sols.length})`;b.onclick=()=>{si=(si+1)%sols.length;render()};ctl.appendChild(b)}
+  const m=document.createElement('button');m.type='button';m.textContent='Make the edit';m.onclick=()=>{E[cut]=[s.u,s.v];cut=-1;pick=[-1,-1];sols=[];render()};ctl.appendChild(m)}
+function render(){drawTree();drawAnswer()}
+function load(key){shapeKey=key;E=(key==='rand'?randTree():SHAPES[key]).map(e=>e.slice());cut=-1;pick=[-1,-1];sols=[];note='';render()}
+document.getElementById('shape').onchange=e=>load(e.target.value);
+document.getElementById('again').onclick=()=>load(shapeKey);
+load('cat');cut=1;pick=[5,3];solve();render();
+</script>
