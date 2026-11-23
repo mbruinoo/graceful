@@ -688,8 +688,10 @@ Over *all* spiders (every multiset of leg lengths, `src/spiderskips.sh`):
 | 20 | 480 | 378 | 102 | 0 | 0 |
 | 24 | 1,243 | 888 | 343 | 12 | 0 |
 | 26 | 1,945 | 1,325 | 591 | 29 | 0 |
+| 28 | 2,996 | 1,930 | 990 | 76 | 0 |
+| 30 | 4,550 | 2,823 | 1,557 | 170 | 0 |
 
-**Observation (`n ≤ 26`, even `n` from 10).** Every spider can be built with
+**Observation (even `n` from 10 to 30).** Every spider can be built with
 at most two skips. Unlike general trees, there is no sign yet of the number
 growing. Whether all spiders are graceful is an open problem (known for at
 most 5 legs and for leg lengths differing by at most one; section 5), so a
