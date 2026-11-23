@@ -33,8 +33,8 @@ README. All programs are in `src/`; all numbers below come from the commands in 
   divide by `|Aut T|` at the end).
 * Checks made:
   * `growfam all n` reproduces the README totals 116, 412, 1764, 7888, 40220, 214600,
-    1275368 for `n = 7..13`, the least counts printed by `src/growcount.cpp` at
-    `n = 11, 12`, and the README anchor table (non-anchors 6, 19, 37, 84 at
+    1275368 for `n = 7..13`, the least non-caterpillar count printed by `src/scarce.py` at
+    `n = 12`, and the README anchor table (non-anchors 6, 19, 37, 84 at
     `n = 8, 10, 12, 14`; trees with no anchor leaf at `n = 10, 12, 15`).
   * `growfam` and `growcheck` give the same count for each of 992 trees: every tree on
     7..12 vertices and 19 family members up to 19 vertices.
@@ -168,7 +168,9 @@ budget. "None" would only ever be reported by a complete unrestricted search. Cl
 
 {{EXIST}}
 
-"Found within" is the first attempt that succeeded, not the least number of runs
+The classes overlap (for example `kbranch` with 2-vertex branches is `spider1` with legs
+of length 2, and some `kbranch` trees are spherically symmetric), so the total counts
+some trees more than once. "Found within" is the first attempt that succeeded, not the least number of runs
 needed, except that the columns for 1, 2 and 3 runs are preceded by complete searches
 with fewer runs whenever those stayed within budget. The hardest trees for this search
 were the spiders with about 30 legs of length 2 and their relatives (up to 166 million
@@ -219,7 +221,8 @@ python3 huntfam.py spider 28..30 2 | QUIET=1 ./growfam exist 3     # three runs,
 ```
 
 Files: `counts/` one file per family (name, n, count, search nodes, anchors per vertex
-orbit); `alltrees/` the exhaustive scans; `hubcores/` core index, count at `m = 20`,
+orbit); `alltrees/` the exhaustive scans; `REPORT.md` is built by `python3 hunt_report.py`
+from `REPORT.template.md`; `hubcores/` core index, count at `m = 20`,
 count at `m = 40`; `b3_n26_pieces.txt` the finished pieces of the B3 run.
 
 ## 9. Dead ends and limits

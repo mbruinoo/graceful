@@ -1,0 +1,16 @@
+n=26 runs<=3 holesize<=0 side=0 part 0/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 1/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 2/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 3/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 4/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 5/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 6/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 7/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 8/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 9/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 10/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 11/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 12/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 13/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 14/64 trees=4371773  none=0 unresolved=0
+n=26 runs<=3 holesize<=0 side=0 part 15/64 trees=4371773  none=0 unresolved=0
