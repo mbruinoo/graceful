@@ -709,7 +709,8 @@ For every spider on `n ≤ 21` vertices a split exists, except:
   (`(3,3,1)`, `(5,5,1)`, `(6,5,1)`, …); these are caterpillars and have
   staircases;
 * `S(3,3,3)`;
-* `S(2,2,…,2)` with `k = 5, 8, 11` legs.
+* `S(2,2,…,2)` with `k = 5` and `k = 8` legs (and `k = 11`, on 23 vertices,
+  outside the fully checked range).
 
 **Lemma 11 (an arithmetic obstruction; proved).** The spider with `k` legs of
 length 2 has no zigzag split when `k ≡ 2 (mod 3)`.
