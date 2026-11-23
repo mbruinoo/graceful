@@ -1,2 +1,9 @@
 {"n": 23, "kind": "free", "spiders": 990, "with_deal": 990, "none": []}
    0s
+{"n": 23, "kind": "zig", "spiders": 990, "with_deal": 989, "none": ["S(2,2,2,2,2,2,2,2,2,2,2)"]}
+   197s
+{"n": 24, "kind": "free", "spiders": 1243, "with_deal": 1243, "none": []}
+   0s
+   600s
+{"n": 25, "kind": "free", "spiders": 1562, "with_deal": 1562, "none": []}
+   1s

@@ -1,0 +1,1 @@
+gen n=23: 14828074 trees, known 14828074, distinct codes 14828074: OK
