@@ -1,0 +1,65 @@
+R=2 H=-1 SIDE=0 n=16 result=NONE(exhaustive) nodes=1600
+R=2 H=-1 SIDE=0 n=16 result=NONE(exhaustive) nodes=652
+R=3 H=-1 SIDE=0 n=16 result=FOUND nodes=28 labels: 1 16 2 15 4 11 8 13 3 12 6 14 5 10 7 9
+R=3 H=-1 SIDE=0 n=16 result=FOUND nodes=197 labels: 1 16 4 14 13 6 15 2 10 7 3 12 5 11 9 8
+R=2 H=-1 SIDE=0 n=18 result=NONE(exhaustive) nodes=4950
+R=3 H=-1 SIDE=0 n=18 result=FOUND nodes=2348 labels: 1 18 2 12 11 10 3 7 6 5 4 17 16 15 8 14 9 13
+R=0 H=2 SIDE=0 n=22 result=NONE(exhaustive) nodes=7232
+R=0 H=3 SIDE=0 n=22 result=FOUND nodes=392 labels: 1 22 4 16 7 15 14 13 12 11 10 21 2 19 5 6 8 9 17 20 18 3
+R=2 H=-1 SIDE=0 n=22 result=FOUND nodes=5442 labels: 18 3 17 4 16 5 6 11 12 14 15 2 19 1 22 21 20 9 8 7 10 13
+R=3 H=-1 SIDE=0 n=22 result=FOUND nodes=72 labels: 1 22 2 21 4 14 13 12 10 9 8 19 3 18 5 6 7 11 15 20 17 16
+n=4 mode=zigzag: spiders=1 deals(found, replayed)=1 NONE=0
+n=5 mode=zigzag: spiders=2 deals(found, replayed)=2 NONE=0
+n=6 mode=zigzag: spiders=4 deals(found, replayed)=3 NONE=1 (2,2,1)
+n=7 mode=zigzag: spiders=7 deals(found, replayed)=7 NONE=0
+n=8 mode=zigzag: spiders=11 deals(found, replayed)=10 NONE=1 (3,3,1)
+n=9 mode=zigzag: spiders=17 deals(found, replayed)=17 NONE=0
+n=10 mode=zigzag: spiders=25 deals(found, replayed)=24 NONE=1 (3,3,3)
+n=11 mode=zigzag: spiders=36 deals(found, replayed)=35 NONE=1 (2,2,2,2,2)
+n=12 mode=zigzag: spiders=50 deals(found, replayed)=49 NONE=1 (5,5,1)
+n=13 mode=zigzag: spiders=70 deals(found, replayed)=69 NONE=1 (6,5,1)
+n=14 mode=zigzag: spiders=94 deals(found, replayed)=92 NONE=2 (7,5,1) (6,6,1)
+n=15 mode=zigzag: spiders=127 deals(found, replayed)=127 NONE=0
+n=16 mode=zigzag: spiders=168 deals(found, replayed)=166 NONE=2 (8,6,1) (7,7,1)
+n=17 mode=zigzag: spiders=222 deals(found, replayed)=220 NONE=2 (8,7,1) (2,2,2,2,2,2,2,2)
+n=18 mode=zigzag: spiders=288 deals(found, replayed)=285 NONE=3 (13,3,1) (11,5,1) (9,7,1)
+n=19 mode=zigzag: spiders=375 deals(found, replayed)=375 NONE=0
+n=20 mode=zigzag: spiders=480 deals(found, replayed)=480 NONE=0
+n=21 mode=zigzag: spiders=616 deals(found, replayed)=613 NONE=3 (17,2,1) (16,3,1) (11,8,1)
+n=8 mode=level: spiders=11 deals(found, replayed)=8 NONE=3 (3,3,1) (2,2,2,1) (2,2,1,1,1)
+n=18 mode=level: spiders=288 deals(found, replayed)=159 NONE=129
+n=8 mode=first: spiders=11 deals(found, replayed)=8 NONE=3 (3,3,1) (2,2,2,1) (2,2,1,1,1)
+n=20 mode=first: spiders=480 deals(found, replayed)=454 NONE=26
+n=4 mode=free: spiders=1 deals(found, replayed)=1 NONE=0
+n=5 mode=free: spiders=2 deals(found, replayed)=2 NONE=0
+n=6 mode=free: spiders=4 deals(found, replayed)=4 NONE=0
+n=7 mode=free: spiders=7 deals(found, replayed)=7 NONE=0
+n=8 mode=free: spiders=11 deals(found, replayed)=11 NONE=0
+n=9 mode=free: spiders=17 deals(found, replayed)=17 NONE=0
+n=10 mode=free: spiders=25 deals(found, replayed)=25 NONE=0
+n=11 mode=free: spiders=36 deals(found, replayed)=36 NONE=0
+n=12 mode=free: spiders=50 deals(found, replayed)=50 NONE=0
+n=13 mode=free: spiders=70 deals(found, replayed)=70 NONE=0
+n=14 mode=free: spiders=94 deals(found, replayed)=94 NONE=0
+n=15 mode=free: spiders=127 deals(found, replayed)=127 NONE=0
+n=16 mode=free: spiders=168 deals(found, replayed)=168 NONE=0
+n=17 mode=free: spiders=222 deals(found, replayed)=222 NONE=0
+n=18 mode=free: spiders=288 deals(found, replayed)=288 NONE=0
+n=19 mode=free: spiders=375 deals(found, replayed)=375 NONE=0
+n=20 mode=free: spiders=480 deals(found, replayed)=480 NONE=0
+n=21 mode=free: spiders=616 deals(found, replayed)=616 NONE=0
+n=22 mode=free: spiders=781 deals(found, replayed)=781 NONE=0
+n=23 mode=free: spiders=990 deals(found, replayed)=990 NONE=0
+n=24 mode=free: spiders=1243 deals(found, replayed)=1243 NONE=0
+n=25 mode=free: spiders=1562 deals(found, replayed)=1562 NONE=0
+n=26 mode=free: spiders=1945 deals(found, replayed)=1945 NONE=0
+n=27 mode=free: spiders=2422 deals(found, replayed)=2422 NONE=0
+n=28 mode=free: spiders=2996 deals(found, replayed)=2996 NONE=0
+n=29 mode=free: spiders=3703 deals(found, replayed)=3703 NONE=0
+n=30 mode=free: spiders=4550 deals(found, replayed)=4550 NONE=0
+n=31 mode=free: spiders=5588 deals(found, replayed)=5588 NONE=0
+NONE 19 0 1 0 9 0 14 1 2 2 3 3 4 4 5 5 6 6 7 6 8 9 10 10 11 11 12 11 13 14 15 15 16 15 17 15 18
+NONE 19 0 1 0 6 0 11 0 16 1 2 2 3 3 4 4 5 6 7 7 8 8 9 9 10 11 12 12 13 13 14 14 15 16 17 17 18
+NONE 19 0 1 0 7 0 13 1 2 2 3 3 4 3 5 3 6 7 8 8 9 9 10 9 11 9 12 13 14 14 15 15 16 15 17 15 18
+NONE 19 0 1 0 6 0 11 0 16 1 2 1 3 1 4 1 5 6 7 6 8 6 9 6 10 11 12 11 13 11 14 11 15 16 17 16 18
+n=19 R=2 H=-1 SIDE=0 part 0/1: trees generated=317955 (matches A000055), searched here: found(verified)=317951 NONE=4 aborted=0 maxnodes=34146

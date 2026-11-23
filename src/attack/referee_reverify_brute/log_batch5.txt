@@ -1,0 +1,67 @@
+n=4 R=0 H=-1 SIDE=0 placements=4 shapes=2
+anchors n=4: vertices=8 nonanchors=0 trees_all_anchor=2 of 2; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=0
+n=5 R=0 H=-1 SIDE=0 placements=12 shapes=3
+anchors n=5: vertices=15 nonanchors=0 trees_all_anchor=3 of 3; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=0
+n=6 R=0 H=-1 SIDE=0 placements=32 shapes=6
+  non-anchor: tree e98 vertex deg 2 rootedcode e98
+anchors n=6: vertices=36 nonanchors=1 trees_all_anchor=5 of 6; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=2
+n=7 R=0 H=-1 SIDE=0 placements=116 shapes=11
+  non-anchor: tree 3a64 vertex deg 1 rootedcode 3d30
+  non-anchor: tree 3c70 vertex deg 2 rootedcode 3c70
+  non-anchor: tree 3c70 vertex deg 2 rootedcode 3e18
+  non-anchor: tree 3c70 vertex deg 2 rootedcode 3e18
+anchors n=7: vertices=77 nonanchors=4 trees_all_anchor=9 of 11; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=2
+n=8 R=0 H=-1 SIDE=0 placements=412 shapes=23
+  non-anchor: tree e998 vertex deg 1 rootedcode fa60
+  non-anchor: tree e998 vertex deg 1 rootedcode fa60
+  non-anchor: tree ea68 vertex deg 2 rootedcode ea68
+  non-anchor: tree ea98 vertex deg 2 rootedcode ea98
+  non-anchor: tree f1c4 vertex deg 1 rootedcode f8e0
+  non-anchor: tree f270 vertex deg 1 rootedcode fc30
+anchors n=8: vertices=184 nonanchors=6 trees_all_anchor=18 of 23; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=2
+n=9 R=0 H=-1 SIDE=0 placements=1764 shapes=47
+anchors n=9: vertices=423 nonanchors=11 trees_all_anchor=40 of 47; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=2
+n=10 R=0 H=-1 SIDE=0 placements=7888 shapes=106
+  tree with no anchor leaf: f1c70
+anchors n=10: vertices=1060 nonanchors=19 trees_all_anchor=95 of 106; trees_with_no_anchor=0; trees_with_no_anchor_leaf=1; max degree of a non-anchor=2
+n=11 R=0 H=-1 SIDE=0 placements=40220 shapes=235
+anchors n=11: vertices=2585 nonanchors=21 trees_all_anchor=218 of 235; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=3
+n=12 R=0 H=-1 SIDE=0 placements=214600 shapes=551
+  tree with no anchor leaf: f51c70
+anchors n=12: vertices=6612 nonanchors=37 trees_all_anchor=525 of 551; trees_with_no_anchor=0; trees_with_no_anchor_leaf=1; max degree of a non-anchor=2
+n=13 R=0 H=-1 SIDE=0 placements=1275368 shapes=1301
+anchors n=13: vertices=16913 nonanchors=54 trees_all_anchor=1258 of 1301; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=2
+n=14 R=0 H=-1 SIDE=0 placements=7926160 shapes=3159
+anchors n=14: vertices=44226 nonanchors=84 trees_all_anchor=3092 of 3159; trees_with_no_anchor=0; trees_with_no_anchor_leaf=0; max degree of a non-anchor=3
+n=8 R=1 H=-1 SIDE=0 placements=184 shapes=23
+n=9 R=1 H=-1 SIDE=0 placements=464 shapes=46
+n=10 R=1 H=-1 SIDE=0 placements=1152 shapes=104
+n=11 R=1 H=-1 SIDE=0 placements=2976 shapes=230
+n=12 R=1 H=-1 SIDE=0 placements=7456 shapes=531
+n=13 R=1 H=-1 SIDE=0 placements=18624 shapes=1221
+n=14 R=1 H=-1 SIDE=0 placements=47808 shapes=2926
+n=15 R=1 H=-1 SIDE=0 placements=120064 shapes=7017
+n=18 R=1 H=-1 SIDE=0 placements=1931008 shapes=103980
+n=9 R=0 H=1 SIDE=0 placements=1348 shapes=47
+n=10 R=0 H=1 SIDE=0 placements=4240 shapes=105
+n=11 R=0 H=1 SIDE=0 placements=13904 shapes=235
+n=12 R=0 H=1 SIDE=0 placements=42020 shapes=551
+n=13 R=0 H=1 SIDE=0 placements=133988 shapes=1300
+n=14 R=0 H=1 SIDE=0 placements=404012 shapes=3158
+n=18 R=0 H=1 SIDE=0 placements=33195924 shapes=123817
+n=9 R=0 H=2 SIDE=1 placements=1524 shapes=47
+n=10 R=0 H=2 SIDE=1 placements=5672 shapes=106
+n=11 R=0 H=2 SIDE=1 placements=21228 shapes=235
+n=12 R=0 H=2 SIDE=1 placements=80736 shapes=551
+n=13 R=0 H=2 SIDE=1 placements=311284 shapes=1301
+n=14 R=0 H=2 SIDE=1 placements=1183056 shapes=3159
+n=15 R=0 H=2 SIDE=1 placements=4547360 shapes=7740
+n=9 R=0 H=2 SIDE=0 placements=1672 shapes=47
+n=9 R=0 H=2 SIDE=2 placements=1672 shapes=47
+n=9 R=0 H=2 SIDE=3 placements=1416 shapes=47
+n=10 R=0 H=2 SIDE=0 placements=6884 shapes=106
+n=10 R=0 H=2 SIDE=2 placements=6192 shapes=106
+n=10 R=0 H=2 SIDE=3 placements=4728 shapes=105
+n=11 R=0 H=2 SIDE=0 placements=28788 shapes=235
+n=11 R=0 H=2 SIDE=2 placements=23556 shapes=235
+n=11 R=0 H=2 SIDE=3 placements=17220 shapes=235

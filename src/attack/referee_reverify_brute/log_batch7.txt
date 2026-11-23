@@ -1,0 +1,17 @@
+n=17 R=3 H=-1 SIDE=0 part 0/1: trees generated=48629 (matches A000055), searched here: found(verified)=48629 NONE=0 aborted=0 maxnodes=60162
+n=18 R=3 H=-1 SIDE=0 part 0/1: trees generated=123867 (matches A000055), searched here: found(verified)=123867 NONE=0 aborted=0 maxnodes=838807
+n=4 R=0 H=2 SIDE=0 part 0/1: trees generated=2 (matches A000055), searched here: found(verified)=2 NONE=0 aborted=0 maxnodes=2
+n=5 R=0 H=2 SIDE=0 part 0/1: trees generated=3 (matches A000055), searched here: found(verified)=3 NONE=0 aborted=0 maxnodes=6
+n=6 R=0 H=2 SIDE=0 part 0/1: trees generated=6 (matches A000055), searched here: found(verified)=6 NONE=0 aborted=0 maxnodes=26
+n=7 R=0 H=2 SIDE=0 part 0/1: trees generated=11 (matches A000055), searched here: found(verified)=11 NONE=0 aborted=0 maxnodes=39
+n=8 R=0 H=2 SIDE=0 part 0/1: trees generated=23 (matches A000055), searched here: found(verified)=23 NONE=0 aborted=0 maxnodes=69
+n=9 R=0 H=2 SIDE=0 part 0/1: trees generated=47 (matches A000055), searched here: found(verified)=47 NONE=0 aborted=0 maxnodes=57
+n=10 R=0 H=2 SIDE=0 part 0/1: trees generated=106 (matches A000055), searched here: found(verified)=106 NONE=0 aborted=0 maxnodes=220
+n=11 R=0 H=2 SIDE=0 part 0/1: trees generated=235 (matches A000055), searched here: found(verified)=235 NONE=0 aborted=0 maxnodes=275
+n=12 R=0 H=2 SIDE=0 part 0/1: trees generated=551 (matches A000055), searched here: found(verified)=551 NONE=0 aborted=0 maxnodes=733
+n=13 R=0 H=2 SIDE=0 part 0/1: trees generated=1301 (matches A000055), searched here: found(verified)=1301 NONE=0 aborted=0 maxnodes=1052
+n=14 R=0 H=2 SIDE=0 part 0/1: trees generated=3159 (matches A000055), searched here: found(verified)=3159 NONE=0 aborted=0 maxnodes=4402
+n=15 R=0 H=2 SIDE=0 part 0/1: trees generated=7741 (matches A000055), searched here: found(verified)=7741 NONE=0 aborted=0 maxnodes=4020
+n=16 R=0 H=2 SIDE=0 part 0/1: trees generated=19320 (matches A000055), searched here: found(verified)=19320 NONE=0 aborted=0 maxnodes=20515
+n=17 R=0 H=2 SIDE=0 part 0/1: trees generated=48629 (matches A000055), searched here: found(verified)=48629 NONE=0 aborted=0 maxnodes=21398
+n=18 R=0 H=2 SIDE=0 part 0/1: trees generated=123867 (matches A000055), searched here: found(verified)=123867 NONE=0 aborted=0 maxnodes=93466

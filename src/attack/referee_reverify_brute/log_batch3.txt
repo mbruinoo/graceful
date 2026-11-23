@@ -1,0 +1,8 @@
+n=19 R=3 H=-1 SIDE=0 part 0/1: trees generated=317955 (matches A000055), searched here: found(verified)=317955 NONE=0 aborted=0 maxnodes=455861
+n=20 R=3 H=-1 SIDE=0 part 0/1: trees generated=823065 (matches A000055), searched here: found(verified)=823065 NONE=0 aborted=0 maxnodes=6701464
+n=21 R=3 H=-1 SIDE=0 part 0/1: trees generated=2144505 (matches A000055), searched here: found(verified)=2144505 NONE=0 aborted=0 maxnodes=3611633
+n=22 R=3 H=-1 SIDE=0 part 0/1: trees generated=5623756 (matches A000055), searched here: found(verified)=5623756 NONE=0 aborted=0 maxnodes=44811282
+./batch3.sh: 3: ./solve: not found
+./batch3.sh: 3: ./solve: not found
+./batch3.sh: 3: ./solve: not found
+./batch3.sh: 3: ./solve: not found

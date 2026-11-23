@@ -1,0 +1,16 @@
+n=9 rule=R2 placements=1440 shapes=47
+n=11 rule=R2 placements=18772 shapes=235
+n=12 rule=R2 placements=65500 shapes=551
+n=13 rule=R2 placements=242224 shapes=1301
+n=14 rule=R2 placements=833892 shapes=3159
+n=15 rule=R2 placements=2993480 shapes=7741
+n=16 rule=R2 placements=10254980 shapes=19318
+given tree drawn: NO
+n=16 rule=R2 placements=10254980 shapes=19318
+given tree drawn: NO
+n=15 rule=SAME placements=4547360 shapes=7740
+n=17 rule=EACH placements=54226312 shapes=48629
+
+real	1m4.948s
+user	1m4.116s
+sys	0m0.012s

@@ -1,0 +1,59 @@
+n=4 rule=ALL placements=4 shapes=2
+anchors n=4: trees 2 vertices 8 non-anchors 0 all-anchor trees 2 no-anchor trees 0 maxdeg-nonanchor 0 no-anchor-leaf trees 0 rooted shapes 4
+n=5 rule=ALL placements=12 shapes=3
+anchors n=5: trees 3 vertices 15 non-anchors 0 all-anchor trees 3 no-anchor trees 0 maxdeg-nonanchor 0 no-anchor-leaf trees 0 rooted shapes 9
+n=6 rule=ALL placements=32 shapes=6
+  non-anchors v4(deg2) in tree 2-3 2-4 1-4 1-5 1-6
+anchors n=6: trees 6 vertices 36 non-anchors 1 all-anchor trees 5 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 0 rooted shapes 19
+n=7 rule=ALL placements=116 shapes=11
+  non-anchors v2(deg1) in tree 3-4 3-5 2-5 1-5 1-6 1-7
+  non-anchors v2(deg2) v5(deg2) v6(deg2) in tree 3-4 3-5 2-5 2-6 1-6 1-7
+anchors n=7: trees 11 vertices 77 non-anchors 4 all-anchor trees 9 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 0 rooted shapes 45
+n=8 rule=ALL placements=412 shapes=23
+anchors n=8: trees 23 vertices 184 non-anchors 6 all-anchor trees 18 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 0 rooted shapes 110
+n=9 rule=ALL placements=1764 shapes=47
+anchors n=9: trees 47 vertices 423 non-anchors 11 all-anchor trees 40 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 0 rooted shapes 277
+n=10 rule=ALL placements=7888 shapes=106
+  no anchor leaf: degrees 3 2 2 2 2 2 2 1 1 1  edges 3-4 5-7 7-10 2-6 4-9 2-8 1-8 1-9 1-10
+anchors n=10: trees 106 vertices 1060 non-anchors 19 all-anchor trees 95 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 1 rooted shapes 706
+n=11 rule=ALL placements=40220 shapes=235
+anchors n=11: trees 235 vertices 2585 non-anchors 21 all-anchor trees 218 no-anchor trees 0 maxdeg-nonanchor 3 no-anchor-leaf trees 0 rooted shapes 1824
+n=12 rule=ALL placements=214600 shapes=551
+  no anchor leaf: degrees 4 3 2 2 2 2 2 1 1 1 1 1  edges 3-4 7-9 2-5 2-6 7-12 2-8 4-11 2-10 1-10 1-11 1-12
+anchors n=12: trees 551 vertices 6612 non-anchors 37 all-anchor trees 525 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 1 rooted shapes 4734
+n=13 rule=ALL placements=1275368 shapes=1301
+anchors n=13: trees 1301 vertices 16913 non-anchors 54 all-anchor trees 1258 no-anchor trees 0 maxdeg-nonanchor 2 no-anchor-leaf trees 0 rooted shapes 12436
+n=14 rule=ALL placements=7926160 shapes=3159
+anchors n=14: trees 3159 vertices 44226 non-anchors 84 all-anchor trees 3092 no-anchor trees 0 maxdeg-nonanchor 3 no-anchor-leaf trees 0 rooted shapes 32899
+n=5 rule=R1 placements=12 shapes=3
+n=6 rule=R1 placements=28 shapes=6
+n=7 rule=R1 placements=72 shapes=11
+n=8 rule=R1 placements=184 shapes=23
+n=9 rule=R1 placements=464 shapes=46
+n=11 rule=R1 placements=2976 shapes=230
+n=12 rule=R1 placements=7456 shapes=531
+n=13 rule=R1 placements=18624 shapes=1221
+n=14 rule=R1 placements=47808 shapes=2926
+n=15 rule=R1 placements=120064 shapes=7017
+n=9 rule=H1 placements=1348 shapes=47
+n=11 rule=H1 placements=13904 shapes=235
+n=12 rule=H1 placements=42020 shapes=551
+n=13 rule=H1 placements=133988 shapes=1300
+n=14 rule=H1 placements=404012 shapes=3158
+n=15 rule=H1 placements=1233600 shapes=7737
+n=16 rule=H1 placements=3717132 shapes=19309
+n=8 rule=SAME placements=412 shapes=23
+n=9 rule=SAME placements=1524 shapes=47
+n=11 rule=SAME placements=21228 shapes=235
+n=12 rule=SAME placements=80736 shapes=551
+n=13 rule=SAME placements=311284 shapes=1301
+n=14 rule=SAME placements=1183056 shapes=3159
+n=15 rule=SAME placements=4547360 shapes=7740
+n=13 rule=EACHLEFT placements=213712 shapes=1301
+n=11 rule=EACHLEFT placements=17220 shapes=235
+n=11 rule=EACH placements=23556 shapes=235
+n=12 rule=EACH placements=86484 shapes=551
+n=13 rule=EACH placements=320724 shapes=1301
+n=14 rule=EACH placements=1149884 shapes=3159
+n=15 rule=EACH placements=4205424 shapes=7741
+n=16 rule=EACH placements=15167208 shapes=19320

@@ -1,0 +1,6 @@
+n=18 rule=EACH placements=195855332 shapes=123866
+given tree drawn: NO
+
+real	4m5.939s
+user	4m3.700s
+sys	0m0.020s

@@ -1,0 +1,16 @@
+Referee (proof-reading lens) for src/attack/reverify. Independent programs: ref_enum.cpp (pure enumeration),
+ref_tree.cpp / ref_tree70.cpp (tree-by-tree search), ref_spider.cpp (deals), ref_cert.py, ref_spidertrees.py.
+Confirmed here: placement counts n=4..14; anchor table n=4..14; R1/R2/H1/SAME/EACH/EACHLEFT counts (out_small, out_r2);
+tree search n=16..19 (out_tree_*), n=20 R2 = 4 NONE, n=20 H2 = 0 NONE, n=21 R2 (see out_tree_21_R2.txt);
+EACH at n=18 misses exactly one tree by enumeration and by tree search; holes.cpp line 21-22 takes the FIRST longest run as main run.
+Spiders: free n<=20 all OK; zigzag failures n<=21 exactly as claimed; level 3/11 (n=8), 129/288 (n=18); first 3/11, 26/480.
+Equal-leg skip table: all 30 entries; all-spider rows n=16, n=20 confirmed; n=24 only 'need more = 0' (R1/H1 timed out at 250 s).
+Not re-run here: R3/H2 all trees n=20(R3),21,22; spiders free n=21..31.
+Second pass (ref_tree_sym.cpp = ref_tree.cpp + interchangeable same-shape unlabelled branches; agrees with ref_tree at n=16 on R1/R2/H1):
+n=21 R2: 10 NONE (9 by ref_tree in chunks; the 10th, S(2^10), by ref_tree_sym; ref_tree timed out on it) -> out_tree_21_R2.txt + S(2^10).
+n=20 H2: 0 NONE (ref_tree and ref_tree_sym). n=21 H2: 0 NONE of 2,144,505 (ref_tree_sym, chunks).
+n=22 H2: exactly 1 NONE of 5,623,756 (ref_tree_sym, six chunks, line counts sum to 5,623,756); it is the README section 11 tree.
+H2 implies R3, and the 22-vertex tree has a verified R3 (indeed R2) certificate, so R3 holds for all trees n<=22.
+Spiders: free deals n=21..31 all found and replayed (5,588 at n=31). All-spider n=24 row 888/343/12/0 (ref_tree_sym R1 355 NONE, H1 12 NONE, H2 0).
+22-vertex tree: H2 NONE, H3 OK, R3 OK, R2 certificate of the claim verified by ref_cert.py.
+holes.cpp SIDE==1 uses bi = FIRST longest run, so three isolated singles are always rejected: confirms the claimant's diagnosis of README sec 11 table 2 row 3.
