@@ -1,0 +1,12 @@
+hubspider(4,1,1) n=9 count=14 nodes=168 hits=0 t=0.0s non_anchors=0/9 orbits[deg x size: placements with it at label 1]: [4 x1: 5] [2 x4: 7] [1 x4: 2]
+hubspider(4,1,2) n=13 count=120 nodes=3192 hits=70 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [4 x1: 57] [3 x4: 60] [1 x8: 3]
+hubspider(4,1,3) n=17 count=840 nodes=32014 hits=1901 t=0.2s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [4 x1: 222] [4 x4: 420] [1 x12: 198]
+hubspider(4,1,4) n=21 count=9844 nodes=189426 hits=17468 t=0.8s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 4092] [5 x4: 4922] [1 x16: 830]
+hubspider(4,1,5) n=25 count=32418 nodes=794353 hits=90729 t=1.5s non_anchors=0/25 orbits[deg x size: placements with it at label 1]: [4 x1: 7112] [6 x4: 16209] [1 x20: 9097]
+hubspider(4,1,6) n=29 count=407604 nodes=2683778 hits=341279 t=3.6s non_anchors=0/29 orbits[deg x size: placements with it at label 1]: [4 x1: 146556] [7 x4: 203802] [1 x24: 57246]
+hubspider(4,1,7) n=33 count=2717590 nodes=8190140 hits=1021395 t=10.6s non_anchors=0/33 orbits[deg x size: placements with it at label 1]: [4 x1: 475166] [8 x4: 1358795] [1 x28: 883629]
+hubspider(4,1,8) n=37 count=23602410 nodes=25196343 hits=2594966 t=31.3s non_anchors=0/37 orbits[deg x size: placements with it at label 1]: [4 x1: 9528700] [9 x4: 11801205] [1 x32: 2272505]
+hubspider(4,1,9) n=41 count=140287756 nodes=91169326 hits=4855453 t=99.5s non_anchors=0/41 orbits[deg x size: placements with it at label 1]: [4 x1: 31499198] [10 x4: 70143878] [1 x36: 38644680]
+hubspider(4,1,10) n=45 count=ABORTED(budget) nodes=200000001 t=201.5s
+hubspider(4,1,11) n=49 count=ABORTED(budget) nodes=200000001 t=193.2s
+# stopped after 2 trees over budget in a row

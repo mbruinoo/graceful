@@ -2,8 +2,9 @@
 # Family survey for results/counterexample-hunt: exact numbers of growth placements, family by family.
 # Usage: ./hunt_survey.sh STREAM   (STREAM = 1, 2 or 3; run the three in parallel)   needs ./growfam
 O=../results/counterexample-hunt/counts; mkdir -p $O
+# nodes per tree: the committed files used 200000000 for the first 16 families and 40000000 after
 B=${COUNTBUDGET:-200000000}; export COUNTBUDGET=$B; export TABLE=${TABLE:-23}; export ANCHORS=1 STOPABORT=2
-run(){ out=$1; shift; python3 huntfam.py "$@" | ./growfam count > $O/$out.txt; }
+run(){ out=$1; shift; [ -s $O/$out.txt ] && return; python3 huntfam.py "$@" | ./growfam count > $O/$out.tmp && mv $O/$out.tmp $O/$out.txt; }   # finished families are skipped on a re-run
 case $1 in
 1) for k in 3 4 5 6 8; do run spider_${k}_L spider $k 1..40 maxn=49; done; run spider_k_2 spider 3..40 2; run spider_k_3 spider 3..40 3
    run comb_p_2 comb 3..20 2; run comb_p_3 comb 3..14 3

@@ -6,3 +6,8 @@ hubspider(3,3,5) n=25 count=2894 nodes=409710 hits=7230 t=0.8s non_anchors=0/25 
 hubspider(3,3,6) n=28 count=9156 nodes=1438742 hits=32836 t=1.4s non_anchors=0/28 orbits[deg x size: placements with it at label 1]: [3 x1: 1168] [2 x3: 2856] [2 x3: 2543] [7 x3: 1722] [1 x18: 867]
 hubspider(3,3,7) n=31 count=24480 nodes=4593378 hits=128329 t=4.3s non_anchors=0/31 orbits[deg x size: placements with it at label 1]: [3 x1: 2324] [2 x3: 7771] [2 x3: 7650] [8 x3: 4469] [1 x21: 2266]
 hubspider(3,3,8) n=34 count=77282 nodes=13464463 hits=411812 t=13.2s non_anchors=0/34 orbits[deg x size: placements with it at label 1]: [3 x1: 7672] [2 x3: 27166] [2 x3: 24689] [9 x3: 11475] [1 x24: 6280]
+hubspider(3,3,9) n=37 count=237798 nodes=37760308 hits=946192 t=39.3s non_anchors=0/37 orbits[deg x size: placements with it at label 1]: [3 x1: 21662] [2 x3: 90625] [2 x3: 81527] [10 x3: 28274] [1 x27: 15710]
+hubspider(3,3,10) n=40 count=792532 nodes=105738839 hits=1314474 t=119.5s non_anchors=0/40 orbits[deg x size: placements with it at label 1]: [3 x1: 76861] [2 x3: 330214] [2 x3: 282067] [11 x3: 66052] [1 x30: 37338]
+hubspider(3,3,11) n=43 count=ABORTED(budget) nodes=200000001 t=208.0s
+hubspider(3,3,12) n=46 count=ABORTED(budget) nodes=200000001 t=232.2s
+# stopped after 2 trees over budget in a row

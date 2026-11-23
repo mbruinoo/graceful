@@ -1,0 +1,5 @@
+hubspider(4,2,1) n=13 count=138 nodes=3030 hits=70 t=0.0s non_anchors=0/13 orbits[deg x size: placements with it at label 1]: [4 x1: 47] [2 x4: 65] [2 x4: 22] [1 x4: 4]
+hubspider(4,2,2) n=17 count=960 nodes=36963 hits=1024 t=0.2s non_anchors=0/17 orbits[deg x size: placements with it at label 1]: [4 x1: 398] [2 x4: 449] [3 x4: 82] [1 x8: 31]
+hubspider(4,2,3) n=21 count=8342 nodes=334510 hits=17263 t=1.0s non_anchors=0/21 orbits[deg x size: placements with it at label 1]: [4 x1: 2702] [2 x4: 3609] [4 x4: 1469] [1 x12: 562]
+hubspider(4,2,4) n=25 count=58030 nodes=2206000 hits=166440 t=2.7s non_anchors=0/25 orbits[deg x size: placements with it at label 1]: [4 x1: 21155] [2 x4: 26126] [5 x4: 7860] [1 x16: 2889]
+hubspider(4,2,5) n=29 count=508120 nodes=11033071 hits=1012944 t=12.0s non_anchors=0/29 orbits[deg x size: placements with it at label 1]: [4 x1: 157027] [2 x4: 212637] [6 x4: 97033] [1 x20: 41423]
