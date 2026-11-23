@@ -46,7 +46,7 @@ Negative results are kept, not deleted (README §7).
 *right slide* (one step along a rail, tree before and after) · *star* (all
 brackets at position 1) · *staircase* · *growth placement* (longest-first,
 one fresh vertex per bracket) · *anchor* (a vertex that can carry label 1 in
-a growth placement) · *island* (connected component of the slide graph; in §11 also a block of used labels between the two end blocks) · *run* (maximal interval of unused labels) · *clean cut*, *gap split* (§9–10).
+a growth placement) · *island* (connected component of the slide graph; in §11 also a block of used labels between the two end blocks) · *run* (maximal interval of unused labels) · *clean cut*, *gap split* (§9–10) · *deal*, *zigzag deal* (§12–13: spiders with the centre at label 0).
 Use "spider" in mathematical text; "starfish" is the author's name for it.
 
 ## Layout
@@ -70,6 +70,7 @@ g++ -O2 -o interval interval.cpp && ./interval 12
 g++ -O2 -o runsolve_gen runsolve_gen.cpp && ./runsolve_gen 18 3   # three-run growth placement for every tree (built-in generator)
 g++ -O2 -o skipmin skipmin.cpp && ./skipmin 14 1               # least number of skips for every tree
 g++ -O2 -o spiderzig spiderzig.cpp && ./spiderzig 16            # zigzag splits for all spiders
+FREE=1 ./spiderzig 20                                         # valid deals (centre-anchored growth placements) for all spiders
 python3 export_atlas.py && python3 ../web/build.py            # rebuild web/index.html
 ```
 

@@ -28,3 +28,5 @@ src/s1_*.txt
 src/skipmin
 src/spiderzig
 src/spiderskips_big.txt
+src/derive_spider
+src/spidercentre_*.txt

@@ -734,7 +734,58 @@ get the same second label). The builds found by search for equal legs
 interleave the legs in a regular but not purely rotating order
 (`src/spidershow.py` prints them). No explicit rule has been found.
 
-## 13. Checking
+## 13. The spider dealing problem
+
+**Setting.** Put a spider's centre at label 0, labels `0..m`. A growth
+placement anchored at the centre is then a *deal*: hand the numbers
+`m, m−1, …, 1` to the legs, one at a time, each leg receiving as many numbers
+as its length; each number moves that leg's tip up or down by that amount
+(the first move of a leg is up, from 0). The deal is valid if no label is
+visited twice. A *zigzag deal* is one in which every leg alternates up, down,
+up, … (section 12).
+
+**Conjecture S (centre-anchored spiders).** Every spider has a valid deal;
+that is, a graceful labeling with the centre labelled 0 and edge lengths
+decreasing outward along every leg.
+
+Evidence: every spider on `4 ≤ n ≤ 32` vertices has one, with no
+exception (`FREE=1 ./spiderzig n`; exhaustive over all leg-length patterns
+with at least three legs). The spiders that have no zigzag deal (`S(3,3,3)`,
+legs of length 2 with `k ≡ 2 mod 3`, …) all have a valid deal once a leg may
+move twice in the same direction. Conjecture S implies that all spiders are
+graceful, which is open.
+
+**Reductions and partial steps (proved).**
+
+* *Legs of length 1 can be ignored.* If a spider has a valid deal, so does
+  the spider with extra legs of length 1: deal the new longest numbers to the
+  new legs first (Lemma 6). So Conjecture S reduces to spiders with all legs
+  of length at least 2.
+* *One more leg of any length, without the anchor.* If a tree has a growth
+  placement with `y` as anchor, then the tree with a pendant path of any
+  length `r` attached at `y` has a growth placement. (Gluing statement of
+  section 7 with `O` the path on `r` edges in zigzag form: started from its
+  label-1 end if `r` is even, or reflected if `r` is odd, its other end carries
+  the largest low label.) In particular: if a spider has a valid deal, the
+  spider with one more leg of any length is graceful. The new placement is not
+  anchored at the centre, so the step cannot be repeated.
+
+**What does not work** (all for centre-anchored deals).
+
+| rule tried | result |
+|---|---|
+| zigzag deal, numbers handed out in a repeating order of period 3, 6 or 9, three equal legs | no order works for all leg lengths (`src/dealrule.py`) |
+| level by level (every leg gets its `j`-th number before any gets its `(j+1)`-th) | fails for 3 of 11 spiders at `n = 8`, 129 of 288 at `n = 18` |
+| first number of every leg first, then free | fails for 3 of 11 at `n = 8`, 26 of 480 at `n = 20`; the failures have many legs of length 1 |
+| leg by leg (finish one leg before starting the next) | the second leg cannot start unless the first has at least half the edges |
+| growing by clean gap insertion of one leaf at a time (Lemma 8), keeping the centre at 0 | reaches 36 of 231 leg patterns at `n = 17` (`src/derive_spider.cpp`) |
+
+**Status.** No explicit dealing rule has been found, for all spiders or for a
+new family. What this section adds is the exact form of the problem
+(Conjecture S), its verification range, the reduction to legs of length at
+least 2, and a list of natural rules that are now known not to work.
+
+## 14. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
 independent pass that tested each one by brute force from the definitions in
