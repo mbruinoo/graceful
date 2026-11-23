@@ -595,9 +595,9 @@ second solver (`src/runsolve128.cpp`).
 
 | rule | first failure | exhaustive range with no failure |
 |---|---|---|
-| one run, at most one single skipped cell | 1 tree at `n = 13` | `n ≤ 12` |
+| one run, at most one single skipped cell | 1 tree at `n = 10` (spider `S(3,3,3)`); none at 11, 12; 1 at 13 | `n ≤ 9` |
 | one run, two skipped cells, both on the same side of the run | 1 tree at `n = 15` | `n ≤ 14` |
-| one run, at most one skipped cell on each side of the run | 2 trees at `n = 18` | `n ≤ 17` |
+| one run, at most one skipped cell on each side of the run | 1 tree at `n = 10` (the same spider) | `n ≤ 9` |
 | one run, at most two single skipped cells | 1 tree at `n = 22` | `n ≤ 21` |
 | at most three runs of any sizes (B3) | none found | `n ≤ 25` |
 
@@ -605,7 +605,12 @@ second solver (`src/runsolve128.cpp`).
 searches tree by tree. The two agree at `n = 13` and `n = 15`.)
 
 The number of single skipped cells needed therefore grows with the size of
-the tree: none suffices up to 8 vertices, one up to 12, two up to 21. Every
+the tree: none suffices up to 8 vertices, one up to 9, two up to 21. It is not
+monotone in between: the spider `S(3,3,3)` on 10 vertices needs two, while
+every tree on 11 or 12 vertices needs at most one. (An earlier version of
+this table gave 13 and 18 as first failures for two of the rules; those rules
+had only been run from `n = 12` up. `src/skipmin.cpp` now computes the least
+number of skips for every tree and all rows were re-run from `n = 5`.) Every
 tightening tried has failed, the looser ones at larger sizes. Conjecture B3
 (three runs of any size) is the loosest of these rules and has not failed for
 `n ≤ 25`, but by the same pattern it may fail at a size not yet reached; the
