@@ -628,7 +628,110 @@ branching `(3,3,3)` on 40 vertices, `(4,4)` on 21, `(5,5)` on 31,
 `(2,2,2,2,2)` on 63 and `(3,3,3,2)` on 94; two runs suffice for `(2,2,2)` and
 `(2,2,2,2)`. None needed four.
 
-## 12. Checking
+## 12. What the number of skips depends on, and spiders
+
+**Least number of skips, tree by tree** (`src/skipmin.cpp`, exhaustive; a skip
+is a single unused cell outside the main run, as in section 11):
+
+| n | trees | need 0 | need 1 | need 2 |
+|---|---|---|---|---|
+| 9 | 47 | 46 | 1 | 0 |
+| 10 | 106 | 104 | 1 | 1 |
+| 12 | 551 | 531 | 20 | 0 |
+| 14 | 3,159 | 2,926 | 232 | 1 |
+| 16 | 19,320 | 17,132 | 2,177 | 11 |
+| 18 | 123,867 | 103,980 | 19,837 | 50 |
+
+No tree on `n ≤ 21` needs three; one on 22 does (section 11).
+
+**What predicts it** (all 32,307 trees with `11 ≤ n ≤ 16`,
+`src/skipfeat.py`). The best single predictor found is the largest number of
+*non-leaf* neighbours of any vertex, i.e. how many real branches meet at one
+point:
+
+| branches meeting at one vertex | trees | need at least one skip |
+|---|---|---|
+| ≤ 2 (caterpillars) | 8,232 | 0% |
+| 3 | 19,922 | 8% |
+| 4 | 3,674 | 37% |
+| 5 | 430 | 76% |
+| 6 | 45 | 98% |
+| 7 | 4 | 100% |
+
+Leaves do not count: maximum degree by itself predicts nothing (stars and
+near-stars need no skips). Number of branch vertices and diameter are weak
+predictors. The trees needing *two* skips at `n ≤ 16` are almost all built
+from three to five equal branches of depth at least 2 (for instance spiders
+with all legs of length 3). So skips are needed to return to a vertex where
+several deep branches meet; this is a tendency, not a law, and the exact
+number depends on arithmetic coincidences (next table).
+
+**Spiders.** Spiders put all branching at one vertex, so they are the natural
+test. Least number of skips for the spider with `k` legs of length `L`
+(`src/runsolve128.cpp`, which now treats unbuilt branches of the same shape as
+interchangeable):
+
+| `L` \ `k` | 3 | 4 | 5 | 6 | 8 |
+|---|---|---|---|---|---|
+| 1 | 0 | 0 | 0 | 0 | 0 |
+| 2 | 0 | 1 | 1 | 1 | 1 |
+| 3 | 2 | 2 | 2 | 2 | 2 |
+| 4 | 0 | 2 | 1 | 2 | 2 |
+| 5 | 0 | 1 | 1 | 2 | 2 |
+| 6 | 1 | 1 | 1 | 1 | 2 |
+
+Over *all* spiders (every multiset of leg lengths, `src/spiderskips.sh`):
+
+| n | spiders | need 0 | need 1 | need 2 | need more |
+|---|---|---|---|---|---|
+| 16 | 168 | 143 | 24 | 1 | 0 |
+| 20 | 480 | 378 | 102 | 0 | 0 |
+| 24 | 1,243 | 888 | 343 | 12 | 0 |
+| 26 | 1,945 | 1,325 | 591 | 29 | 0 |
+
+**Observation (`n ≤ 26`, even `n` from 10).** Every spider can be built with
+at most two skips. Unlike general trees, there is no sign yet of the number
+growing. Whether all spiders are graceful is an open problem (known for at
+most 5 legs and for leg lengths differing by at most one; section 5), so a
+proof of this observation would be a new theorem.
+
+**A cleaner form of the spider question.** Put the centre at label 0 and let
+every leg zigzag. Then a graceful numbering is exactly this: split the numbers
+`1..m` into one strictly decreasing list per leg, of the leg's length, so that
+all the alternating sums `w_1`, `w_1 − w_2`, `w_1 − w_2 + w_3`, … over all
+lists are different. (They are then automatically the labels `1..m`, the
+lists are the edge lengths going outward, and the result is a growth placement
+anchored at the centre.) `src/spiderzig.cpp` searches for such a split.
+
+For every spider on `n ≤ 21` vertices a split exists, except:
+
+* three-legged spiders with a leg of length 1 and certain other two legs
+  (`(3,3,1)`, `(5,5,1)`, `(6,5,1)`, …); these are caterpillars and have
+  staircases;
+* `S(3,3,3)`;
+* `S(2,2,…,2)` with `k = 5, 8, 11` legs.
+
+**Lemma 11 (an arithmetic obstruction; proved).** The spider with `k` legs of
+length 2 has no zigzag split when `k ≡ 2 (mod 3)`.
+
+*Proof.* Let `I` be the labels next to the centre and `O` the outer labels,
+so `I ⊔ O = {1..2k}`. The inner edge lengths are the labels in `I`, so the
+outer edge lengths are exactly the numbers in `O`. Each outer label is its
+inner neighbour minus an outer edge length, so `ΣO = ΣI − ΣO`, i.e.
+`3·ΣO = ΣI + ΣO = k(2k+1)`. If `k ≡ 2 (mod 3)` then `k(2k+1) ≡ 1 (mod 3)`. ∎
+
+So the zigzag form is not universal, and its failures are arithmetic, in the
+same way as the parity effect noted in section 11. Those spiders still have
+growth placements with at most two skips; they need a leg that does not
+alternate, or the centre away from label 0.
+
+**What a proof for spiders would need.** A rule for dealing the numbers
+`m, m−1, …, 1` to the legs. Dealing them in strict rotation fails (two legs
+get the same second label). The builds found by search for equal legs
+interleave the legs in a regular but not purely rotating order
+(`src/spidershow.py` prints them). No explicit rule has been found.
+
+## 13. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
 independent pass that tested each one by brute force from the definitions in

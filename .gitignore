@@ -26,3 +26,5 @@ src/runsolve128
 src/h1_*.txt
 src/s1_*.txt
 src/skipmin
+src/spiderzig
+src/spiderskips_big.txt

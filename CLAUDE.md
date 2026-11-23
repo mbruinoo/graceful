@@ -68,6 +68,8 @@ python3 gentrees.py 16 | ./growsolve 16                       # growth placement
 g++ -O2 -o anchors anchors.cpp   && python3 gentrees.py 12 | ./anchors 12
 g++ -O2 -o interval interval.cpp && ./interval 12
 g++ -O2 -o runsolve_gen runsolve_gen.cpp && ./runsolve_gen 18 3   # three-run growth placement for every tree (built-in generator)
+g++ -O2 -o skipmin skipmin.cpp && ./skipmin 14 1               # least number of skips for every tree
+g++ -O2 -o spiderzig spiderzig.cpp && ./spiderzig 16            # zigzag splits for all spiders
 python3 export_atlas.py && python3 ../web/build.py            # rebuild web/index.html
 ```
 
