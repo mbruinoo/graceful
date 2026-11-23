@@ -1,0 +1,78 @@
+FAMILY
+Equal-leg spiders with K legs of length L where K = 1 + (2L+1) + (2L+1)^2 + ... + (2L+1)^n, for every L >= 1 and every n >= 0. The first non-trivial member for each L is K = 2L+2 legs of length L (6 legs of length 2, 8 of length 3, 10 of length 4, ...); the next is K = (2L+1)(2L+2)+1. The family is infinite in both parameters but sparse in K: it does NOT cover fixed small k (3, 4, 5) for all L, nor all k for a fixed L. It comes from a more general stacking statement that is not restricted to equal legs: if ANY spider S with t edges has a valid deal, then S plus 2t+1 new legs of one common length L (any L >= 1) has a valid deal. Consequently, whenever j legs of length L have a valid deal (by search or otherwise), so do j(2L+1)+1 legs of length L.
+
+RULE
+BLOCK(t, L), for t >= 0 and L >= 1. Put k = 2t+1. It has k legs of length L, numbered s = 1..k. Define u(s) = 2s if s <= t, and u(s) = 2s - k if s > t (a permutation of 1..k). Leg s receives, in this order, the numbers
+  w_1 = t + (L-1)k + s,
+  w_j = t + (L-j)k + u(s) for j = 2..L,
+and moves up, down, up, down, ... (zigzag). The block uses exactly the numbers t+1 .. t+kL and visits exactly the labels t+1 .. t+kL. Closed form for the labels of leg s: after an odd number j = 2i+1 of moves the tip is at t + (L-1-i)k + s; after an even number j = 2i of moves it is at ik + s - u(s), which is ik - s for s <= t and (i+1)k - s for s > t. BLOCK(0, L) is the single zigzag path with numbers L, L-1, ..., 1 and labels L, 1, L-1, 2, ....
+
+STACKING. Given a valid deal D of a spider S with t edges (numbers 1..t, labels 1..t), the spider S plus 2t+1 new legs of length L gets the deal: BLOCK(t, L) on the new legs (numbers and labels t+1 .. t+(2t+1)L), then D unchanged on the old legs.
+
+TOWER(L, n) (the equal-leg rule, no search). Start with t = 0 and no legs. Repeat n+1 times: add BLOCK(t, L), then set t := t + (2t+1)L. The result has K = sum_{i=0..n} (2L+1)^i legs of length L and m = KL edges.
+
+Example, TOWER(2,1), six legs of length 2 (numbers / labels): 8 4 / 8 4; 9 6 / 9 3; 10 3 / 10 7; 11 5 / 11 6; 12 7 / 12 5; 2 1 / 2 1.
+
+STATUS proved
+
+VERIFIED
+All checks are made directly from the definition by check_deal() in rule_equal.py (python3 rule_equal.py verify 20000, about 4 s). (1) BLOCK(t, L) as a generalised deal on t+1..t+kL: every 0 <= t <= 60, 1 <= L <= 60 (3660 blocks), all valid. (2) TOWER(L, n): every (L, n) with n >= 1 and at most 20000 edges, 129 spiders, which includes K = 2L+2 for every L <= 99 (largest: 200 legs of length 99, m = 19800) and the deeper towers that fit; all valid. So every member of the family with m <= 150 is checked, and far beyond. (3) Stacking on every valid deal of every spider with at most 9 edges that has one (94 leg patterns, all deals enumerated), new legs of length 1..6: 4788 stacked deals, all valid. (4) Stacking on a searched deal of j legs of length L for 25 pairs (j, L) with 2 <= j <= 6, jL <= 30, giving valid deals for (legs, L) = (11,2), (16,2), (21,2), (26,2), (31,2), (22,3), (29,3), (36,3), (43,3), (19,4), (28,4), (37,4), (46,4), (55,4), (23,5), (34,5), (45,5), (56,5), (67,5), (40,6), (53,6), (66,6), (46,7), (61,7), (52,8). These last ones rest on a searched base, so they are verified-only, not part of the explicit rule.
+
+PROOF
+Complete argument (elementary; the picture is k-wide bands of labels, the high bands walking down from the top and the low bands walking up from the bottom).
+
+Fix t >= 0, L >= 1, k = 2t+1. Call [t+(q-1)k+1, t+qk] band q, for q = 1..L; the bands partition [t+1, t+kL].
+
+(a) u is a permutation of 1..k: for s = 1..t it gives the even numbers 2, 4, ..., 2t; for s = t+1..k it gives 2s-k = 1, 3, ..., k.
+
+(b) s - u(s) takes each value in {-t, ..., t} exactly once: for s <= t it is -s, giving -1..-t; for s > t it is k-s, giving t, t-1, ..., 0.
+
+(c) Numbers. Position 1 of the legs uses t+(L-1)k+s for s = 1..k, which is band L. Position j >= 2 uses t+(L-j)k+u(s), which by (a) is band L-j+1. So the block uses every number of [t+1, t+kL] exactly once, and each leg's numbers strictly decrease because position j lies in band L-j+1.
+
+(d) Labels, by induction on j, with zigzag signs. j = 1: label = w_1 = t+(L-1)k+s. Even j = 2i: label = [t+(L-i)k+s] - [t+(L-2i)k+u(s)] = ik + s - u(s). Odd j = 2i+1 >= 3: label = [ik+s-u(s)] + [t+(L-2i-1)k+u(s)] = t+(L-1-i)k+s.
+
+(e) Label sets. Odd position 2i+1 (i = 0..ceil(L/2)-1): as s runs over 1..k the labels fill band L-i. Even position 2i (i = 1..floor(L/2)): by (b) the labels fill [ik-t, ik+t] = [t+(i-1)k+1, t+ik] = band i. The odd positions give bands L, L-1, ..., L-ceil(L/2)+1 = floor(L/2)+1, and the even positions give bands 1..floor(L/2). These are all L bands, each once. So the block visits every label of [t+1, t+kL] exactly once, and none outside.
+
+(f) Stacking. Let D be a valid deal of S with t edges: numbers 1..t, labels 1..t. The combined deal hands out t+kL, ..., t+1 according to BLOCK(t, L) and then t, ..., 1 according to D. Each leg's list is strictly decreasing, the first move of every leg is up from 0, the block visits exactly t+1..t+kL once each and D visits exactly 1..t once each. Hence every label in 1..t+kL is visited exactly once: a valid deal of S plus 2t+1 legs of length L.
+
+(g) Tower. BLOCK(0, L) is a valid deal of one leg. By (f) and induction each stage is a valid deal; the number of legs satisfies K' = K + 2KL + 1 = (2L+1)K + 1, so K = sum_{i<=n} (2L+1)^i.
+
+Why it works, in one line: with the centre at 0 and all 2t+1 legs starting in the top band, the second labels are k + (s - u(s)), a set with sum of offsets zero, so it can only be a full band if that band is centred on k, i.e. starts at t+1 = (k+1)/2. The t labels and t numbers below it are exactly what a smaller spider needs. This is the same sum obstruction as README Lemma 11, turned into the construction.
+
+Not claimed: novelty. I have not checked this against the literature.
+
+NEGATIVE
+What the rule does not give: fixed k = 3, 4, 5 for all L, or all k for a fixed L >= 2. The stacking step only reaches K = j(2L+1)+1 from j.
+
+Rules and shapes that failed (all for k equal legs of length L, centre 0):
+
+1. Each leg zigzags between two contiguous label blocks (uniform blocks, L even): impossible for every k >= 2. The high/low block indices would need j - sigma(j) to take every value 0..k-1 for a permutation sigma, and the sum is 0. (Hand argument.)
+
+2. Each leg zigzags between two arithmetic progressions of step k (same leg order in every level): impossible for every k >= 2, same sum obstruction. Hand argument; it agrees with the search for LEVEL=1 zigzag deals, which finds none for k = 3..6, L = 2..8 (smallest: k=3, L=2).
+
+3. One free first label, then a two-block zigzag tail (shapes.py): no shape for k = 3, at any single L in 4..11.
+
+4. Zigzag deals with all odd-position labels above all even-position labels (ALPHA=1 in dsearch.cpp): none for k = 3, L = 2..10; k = 4, L = 2..7; k = 5, L = 2..5. Smallest failure k=3, L=2.
+
+5. Level by level with free signs: exists only sporadically (k=3: only L=5 among L = 2..8; k=4: L = 3, 4, 5; k=5: L = 3, 4, 5, 6, 8; k=6: L=4). Smallest failure k=3, L=2.
+
+6. Free prefix of Q1 levels, then every leg's numbers in arithmetic progression of step k, then Q2 free levels (apsearch.cpp): solutions always die out as L grows. k=3: none for L = 6..14 with (Q1,Q2) in (1,1), (2,1), (1,2), (2,2), (3,1), (1,3); with (3,3) only L=8 and with (4,2) only L=9 among L = 8..14. k=4: none for those six small (Q1,Q2) at L = 6..14; only L = 8, 9 for (3,3), (4,2), (5,1) among L = 8..16. k=5 with (2,4): none at L = 13, 14; with (4,2): none at L = 15, 16. A balance count explains it: a zigzag step-k stretch gains +k per leg per two levels in the identity sum over moves of w*(eps*(L-l+1) - 1) = 0, so the correction needed grows with L and cannot sit in a bounded number of end levels.
+
+7. Bounded number of runs (a run = consecutive numbers given to one leg with alternating directions; runsearch.cpp): for k=3 the least number of runs is 7, 8, 8, 9, 8, 11, 11, 11, 9, 12, 11, 12, 12, 12, 13, 12, 11, 14 for L = 3..20, but the number of deals with at most 14 runs falls 47, 47, 31, 17, 13, 10, 5, 6, 3, 2, 6 for L = 8..18, and no run word (sequence of legs and directions) recurs for three values of L in 5..18. No L-independent run shape was found.
+
+8. Period-2 gap patterns (persearch.cpp): the least number of breaks for k=3 is 6, 4, 8, 8, 10, 9 for L = 6..11; no bounded-break family seen. One unexplored curiosity: k=3, L=7 has a deal with numbers 21 18 16 14 12 10 1 / 20 19 17 8 6 4 2 / 15 13 11 9 7 5 3 (mostly step 2).
+
+9. Two legs (k=2): a valid deal exists only for L = 2, 4, 5 among L = 2..7 (exhaustive, enumdeals.py); none for L = 3, 6, 7.
+
+Observation that bounds the stacking idea (gt.cpp, exhaustive, free signs, L = 2, 3, 4, k = 1..9, t = 0..14): a generalised deal with numbers and labels both equal to [t+1, t+kL] exists exactly when t <= floor((k-1)/2), with the single exception k=2, L=3, t=0. BLOCK is the extreme case t = (k-1)/2. An explicit rule for the non-extreme cases (in particular t = L, all k >= 2L+1) would give every K >= 2L+2 legs of length L; I did not find one.
+
+FILES
+/home/user/graceful/src/rules/equal/rule_equal.py
+/home/user/graceful/src/rules/equal/gt.cpp
+/home/user/graceful/src/rules/equal/dsearch.cpp
+/home/user/graceful/src/rules/equal/apsearch.cpp
+/home/user/graceful/src/rules/equal/runsearch.cpp
+/home/user/graceful/src/rules/equal/runwords.py
+/home/user/graceful/src/rules/equal/persearch.cpp
+/home/user/graceful/src/rules/equal/shapes.py
+/home/user/graceful/src/rules/equal/enumdeals.py

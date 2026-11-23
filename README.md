@@ -785,7 +785,186 @@ new family. What this section adds is the exact form of the problem
 (Conjecture S), its verification range, the reduction to legs of length at
 least 2, and a list of natural rules that are now known not to work.
 
-## 14. Checking
+## 14. What a skip does (worked by hand)
+
+**Setting.** Labels `1..n`, brackets placed longest first. At any moment call
+the longest run of unused labels the *main gap*; `a` is the used label just
+left of it and `d` the used label just right of it. The other unused labels
+are *holes* (skipped cells); let `H` be their number. A new label placed in
+the main gap and joined to a label on the far side of the gap is an *across*
+move.
+
+**Lemma 12 (offset rule; proved).** Suppose the new label is `a + 1 + s`
+(counting from the left, having skipped `s ≥ 0` cells) and the move is across.
+Then its partner is exactly `d + H + s`: the label `H + s` places in from the
+innermost label on the right. Symmetrically, the new label `d − 1 − s` joins
+`a − H − s`. In words: **the partner sits as many places in from the tip of
+the opposite block as there are holes after the move.**
+
+*Proof.* The bracket placed has length equal to the number of unused labels,
+`(d − a − 1) + H`. So the partner of `a + 1 + s` is
+`a + 1 + s + (d − a − 1) + H = d + H + s`. The other side is the same count. ∎
+(Checked on all 70,382 across moves in all growth placements with `n ≤ 10`,
+`src/offset_check.py`.)
+
+**Reading it as two stacks.** Think of the left block and the right block as
+stacks whose tops are `a` and `d`. With no holes, a new label on one side
+joins the *top* of the other stack. Staying on the same side adds another
+child to that top; switching sides descends to the child just added. One can
+only walk down a path, hanging leaves along the way: a caterpillar
+(Theorem 2). Once the walk has descended past a vertex, that vertex is buried
+one place down and can never be joined again by an across move.
+
+With one hole, every across move joins the cell *one place down* instead of
+the top. So a vertex becomes available as a parent one push after it is
+placed, and the build can return to it after having gone past it once.
+
+**Corollary (threads).** Hold `H` holes fixed and push alternately left,
+right, left, …. The `i`-th left label joins the right label pushed `H + 1`
+pushes earlier, and the `i`-th right label joins the left label pushed `H`
+pushes earlier; following parents, the push index drops by `2H + 1` per round
+trip. So the across edges form **`2H + 1` parallel paths**: no holes, one
+path; one hole, three paths growing in rotation; two holes, five.
+
+**The smallest example.** The spider with four legs of length 2 (9 vertices)
+is the smallest tree that needs a skip (section 11). Its build, with the
+centre at label 1:
+
+| bracket | new label | joins | what happened |
+|---|---|---|---|
+| 8 | 9 | 1 | the only place for the longest bracket |
+| 7 | 2 | 9 | left block grows; joins the right tip |
+| 6 | 7 | 1 | **skips 8**; so it joins one place down on the left: the centre, not 2 |
+| 5 | 6 | 1 | one hole still open: again one place down, the centre |
+| 4 | 3 | 7 | left block grows; joins one place down on the right |
+| 3 | 4 | 1 | a same-side bracket (see below) |
+| 2 | 8 | 6 | the hole is filled by a short same-side bracket |
+| 1 | 5 | 4 | |
+
+After `1–9` and `9–2` the centre is buried under label 2. Without a hole every
+further across move would join 2 or 9, and the centre could never get its
+remaining legs that way. The skip is what brings the centre back into reach.
+
+**Two more facts that complete the picture.**
+
+* *Same-side brackets come late.* A new label `a + 1` can also join a label on
+  its own side, namely `a + 1 − t` where `t` is the number of unused labels.
+  That label exists only when `t ≤ a`, i.e. once a block is at least as large
+  as what remains. So roughly the first half of every build consists of
+  across moves only, and obeys the offset rule exactly.
+* *A hole is repaid late.* A hole at `h` can only be filled by a bracket of
+  length `t` joining `h − t` or `h + t`, both of which must already be used;
+  for a hole inside a block this needs `t` small. So holes opened early stay
+  open for most of the build: `H` goes up easily and comes down only near the
+  end.
+
+**What this says about which trees are hard.** During the across phase the
+number of holes is the number of places down that parents are taken from, on
+both sides at once, and it cannot be lowered. A tree whose first half can be
+laid out so that this depth never has to decrease is easy. Several equal deep
+branches meeting at one vertex force the build to keep returning to that
+vertex while the branches advance, which is the three-or-five-threads
+pattern, and that is exactly the kind of tree found to need skips
+(section 12). This is an explanation of the data, not yet a theorem about
+which trees need how many holes.
+
+## 15. Composition: fattening, and explicit rules for spider families
+
+These results came from a multi-agent run: four independent attempts, each
+followed by an independent referee who re-implemented the rule from its
+statement and tried to break it. The statements below are the ones that
+survived; the first is re-proved here and was re-checked by the main author's
+own program, including for trees that are not spiders.
+
+**Theorem 13 (fattening; proved).** Let `S` and `T` be trees with growth
+placements anchored at roots `r_S` and `r_T`, with `m` and `n` edges. Then the
+tree obtained by gluing `S` and `2m + 1` copies of `T` at their roots has a
+growth placement anchored at the glued root.
+
+*Construction.* Use labels from 0, roots at 0. Put `k = 2m + 1` and, for
+`x ∈ [−m, m]`, `δ(x) = −x − m` if `x ≤ 0`, `δ(x) = m + 1 − x` if `x > 0`.
+Keep `S` as it is (labels `0..m`). For every non-root vertex `v` of `T`, with
+label `ℓ` and depth `j ≥ 1`, and every `i ∈ [−m, m]`, make a copy with label
+`kℓ + δ^{j−1}(i)`, joined to the copy of `v`'s parent with the same `i`
+(copies of children of the root are joined to the root).
+
+*Proof.* `δ` reverses `[−m, 0]` and reverses `[1, m]`, so it is a permutation
+of `[−m, m]`; and `τ(x) = x − δ(x)` equals `2x + m` for `x ≤ 0` and
+`2x − m − 1` for `x > 0`, so it takes each value of `[−m, m]` once.
+*Labels.* For a fixed vertex of `T` with label `ℓ`, the copies carry
+`kℓ + δ^{j−1}(i)`, `i ∈ [−m, m]`, which is the window `[kℓ − m, kℓ + m]`.
+The labels of `T` are `1..n`, so the windows tile `[m + 1, m + kn]`; with
+`S` on `[0, m]` every label is used once.
+*Lengths.* Take an edge of `T` of length `c` from parent label `p` to child
+label `p + sc` (`s = ±1`), and let the parent's copy carry offset `E`. The
+copy edge joins `kp + E` to `k(p + sc) + δ(E)`, so its length is
+`kc − sτ(E)` (for an edge at the root, `kc + i`). As `i` runs over
+`[−m, m]`, so does `E` and hence `−sτ(E)`: the copies of that edge have
+exactly the lengths `kc − m .. kc + m`. For `c = 1..n` these windows tile
+`[m + 1, m + kn]`; with `S`'s lengths `1..m`, every length is used once.
+*Downhill.* Along a path away from the root in `T` the lengths drop by at
+least 1 per edge, so in a copy they drop by at least `k − 2m = 1`; all copy
+lengths exceed `m`, so `S` stays downhill too. By Theorem 7 this is a growth
+placement anchored at the root. ∎
+
+Checked: all 28,056 pairs of anchored growth placements of trees with at most
+7 vertices each (`src/fatten_trees.py`); for spiders, all 638,401 pairs of
+valid deals with at most 9 edges each, by the referee.
+
+*Picture.* Scale `T` by `2m + 1`. Every label and every length of `T` becomes
+a window of `2m + 1` cells; the root's window is `[−m, m]` and `S` sits in its
+right half; the copies thread the windows, shuffled by `δ` at each step.
+
+**Consequences (all with no search).**
+
+* *Stacking.* If a tree with `t` edges has an anchor `v`, then hanging
+  `2t + 1` pendant paths of any common length `L` on `v` gives a tree with a
+  growth placement anchored at `v`. For spiders there is a closed form: with
+  `k = 2t + 1`, leg `s = 1..k` receives `t + (L−1)k + s` first and then
+  `t + (L−j)k + u(s)` for `j = 2..L`, where `u(s) = 2s` for `s ≤ t` and
+  `2s − k` otherwise, moving up, down, up, …
+  (`src/rules/equal/rule_equal.py`, proof in `src/rules/equal/REPORT.txt`;
+  refereed as complete).
+* *Equal-leg spiders in towers.* `K` legs of length `L` have a valid deal
+  whenever `K = 1 + (2L+1) + … + (2L+1)^j`: 6 legs of length 2, 8 of length
+  3, 10 of length 4, then 31 legs of length 2, 57 of length 3, ….
+* *`2j + 1` legs of length `L` plus `j` legs of length 1*, for every `L` and
+  `j`.
+* *Odd bunches of any anchored tree.* For any tree `T` with anchor `v` and any
+  `j ≥ 0`: `2j + 1` copies of `T` glued at `v`, plus `j` leaves at `v`, has a
+  growth placement. The result is anchored at `v`, so the step can be
+  repeated and mixed with Lemma 6.
+
+**Explicit rules for two more spider families** (written arguments exist in
+`src/rules/…`; each was re-implemented and confirmed by a referee on the
+ranges shown; the referees judged the arguments free of errors but with gaps
+of exposition, so they are recorded here as *verified with a written
+argument*, not as Proved in the sense of `CLAUDE.md`).
+
+* *All legs of length 2.* A recursive rule with no search gives a valid deal
+  for every number of legs `k`: a zigzag deal when `k ≡ 0, 1 (mod 3)`, and a
+  deal with exactly one leg moving up twice when `k ≡ 2 (mod 3)`, where
+  Lemma 11 shows a zigzag deal is impossible. Confirmed for every `k ≤ 6000`
+  and spot-checked to `k = 2,000,006` (`src/rules/len2/rule.py`, argument in `REPORT.txt` there).
+* *One long leg and `k` legs of length 2.* An explicit rule covers every `k`
+  and every long-leg length `r` with `r + k ≡ 1 (mod 3)` above a small
+  threshold, and every `r ≥ 2k` when `3 | k`. Confirmed for all `k ≤ 330`,
+  `r ≤ 1500` (`src/rules/twolens/rule.py`, `PROOF.txt`).
+
+**Steps that do not work** (from the same run, exhaustive over all valid
+deals of spiders with up to 13–16 edges): lengthening one leg by one,
+lengthening every leg by one or two, adding one leg of length 2, adding two
+legs of length 2. Each fails for some small deal; the smallest failures are
+listed in `src/rules/induct/PROOF.txt`.
+
+**Novelty.** Theorem 13 is a product construction in the spirit of
+Stanton–Zarnke and Koh–Rogers–Tan (section 5); what is checked here is that
+it preserves the growth property and the anchor. Whether the spider families
+above are new as graceful trees has not been checked against the literature:
+equal-leg spiders are known to be graceful (Bahls–Lake–Wertheim), spiders
+with legs of two very different lengths in general are not.
+
+## 16. Checking
 
 The statements marked proved in sections 2 and 7–9 were re-checked by an
 independent pass that tested each one by brute force from the definitions in

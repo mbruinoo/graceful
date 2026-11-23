@@ -1,0 +1,55 @@
+TOP-BLOCK RULE for the spider (r, 2, ..., 2) with k legs of length 2.   m = r+2k, B = r+k.     (see rule.py)
+
+STATUS.  Proved (argument below, not yet in README): a valid deal for
+   (A) every k >= 1 and every r with r+k = 1 (mod 3), r >= (k-1)/2 (k odd), r >= k/2+1 (k even);
+   (B) every k divisible by 3 and every r >= c_t - k in each residue class, c_t as in the tower design (r >= 3k suffices).
+Machine check (check_rule.py 150 600, check_designs.py 3000): every deal the rule produces for k <= 150, r <= 600
+(44,495 spiders) is valid by the definition; the design identities hold for every k <= 3000.
+NOT covered: k not divisible by 3 and r+k = 0 or 2 (mod 3); small r below the thresholds.  All legs zigzag.
+
+1. ZIGZAG WITH SKIPS (Lemma).  Let D be a set of k numbers in 1..B, v = max D, B - v = 2l even, and write D = {v - d : d in Delta}.
+Assume  d - rank(d) is even for all d in Delta  (rank(d) = number of elements of Delta below d).
+Let the long leg take the numbers of [1,B] \ D in decreasing order, alternately up/down.  Then it visits exactly the
+labels of [1,B] except the k labels   B - l - pi(d),  pi(d) = (d + rank(d))/2,  d in Delta,   each once.
+Proof.  Read the numbers B, B-1, ..., 1.  Invariant when the tip is on the low side at label lam (lam = 0 is the centre),
+the next number is w and u-1 is the largest label of [1,B] neither visited nor skipped:  w = u-1-lam, every label
+<= lam is visited, every label >= u is visited or skipped.  True at the start (lam=0, u=B+1, w=B).
+If w is not in D: the tip goes up to u-1; by the parity assumption w-1 is not in D either (or w=1 and the leg ends), and the
+tip comes down to u-1-(w-1) = lam+1: new state (lam+1, u-1, w-2).  If w is in D: label u-1 is skipped: state (lam, u-1, w-1).
+The invariant persists; all visited labels are new and in [1,B]; at w=0 nothing is left.  When w = v-d is skipped,
+lam = l + (d - rank(d))/2 (half the number of used numbers between), so the skipped label is w+lam = B-l-pi(d).   QED
+
+2. THE DEAL.  Short leg i (i=1..k) takes B+i (label B+i) and then v - delta_i, going down to  B+i-(v-delta_i) = 2l+i+delta_i.
+By the Lemma the deal is valid iff {2l+i+delta_i} = {B-l-pi(d)}, i.e. iff, with c = B-3l,
+      i  ->  c - i - delta_i   is a bijection of {1..k} onto Pi = {pi(d) : d in Delta}                         (*)
+(and v - max Delta >= 1, l >= 0).  A pair (c, delta) with the parity condition and (*) is a DESIGN for k.  A design
+gives a valid deal for every r with r+k = c + 3l, l >= max(0, max Delta + 1 - c).
+
+3. DESIGNS.
+ odd k:   Delta = Pi = [0,k-1], c = (3k-1)/2;  delta_i = k-2i (i <= (k-1)/2), 2k-2i (i >= (k+1)/2).
+          Then pi_i = c-i-delta_i = (k-1)/2+i  resp.  i-(k+1)/2: the two ranges are [(k+1)/2,k-1] and [0,(k-1)/2].
+ even k=2h: Delta = [0,h-1] u [h+2,2h+1], Pi = [0,h-1] u [h+1,2h], c = 3h+1;
+          i = 2h-1-2s (s=0..h-1): delta = h+2+s, pi = s;      i = 2j (j=1..h): delta = h-j, pi = 2h+1-j.
+ Both have c = 1 (mod 3): case (A).
+ stacking: if (c, delta) is a design for q with max Delta = q-1+2g (so max Pi = q-1+g) and g <= q, then for any T
+          delta*(J q + i) = 3q(T-1-J) + delta_i  (J=0..T-1, i=1..q),  c* = 3q(T-1) + c  is a design for Tq (g* = (T-1)q+g).
+          [copy J of Delta sits at 3qJ, copy J of Pi at 2qJ = (3qJ + Jq)/2; J q + 3q(T-1-J) + 2qJ = 3q(T-1).]
+ three shifted copies of odd(q), q odd: blocks of Delta at (0,q,4q), of Pi at (0,q,3q), block of i number j=0,1,2 uses
+          Delta-block (2,0,1)[j] and Pi-block (0,2,1)[j]: c = 4q + (3q-1)/2.   Blocks (0,3q,4q) / (0,2q,3q), Delta-block
+          (1,2,0)[j], Pi-block (1,0,2)[j]: c = 5q + (3q-1)/2.   Plain odd(3q): c = 3q + (3q-1)/2.
+ tower:   k = 3qT with q odd and prime to 3: stack T copies of one of the three designs for 3q.  c = 1 + tq (mod 3),
+          t = 0,1,2: all residues.  Case (B).
+
+4. WHY NOT MORE (proved).  For any design, sum Pi = (sum Delta + k(k-1)/2)/2, so (*) gives 4kc = k(3k+1) + 6 sum Delta,
+hence kc = k (mod 3): if 3 does not divide k then c = 1 (mod 3).  The top-block rule (short legs first on the top k
+labels, long leg skipping only on its low turns) cannot reach r+k = 0, 2 (mod 3) unless 3 | k.
+
+5. OTHER NEGATIVE RESULTS (computer).
+ * k = 1, legs (r,2): NO valid deal at all (any signs) for r = 4, 13, 14, 16, 19, 20, 23 (k1tail.py; spiderzig FREE agrees
+   on 13,14,16,19,20).  With the long leg a zigzag: only r = 0 (mod 3) and sporadic r.
+ * long leg zigzag, short numbers in <= 2 intervals (explore.py, r <= 40): k even has almost nothing; k odd only
+   r+k = 1 (mod 3) plus sporadic.  With <= 3 intervals k=5 still misses r = 15,19,25,26,28,31,32,34 (r <= 36).
+ * gap design Delta=[0,a-1] u [a+2,k+1] with the fixed greedy matching (GREEDY=1 in rule.py): first stuck at k = 63.
+ * For fixed k and large r every valid deal has the long leg alternating except for O(k) numbers, and every skipped number
+   outside the top block forces a skipped label elsewhere, so each architecture works only for r in residue classes
+   (mod 3 here; the two-block deals found by spiderzig for k=5, r=28 are of a "mod 7" type).  (Heuristic, not proved.)

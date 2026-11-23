@@ -1,0 +1,104 @@
+FAMILY
+All spiders with k legs of length 2, every k >= 1 (m = 2k). For k = 0 or 1 mod 3 the rule gives a zigzag deal. For k = 2 mod 3 (where no zigzag deal exists) it gives a valid deal in which exactly one leg goes up twice and every other leg alternates.
+
+RULE
+GRAPH FORM. A deal is written as a graph on the outer labels O (k of the labels 1..2k): every vertex has degree 2 (a loop counts 2), each edge {u,w} carries the label u+w, and the edge labels are exactly the other k labels. Orient each cycle; the leg of o with out-neighbour x receives the numbers (o+x, x). For k = 2 mod 3 one edge is a "difference edge" o*->x* carrying the label i* = o*-x*; that leg receives (i*, x*) and goes up twice.
+
+SPLIT / SHIFT. T is a split if every edge has [u>T]+[w>T] = [u+w>T]. Then adding a constant delta to all labels >T keeps every edge equation and frees the labels T+1..T+delta. C0(k) = graphs on 1..2k with split T=k (k = 0 mod 3).
+
+RECURSION (no search).
+- k = 0: empty graph.
+- k = 1 mod 3: take G(k-1), add 1 to every label > k-1, add a loop at k (sum 2k).
+- Otherwise write k = 3n+c with c = 3,6,9,2,5,8 for k mod 9 = 3,6,0,2,5,8 (so n = 0 mod 3). Take G(n), add delta = n+c-1 to every label > n, and add cap_c(n), a graph on the labels [n+1, 2n+c-1] u [3n+c, 6n+2c].
+
+CAPS, in v-coordinates: low vertex n+v, high vertex 3n+c+j for j = 1..h, h = n+h3, h3 = floor((c+1)/3). cap_c(n) consists of
+(i) backbone: j joined to v = j+beta and v = j+beta+g, for j = J0+1..h-J1;
+(ii) bottom table of pairs (j,v);
+(iii) top table of pairs (j',v'), meaning j = h-J1+j', v = n+v';
+(iv) "small" low-low edges (a,b) = {n+a, n+b};
+(v) "cross" low-low edges (p,q) = {n+p, 2n+q};
+(vi) for c = 2,5,8 one difference edge.
+
+c=3: beta=0, g=1, J0=J1=0; cross (1,2). This is the ladder X=[n+1,2n+2], Y=[3n+4,4n+4] closed by {n+1,2n+2}.
+c=6: beta=0, g=3, J0=1, J1=2; small (1,3); cross (1,5); bottom (1,2),(1,4); top (1,1),(2,2),(2,3),(1,5).
+c=9: beta=-1, g=7, J0=J1=5; small (1,4),(1,6); cross (3,6); bottom (1,3),(1,4),(4,2),(5,2),(3,5),(2,7),(2,8),(3,9),(4,10),(5,11); top (1,-2),(1,0),(4,-1),(2,3),(5,1),(5,2),(4,4),(3,6),(2,8),(3,8).
+c=2: beta=0, g=1, J0=0, J1=1; top (1,1); difference edge o*=4n+3, x*=n+1, i*=3n+2. This is the ladder path on X=[n+1,2n+1], Y=[3n+3,4n+3] with its two ends joined by the difference edge.
+c=5: beta=0, g=3, J0=1, J1=2; small (1,3); bottom (1,2),(1,4); top (1,1),(2,2),(2,3); difference edge o*=4n+6, x*=n+1, i*=3n+5.
+c=8: beta=-2, g=7, J0=J1=5; small (1,3); cross (3,5); bottom (2,2),(3,2),(5,1),(1,6),(1,7),(4,5),(3,8),(4,9),(5,10); top (1,-3),(1,-1),(4,-2),(2,2),(5,0),(5,1),(4,3),(3,5),(2,7),(3,7); difference edge o*=3n+10, x*=n+4, i*=2n+6.
+
+STORED SMALL CASES (found by search, where the pattern has no room), as edge lists:
+cap_6(0): 5+7 3+8 2+8 2+7 1+5 1+3
+cap_9(0): 8+10 6+11 6+10 4+11 2+12 1+12 1+8 3+4 2+3
+cap_9(3): 11+25 13+22 10+24 11+22 7+25 10+21 6+24 9+20 7+21 8+19 6+20 4+19 5+13 5+9 4+8
+cap_9(6): 18+36 17+35 17+36 18+33 15+35 14+34 13+33 12+32 11+31 10+30 15+34 19+28 14+31 11+32 12+29 9+30 8+29 10+28 7+9 7+13 8+19
+cap_5(0): 5+5 3+6 4+4 1+6 3-1
+cap_8(0): 8+8 5+10 5+9 4+9 6+6 1+10 3+4 3-1
+cap_8(3): 17+17 13+20 11+21 7+24 8+22 7+22 4+24 6+21 6+20 12+13 11+12 9+10 8+10 9-4
+cap_8(6): 26+26 19+32 19+31 18+31 12+36 11+36 9+37 11+34 7+37 9+34 10+32 13+28 13+27 12+27 10+28 17+18 16+17 14+16 14+15 15-7
+
+Implemented in rule.py as build(k), with the cap data in CAP_DATA and CAP_SMALL.
+
+STATUS proved
+
+VERIFIED
+Every k = 1..1500 (m up to 3000) checked straight from the definition of a deal by `rule.py check 1500`. Every k = 1..1000 re-checked by the separately written `verify.py`, which hands out m..1 one number at a time. For k = 2 mod 3 the check also confirms exactly one non-alternating leg. Each cap_c(n) was checked as a stand-alone graph for all n <= 400; the only failures are cap_8 and cap_9 at n = 1,2,4,5, which the rule never uses because n is always a multiple of 3.
+
+PROOF
+Status "proved" means: a written argument for n >= n0(c), plus finitely many small cases that are stored tables or direct machine checks. I have not had the argument reviewed, and novelty against the literature is not checked.
+
+(1) Graph = deal. In the graph, each vertex has one in-edge and one out-edge after orienting cycles. The leg of o with out-neighbour x gets (o+x, x): decreasing, inner label o+x, outer label o. Inner labels are the edge labels, outer labels are the vertices, and together they are 1..2k, so the deal is valid and zigzag. For the difference edge the leg gets (i*, x*) with i* > x* (3n+2 > n+1, 3n+5 > n+1, 2n+6 > n+4) and visits i*, then i*+x* = o*.
+
+(2) Shift lemma. If T is a split, each edge is low+low=low (unchanged by the shift) or low+high=high (both sides gain delta). No edge is high+high.
+
+(3) Cap lemma, for n >= n0(c) = g+J0+J1-h3 (n0 = 0, 4, 14, 1, 4, 14 for c = 3, 6, 9, 2, 5, 8). The backbone has at least g rungs.
+- High vertices: j <= J0 get their two edges from the bottom table, j > h-J1 from the top table, the rest from the backbone; the difference edge replaces one table entry.
+- Low vertices: the backbone gives v the degree [J0+1+beta <= v <= h-J1+beta] + [J0+1+beta+g <= v <= h-J1+beta+g]. With at least g rungs this is [v >= J0+1+beta] for v <= J0+beta+g, is 2 in the middle, and is [v' <= h3-J1+beta+g] for v' > h3-J1+beta. The tables and low-low edges only touch those two end regions, in coordinates that do not depend on n. So "every low vertex has degree 2 and the unused middle labels are exactly the small-edge sums 2n+a+b (and i* for c=8)" is a finite n-free check.
+- High sums 4n+c+s: the backbone gives s = 2j+beta and 2j+beta+g. The bottom table must give exactly the s >= h3+1 below these in each parity class, and the top table exactly those above, up to 2n+c. This is again n-free. Then the high sums fill [4n+c+h3+1, 6n+2c], directly above the high vertices [3n+c+1, 4n+c+h3].
+- Cross edges give exactly the labels 3n+dd+1..3n+c (with i* for c = 2, 5).
+- So cap_c(n) uses each label of [n+1,2n+dd] u [3n+dd+1,6n+2c] once (dd = c-1). For c = 3,6,9 all low-low sums are <= 3n+c and all low-high sums are above it, so 3n+c is a split.
+These n-free table checks are done by prove_cap(c) in rule.py (True for all six caps). They are small enough to redo by hand (at most 12 entries per table).
+
+(4) Small n. Only n = 0 mod 3 is used. For n < n0(c) the cases are: cap_2(0); cap_5(3); cap_6(3); cap_8(9), cap_8(12); cap_9(9), cap_9(12), all checked directly by machine; and the stored tables cap_6(0), cap_9(0,3,6), cap_5(0), cap_8(0,3,6), also checked directly.
+
+(5) Induction for k = 0 mod 3. G(n) in C0(n) occupies [1,2n]. After shifting labels >n by n+dd it occupies [1,n] u [2n+dd+1, 3n+dd]. The cap fills the rest of [1,6n+2c]. Shifted sub-labels are <= 3n+dd < 3n+c, so with the cap's split the result is in C0(3n+c). Base: the empty graph.
+
+(6) k = 1 mod 3. G(k-1) in C0(k-1), shifted by 1 above k-1, occupies [1,k-1] u [k+1,2k-1]; the loop at k supplies vertex k and sum 2k.
+
+(7) k = 2 mod 3. Same union as in (5) with cap_2, cap_5 or cap_8; no split is needed at the last step, and (1) gives a valid deal with one leg going up twice.
+
+NEGATIVE
+Rules and shapes that failed, with the smallest failure found:
+
+1. O = [1,2n] u [(7n+1)/2,(9n-1)/2] for k = 3n, n odd (the only "two intervals, first one [1,2n]" shape with the right sum): no bijection d for n = 3 (k = 9) or n = 5 (givenO.py).
+
+2. Deals built only from ladder cycles (ladders.py): none with at most 5 ladders for k = 7; k = 18 and k = 22 also fail. As a block on top of any deal for k' (labels [2k'+1, 2k]), a single ladder works only for k = 5k'+1.
+
+3. Insertion calculus using only ladder caps (calculus.py): reaches only k = 1, 3, 4, 6, 10, 12, 13, 16, 21, 31, 37, 39, 40, 45, 51, 61, 66, 81 up to 100; k = 7 is the first valid k missed.
+
+4. A split-preserving cap for k = 3n+0: none exists for n = 2..6 (exhaustive, capsearch.cpp). This is why k = 0 mod 9 needs the c = 9 cap.
+
+5. Caps taking the class "k' = 1 mod 3 with split k'+1" to C0(3k'+6): none for k' = 1..4.
+
+6. c = 9 cap with a consecutive-zigzag backbone (beta, g) = (2,1), or with (1,3) or (0,5): no end tables with J0, J1 <= 5. Only the offset-7 backbone (-1,7) worked. Likewise c = 8 needed (-2,7) with J0 = J1 = 5; nothing with J0, J1 <= 4.
+
+7. c = 9 as "two long runs of length n+e (e >= -4) plus at most 9 sporadic edges" (capfamily.py): none. A wider version (13 sporadic) was stopped before finishing.
+
+8. A two-leg cap carrying the difference edge on top of C0(k') (k = k'+2): impossible for k' > 0 by a short label-position argument, so k = 2 mod 3 needs the linear-size caps c = 2, 5, 8.
+
+9. Closed blocks on an interval [M+1, N] appear to exist only for N >= 5M+2 (M = 2, 4, 6 searched).
+
+Limits: the general patterns cap_8(n) and cap_9(n) are wrong for n < 7; n = 0, 3, 6 use stored searched tables, and n = 1, 2, 4, 5 are never needed. The rule is a base-3 recursion (depth about log_3 k), not a single closed formula in k. I did not compare it with known graceful labelings of spiders with legs of length 2, so no novelty is claimed.
+
+FILES
+/home/user/graceful/src/rules/len2/rule.py
+/home/user/graceful/src/rules/len2/verify.py
+/home/user/graceful/src/rules/len2/ends.py
+/home/user/graceful/src/rules/len2/ends2.py
+/home/user/graceful/src/rules/len2/bip.py
+/home/user/graceful/src/rules/len2/capfamily.py
+/home/user/graceful/src/rules/len2/capsearch.cpp
+/home/user/graceful/src/rules/len2/pieces.cpp
+/home/user/graceful/src/rules/len2/ladders.py
+/home/user/graceful/src/rules/len2/calculus.py
+/home/user/graceful/src/rules/len2/explore.py
+/home/user/graceful/src/rules/len2/givenO.py

@@ -157,7 +157,8 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     </tbody>
   </table></div>
   <p>So no small fixed number of skips is enough. The number needed creeps up as trees get larger. Each time a tighter rule looked universal, a bigger tree broke it. That is worth remembering about every “checked up to” on this page.</p>
-  <p>With no skips at all, each new number joins the innermost number of the opposite block, which is a staircase step. Each skip still waiting pushes that target one place deeper. Skips are what let the tree branch.</p>
+  <p>What a skip does can be said exactly. With no skips, each new number joins the innermost number of the opposite block. That is a staircase step: the build walks down one path and can never return to a dot it has passed. With one skip waiting, each new number joins the number one place further in. With two, two places in. So a skip brings a dot that was already passed back into reach.</p>
+  <p>In the example above, after 1 and 9 are joined and 2 is hung on 9, the centre (number 1) is buried under 2. Skipping 8 is what lets 7 and 6 join the centre and start two more legs. Held steady, one skip lets three paths grow in rotation, and two skips let five.</p>
 </section>
 
 <section>
@@ -167,6 +168,8 @@ input[type=range]{flex:1 1 140px;min-width:0;accent-color:var(--bracket)}
     <li>Staircases always give caterpillars, and give every caterpillar. (Rosa’s result, in this picture.)</li>
     <li>Sliding right from the star reaches every caterpillar.</li>
     <li>If every bracket jumps one common point and the build is longest-first, it is a staircase.</li>
+    <li>A new number joins the number as many places in from the far block’s tip as there are skips waiting.</li>
+    <li>If two trees can each be built longest-first from a chosen dot, so can the first tree with an odd bunch of copies of the second attached at that dot (2m+1 copies, where m is the number of lines in the first). This gives infinitely many new buildable trees with no search; details in the README.</li>
   </ul>
   <h3>Checked by computer, not proved</h3>
   <div class="tablewrap"><table>

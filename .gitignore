@@ -31,5 +31,5 @@ src/spiderskips_big.txt
 src/derive_spider
 src/spidercentre_*.txt
 # in-progress output of the multi-agent attack; vetted results are copied into the tracked tree by hand
-src/rules/
+src/rules/**/__pycache__/
 src/attack/

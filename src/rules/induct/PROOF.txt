@@ -1,0 +1,84 @@
+INDUCTIVE STEPS FOR SPIDER DEALS  (src/rules/induct)
+Notation: a deal is a list of legs, a leg a list of signed numbers (+w up, -w down), |numbers| decreasing.
+Status words as in CLAUDE.md.  Novelty NOT checked against the literature (the step below is a product
+construction in the spirit of Stanton-Zarnke / Koh-Rogers-Tan; do not call it new without checking).
+
+1. FATTENING STEP                                                                     status: Proved
+   Statement.  Let DS be a valid deal of a spider S with m edges (m >= 0) and DT a valid deal of a spider T
+   with n edges.  Then S + (2m+1)T  (the legs of S, plus 2m+1 copies of every leg of T) has a valid deal on
+   M = m + (2m+1) n edges, given by the following rule.  Put k = 2m+1 and, for x in [-m, m],
+          delta(x) = -x-m  if x <= 0,      delta(x) = m+1-x  if x > 0,      tau(x) = x - delta(x).
+   Keep DS.  For every leg of DT with signed numbers s_1 c_1, s_2 c_2, ... (c_j > 0, s_1 = +) and labels
+   l_1, l_2, ..., and every i in [-m, m], make a leg whose j-th number is
+          k c_1 + i                              (j = 1)
+          k c_j - s_j tau(delta^(j-2)(i))        (j >= 2)
+   moved in the same direction s_j.
+   Proof.
+   (a) delta is a permutation of [-m, m]: it maps [-m,0] onto [-m,0] (reversal) and [1,m] onto [1,m].
+       tau is a permutation of [-m, m]: tau(x) = 2x+m on x <= 0 gives -m, -m+2, .., m; tau(x) = 2x-m-1 on
+       x > 0 gives -m+1, -m+3, .., m-1.
+   (b) Claim: the j-th label of copy i is  k l_j + delta^(j-1)(i).  For j = 1 it is k c_1 + i and l_1 = c_1.
+       If the (j-1)-th label is k l_(j-1) + E with E = delta^(j-2)(i), the j-th is
+       k l_(j-1) + E + s_j (k c_j - s_j tau(E)) = k (l_(j-1) + s_j c_j) + E - tau(E) = k l_j + delta(E).
+   (c) Numbers.  For a fixed edge of T (number c) the offsets i, resp. -s tau(delta^(j-2)(i)), run over
+       [-m, m] once as i does (a).  So the copies of that edge carry exactly the numbers kc-m .. kc+m.
+       As c runs over 1..n these windows are disjoint and tile m+1 .. m+kn.  With DS: numbers 1..M once each.
+   (d) Labels.  By (b) and (a) the copies of a vertex of T with label l carry exactly kl-m .. kl+m; the
+       labels of DT are 1..n once each, so the new labels are m+1 .. M once each; DS has 1..m.
+   (e) Order.  Along a leg of DT c_j >= c_(j+1) + 1, so consecutive numbers of a copy differ by at least
+       k - 2m = 1 > 0: strictly decreasing.  All new numbers are positive, so the move directions are s_j,
+       and the first move is up from 0.                                                               QED
+   Picture: scale T by k; every label and every number c of T becomes a window of 2m+1 cells centred at kc;
+   the centre's own window is [-m, m] and S lives in its right half 1..m; the 2m+1 copies of a leg thread
+   the windows, permuted by delta at each step.
+   Why 2m+1 (Proved for this window scheme, Observation otherwise): summing the labels of one window forces
+   the window to be symmetric about its centre.  Search (block.cpp) finds that k legs of length 2 or 3 can
+   be put on top of an m-edge deal without touching it exactly when k >= 2m+1 (L=2: m<=5, k<=16; L=3: m<=4, k<=9),
+   with the single exception m=0, L=3, k=2 (S(3,3) has no valid deal).
+
+2. Families obtained (each member re-verified from the definition by fatten.py)
+   * S(L^(2j+1), 1^j) for all L >= 1, j >= 0: star with j leaves (numbers j..1) fattened by the single leg
+     L, L-1, .., 1 (zigzag).  Closed form: leg i (i=-j..j), position p (1-based), has number
+     (2j+1)(L-p+1) + e_p,  e_1 = i,  e_p = (-1)^p tau(delta^(p-2)(i)).            Proved; checked for all members with <= 400 edges.
+   * S(L^K) for K = 1, 2L+2, (2L+2)(2L+1)+1, ... (K -> K(2L+1)+1).                Proved; checked up to 3000 edges.
+   * In general the set V of spiders with a valid deal satisfies:  S, T in V  =>  S + (2|S|+1) T in V.
+
+3. WEIGHTED FATTENING                                                                 status: Proved (same proof)
+   Leg lam of DT may be copied k_lam times (odd) and the centre given width k_0 = 2m+1 provided the window
+   midpoints satisfy the linear system in weights.py; the routing uses delta, tau with m replaced by
+   (k_lam-1)/2.  All-equal weights are always a solution (= step 1).  Observation: for every deal with no leg
+   of length 1 and m <= 12 the all-equal solution is the only one (weights_noleaf.py); other solutions occur
+   only with legs of length 1 in T.  384,226 instances checked (wfatten.py 7 7).
+
+4. Other steps, exact conditions (conditions.py: all valid deals, m <= 13; extend.cpp: all valid deals, m <= 16)
+   LEAF  new leg [m+1]: always valid (Lemma 6 of the README).
+   DOUBLE-TIP  double every number; a leg whose tip label x is odd with x < 2*(its last number) may receive the
+     number x as a down move (new label x); all other odd numbers below 2m become legs of length 1.  Always
+     valid (Proved: old labels are the even labels, each new vertex has label = its number, an odd number).
+   TIP(i,s)  all numbers +1, leg i receives 1 with sign s.  Valid iff phi(x) = x + sigma(x) (sigma = ups minus
+     downs on the way to the vertex) is injective into 1..m+1 and phi(tip_i)+s is the value missed.
+     Holds for few deals (m=12: 278 of 15,644 deals have such a leg).
+     Inside class A (zigzag, every odd-depth label above every even-depth label) the leg that holds number 1
+     can always be lengthened and the result is in A again (Classical: alpha-labelings); but A contains
+     exactly one deal for each S(L,1,..,1) and nothing else (m <= 13).
+   BASE-MIRROR(i)  leg i receives m+1 at its base, its old signs flipped.  Valid iff the label set of leg i is
+     symmetric under x -> m+1-x.
+   BASE-KEEP(i)  leg i receives m+1 at its base, its old first number goes down, the rest keeps its signs.
+     Valid iff the first number of leg i equals (m+1)/2.
+   ALLBASE-MIRROR(pi)  leg i receives m+pi(i) at its base and is mirrored.  Valid iff the sets m+pi(i)-A_i
+     partition 1..m; exactly one deal for each m <= 13 (legs <= 6) admits a pi.
+   Search versions (the new numbers may be inserted anywhere in the order; "is there an extension at all"),
+   from extend.cpp, fractions of all valid deals:  see out16.txt.  None is universal except new legs of length 1;
+   smallest deals with no extension:  one leg +1 at the tip: S(2,1,1) [+4 -2][+3][+1];  one leg +1 at the base: the same deal;
+   every leg +1 at the tip: S(3,1) [+4 -2 -1][+3];  every leg +2: S(1,1) [+2][+1];  one new leg of length 2:
+   S(4) [+4 -3 +2 -1];  two new legs of length 2: S(4,2,1) [+6 -5 +3 +1][+7 -4][+2];  two new legs of length 3:
+   none for m <= 10 (Observation, search only, no rule).
+
+5. Reach (reach.py 14 w).  From the empty spider and single legs, by LEAF, FATTEN, WFATTEN and DOUBLE-TIP, the
+   spiders with >= 3 legs and at least two legs of length >= 2 reached at m = 14 are 22 of 115; see the output.
+   Stars alone generate only stars under these steps (no step lengthens a leg except DOUBLE-TIP, which turns
+   the star K_{1,j} into S(2^t, 1^(2j-2t)) for the odd labels chosen).
+
+Build:  g++ -O2 -o enum_deals enum_deals.cpp ; g++ -O2 -o extend extend.cpp ; g++ -O2 -o block block.cpp
+Run:    python3 fatten.py all ; python3 wfatten.py 7 7 ; python3 conditions.py 13 ; python3 reach.py 14 w ;
+        ./extend 16 sp > out16.txt ; ./block scan 2 5 16 ; ./block scan 3 4 9

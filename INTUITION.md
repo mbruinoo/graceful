@@ -47,7 +47,7 @@ Plus a method: keep it visual, and keep to arguments a person can follow.
 | Sliding from trivial shapes | Staircases = caterpillars, and right slides reach all of them (Theorems 2–3). The labeling itself is Rosa's, 1967 | Claude, restating a classical result |
 | "Shown logically to humans… visually" | The interactive bench in `web/`; proofs written to be watched | Claude, to the author's brief |
 | Sliding from trivial shapes | Theorem 9: growth plus "all brackets jump one point" forces a staircase (grid proof) | Claude |
-| — (not in the original idea) | Growth placements and the growth conjecture (Conjecture B); anchors; the gluing lemma; the interval variant; the root form (Theorem 7); clean cuts and gap splits (Lemma 8, §10); the three-run conjecture B3 (§11) | Claude |
+| — (not in the original idea) | Growth placements and the growth conjecture (Conjecture B); anchors; the gluing lemma; the interval variant; the root form (Theorem 7); clean cuts and gap splits (Lemma 8, §10); the three-run conjecture B3 (§11); the offset rule for skips (§14); fattening and the spider rules (§15, found by a multi-agent run and refereed) | Claude |
 
 ## A note on the name "starfish"
 
