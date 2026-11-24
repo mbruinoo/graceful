@@ -1,0 +1,311 @@
+L-FAMILY: non-anchors of every degree.  Statements, complete arguments, machine checks.
+=====================================================================================
+Status words as in CLAUDE.md.  Nothing here proves the Graceful Tree Conjecture or Conjecture B.
+"Proved" below means: a complete written argument is given in this file and every numbered step was also
+checked by machine on all small cases (section 10).  It has NOT yet been read by independent referees.
+
+Tree.  L(l; h1, h2): v has l leaf neighbours and one more neighbour c; c has two further neighbours
+(the "hubs"); the hubs carry h1 and h2 leaves.  n = l+h1+h2+4 vertices, m = n-1 edges, deg(v) = l+1.
+Labels 0..m (README: 1..n), v = 0.  By README Theorem 7 a growth placement anchored at v is a graceful
+labelling in which edge lengths strictly decrease along every path away from v.
+
+RESULTS
+  Theorem L (lower bound; Proved).  Let p be even, q odd, p < q.  If l < p/2 then v is NOT an anchor of
+      L(l; p, q).
+  Theorem U (upper bound; Proved, explicit labelling).  Let p >= 2 be even and q >= 1 arbitrary.
+      If l >= p/2 then v is an anchor of L(l; p, q).
+  Corollary 1 (Proved).  For p even, q odd, p < q: v is an anchor of L(l; p, q) if and only if l >= p/2.
+      (This is the earlier line's Observation "least l = h1/2", now for all even h1 < odd h2.)
+  Corollary 2 (Proved).  For every l >= 1, in L(l; 2l+2, 2l+3) (5l+9 vertices) the vertex v has degree l+1
+      and is not an anchor.  So non-anchors of every degree >= 2 exist; degree 4 at 24 vertices (L(3;8,9)).
+  Main Theorem (Proved; no parity assumption).  Let 1 <= p < q and 2d < p.  In every solution of the reduced
+      problem R(p,q,d) (section 1) the hub with q leaves has label 1, or the hubs have labels (P,Q) = (1,3).
+
+-------------------------------------------------------------------------------------------------------------
+1. Reduction to a problem on the number line 1..N  (Lemma R)
+-------------------------------------------------------------------------------------------------------------
+Reduced problem R(h1,h2,d).  N = h1+h2+2+d, a = N+1.  A SOLUTION consists of
+  * two different hub labels g1, g2 in [1,N]; hub i has edge length x_i = a - g_i;
+  * for each hub i a set W_i of h_i leaf lengths, all < x_i, each with a direction: a leaf of hub i with
+    length w has label g_i + w ("up") or g_i - w ("down");
+  * a set Gamma of d numbers ("gaps");
+such that  {x1,x2}, W1, W2, Gamma partition [1,N]                                   (lengths)
+and        {g1,g2}, the h1+h2 leaf labels, Gamma partition [1,N]                    (labels).
+Write S = [1,N] minus Gamma.  So S is at the same time the set of all hub/leaf LABELS and the set of all
+hub/leaf LENGTHS.  Picture: the number line 1..N; every non-gap point carries one vertex (a hub or a hub
+leaf) and is also the length of exactly one hub edge or hub-leaf edge.
+
+Lemma R.  If v is an anchor of L(l; h1, h2) then R(h1,h2,d) has a solution for some 0 <= d <= l.
+Argument.  Take a growth placement with v = 0; root the tree at v.  Let a be the label of c; the edge vc has
+length a.  A leaf at v with label w has length w.  By Theorem 7 the edge from c to hub i has length
+x_i < a and every leaf edge at hub i has length < x_i.  Hence every length > a belongs to a leaf at v, and
+since such a leaf has label = length, every label > a belongs to a leaf at v.  So both hubs and all hub
+leaves have labels < a; in particular hub i sits at a - x_i (not a + x_i).  Let d be the number of leaves
+at v with label < a; the other l - d leaves at v use exactly the numbers a+1..m.  Put N = a-1.  The numbers
+1..N are, as labels: the two hubs, the h1+h2 hub leaves, d leaves at v; so N = h1+h2+2+d.  As lengths:
+x1, x2, the hub-leaf lengths, and the lengths (= labels) of those d leaves at v.  Take Gamma = the labels of
+those d leaves.  []
+(Conversely a solution of R(h1,h2,d) gives a growth placement of L(d;h1,h2) anchored at v: v = 0, c = a,
+gaps = leaves at v; lengths decrease away from v by construction.  Not needed below except in section 8.)
+
+-------------------------------------------------------------------------------------------------------------
+2. Notation
+-------------------------------------------------------------------------------------------------------------
+Fix a solution.  e < g are the two hub labels; E is the hub at e ("low hub"), G the hub at g.
+X = a - e and Y = a - g are their edge lengths, so X > Y and X - Y = g - e.  hE, hG = numbers of leaves.
+   A = up-lengths of E     (label e + w)        D = down-lengths of E   (label e - w)
+   U = up-lengths of G     (label g + w)        V = down-lengths of G   (label g - w)
+|A|+|D| = hE, |U|+|V| = hG.  For a set M of integers and integers r <= s write M[r,s] for the number of
+elements of M in [r,s], and M(r,s] = M[r+1,s].  [statement] is 1 if the statement holds, else 0.
+
+(B1) Every length in S is <= X (hub edges are X and Y < X; leaf lengths are smaller than their hub's edge).
+     So the e-1 numbers X+1..N are gaps:   e - 1 <= d,   and every label is <= X.  Consequently
+        A in [1, X-e],   U in [1, Y-e]  (g+u <= X),   D in [1, e-1],   V in [1, g-1] and V in [1, Y-1],
+     and g <= X (g is a label), i.e. Y >= e.
+
+-------------------------------------------------------------------------------------------------------------
+3. The window identity  (STAR)
+-------------------------------------------------------------------------------------------------------------
+Lemma W.  For every integer t >= 0:
+   A(t-e, t] + U(t-g, t]  =  [e<=t] + [g<=t] - [X<=t] - [Y<=t]  +  phiV(t)  +  phiD(t),              (STAR)
+where  phiV(t) = (number of v in V with v >= g-t) - V[1,t]   and   phiD(t) = (number of w in D with
+w >= e-t) - D[1,t].   phiV(t) = 0 for t >= g-1 and phiD(t) = 0 for t >= e-1.
+Argument.  Count the points of S in [1,t] twice.  As labels: hub E if e <= t, hub G if g <= t, an up-leaf
+of E with length w if w <= t-e, a down-leaf of E if e-w <= t, an up-leaf of G if w <= t-g, a down-leaf of
+G if g-w <= t.  As lengths: X if X <= t, Y if Y <= t, and every leaf length <= t.  Both counts equal the
+number of non-gap points in [1,t].  Subtract:  A[1,t] - A[1,t-e] = A(t-e,t], same for U, and the down-leaves
+give phiV, phiD.  If t >= g-1 then all of V (which lies in [1,g-1]) is counted in both terms of phiV. []
+Picture: slide a window of width e over the up-lengths of E and a window of width g over the up-lengths of
+G, both ending at t.  The two windows together hold exactly 2 points while g <= t < Y, exactly 1 point
+while max(g,Y) <= t < X, and none from X on.
+
+Consequences used below.
+(T1) Sum of labels = sum of lengths over S:
+        e(1+hE) + g(1+hG) - 2 sum(D) - 2 sum(V) = X + Y = 2a - e - g,   a = hE+hG+3+d,   hence
+        2d = (e-2)(hE+2) + (g-2)(hG+2) + 2 - 2 sum(V) - 2 sum(D).
+(PAR) Parity.  From (T1), e(hE+2) + g(hG+2) is even.  If one hub has an even number p of leaves and the
+      other an odd number q, then (label of the q-hub)*(q+2) is even, so THE q-HUB HAS AN EVEN LABEL.
+(I)  Sum (STAR) over all t >= g.  A point a' of A lies in the window (t-e,t] for t = a'..a'+e-1; of these,
+     min(e, g-a') are < g when a' < g.  A point u of U lies in (t-g,t] for t = u..u+g-1, of which g-u are
+     < g when u < g.  The right side is 2 - [X<=t] - [Y<=t] for t >= g, with sum (X-g) + max(Y-g,0).  So
+        e|A| + g|U| - Lam = X - g + max(Y-g, 0),
+        Lam := sum over a' in A, a' < g of min(e, g-a')  +  sum over u in U, u < g of (g-u)   >= 0.
+     If g <= Y, substituting X = hE+hG+3+d-e and Y = X-g+e:
+        2d = (e-2)|A| + (g-2)|U| - 2|D| - 2|V| + e + 3g - 6 - Lam.                                    (I)
+(B4) (STAR) at t = g-1 (note g-1 >= e):   A(g-1-e, g-1] + U[1,g-1] = 1 - [Y <= g-1].
+     So at most one element of U is smaller than g; write iota = 1 if there is one, else 0.
+     If Y < g then U has no element below g, and since U lies in [1,Y-1], U is empty.
+
+-------------------------------------------------------------------------------------------------------------
+4. Far case: g > Y  (Lemma F)
+-------------------------------------------------------------------------------------------------------------
+Assume g > Y.  By (B4) U is empty: all leaves of G point down.
+Step F1.  For Y <= t <= g-1, (STAR) reads  A(t-e,t] = 1 + 0 - 0 - 1 + phiV(t) = -V[1, g-t-1]
+          (V lies below Y <= t, so V[1,t] = |V|).  Both sides are therefore 0:
+              V lies in [g-Y, Y-1]   and   A has no element in (Y-e, g-1].
+Step F2.  For g <= t <= X-1, (STAR) reads A(t-e,t] = 1: every window of width e ending in [g, X-1] holds
+          exactly one point of A.  If g < X: the window (g-e, g] has no point below g (F1), so g is in A.
+          If g+ie is in A and g+ie < X, the windows ending at g+ie, ..., g+(i+1)e-1 (as far as they end
+          before X) already contain g+ie, so A has no point strictly between g+ie and g+(i+1)e in that
+          range, and if g+(i+1)e <= X-1 the window ending there forces g+(i+1)e into A.  The last point
+          g+i*e reached is <= X-1 < g+(i*+1)e; but A lies in [1,X-e], so g+(i*+1)e <= X, hence = X.
+          Therefore e divides X-g = Y-e;  write Y = y*e (y >= 1), and
+              A intersected with [g, X-1]  =  { g, g+e, ..., X-e },   y-1 points.   (Also true if g = X.)
+Step F3 (gaps).  Gaps are forced at: X+1..N (e-1 numbers); the numbers strictly between g and X that are
+          not g+ie ((y-1)(e-1) numbers: they are not in A, exceed Y so are not leaf lengths of G, and
+          exceed e); the c := g-Y-1 numbers strictly between Y and g (not in A by F1, above all G-lengths,
+          above e-1 since Y >= e).  Let gam = number of gaps in [1,Y-1].  Then exactly
+              d = y(e-1) + c + gam.
+          Lengths in [1,Y-1] are V, D, the part of A below Y, and gam gaps, so with F2
+              hE + hG = (Y - 1 - gam) + (y - 1) = Y + y - 2 - gam,     hG = |V| <= 2Y - g = Y - 1 - c.
+
+Lemma F(a).  If g > Y and e >= 2 and the two hubs have different numbers of leaves p < q, then 2d > p.
+   Argument.  p <= (hE+hG-1)/2 <= (ye + y - 3)/2 < y(e+1)/2 <= 2y(e-1) <= 2d, because e+1 <= 4(e-1). []
+
+Lemma F(b).  If g > Y and e = 1 and hE >= 1, then hE >= hG.  (A low hub at 1 cannot have fewer leaves.)
+   Argument.  Suppose 1 <= hE < hG =: q; then q >= 2.
+   Here D is empty, y = Y, d = c + gam, hE = 2Y - 2 - gam - q.
+   For 1 <= t <= Y-1 (STAR) reads  [t in A] = 1 + phiV(t) = 1 - (cV(t) - cB(t)),  where cV(t) = V[1,t] and
+   cB(t) counts the labels B = { g - v : v in V } that are <= t.  So
+        cV(t) - cB(t) is 0 or 1 for 1 <= t <= Y-1, and it is 1 whenever t is not in A (e.g. t in V).
+   Sort V as v_1 < ... < v_q and B as b_1 < ... < b_q, b_i = g - v_{q+1-i}.  At t = v_i the difference is 1,
+   so b_i > v_i.  At t = v_{i+1} the difference is 1, so b_i <= v_{i+1}  (i <= q-1).  Also b_q = g - v_1 <= Y
+   by F1.  The points of [1,Y-1] outside A are exactly the disjoint intervals [v_i, b_i - 1]; removing the
+   q points of V leaves the gaps:
+        gam = sum_{i=1..q} (b_i - v_i - 1).
+   For i <= q-1, b_i - v_i - 1 <= v_{i+1} - v_i - 1 = number of integers strictly between v_i and v_{i+1}.
+   Let r = number of integers strictly between v_1 and v_q that are not in V.  Then the terms i = 1..q-1
+   add up to at most r, and the term i = q equals the term i = 1 (both are g - v_1 - v_q - 1), which is
+   <= r when q >= 2.  So  gam <= 2r.   Since V and those r integers lie in [g-Y, Y-1] = [c+1, Y-1]:
+   q + r <= Y - 1 - c.   Now hE <= q - 1 says 2Y - 2 - gam - q <= q - 1, i.e.
+        gam >= 2(Y - 1 - q) + 1 >= 2(r + c) + 1 > 2r >= gam,   a contradiction.   []
+
+-------------------------------------------------------------------------------------------------------------
+5. Near case g <= Y, low hub at e >= 2  (Lemma N2)
+-------------------------------------------------------------------------------------------------------------
+Assume g <= Y.  The sets  A below g,  U below g,  V,  D  are disjoint sets of lengths inside [1, g-1], so
+        (number of points of A below g)  <=  g - 1 - iota - |V| - |D|,   and it is also <= |A|.
+Every term of Lam coming from A is <= e and the single possible term from U is <= g-1.  Hence
+   (alpha)  Lam <= e(g - 1 - iota - |V| - |D|) + (g-1) iota,
+   (beta)   Lam <= e|A| + (g-1) iota.
+Insert into (I):
+   (alpha)  2d >= (e-2)(hE + |V|) + (g-2)|U| - (e-3)g + 2e - 6 - (g-1-e) iota,
+   (beta)   2d >= -2 hE - 2|V| + (g-2)|U| + e + 3g - 6 - (g-1) iota.
+
+Lemma N2.  Assume g <= Y.
+   (i)  If e = 2 then 2d >= hG.
+   (ii) If e >= 3 then 2d >= hE + hG + e - 3.
+Argument.  (i) (alpha) with e = 2:  2d >= (g-2)|U| + (g-2) - (g-3) iota.  The labels g-v (v in V) are
+   different points of [1,g-1] other than e, so |V| <= g-2.  If U is empty, iota = 0 and
+   2d >= g-2 >= |V| = hG.  If |U| >= 1:  2d >= (g-2)|U| + 1 >= |U| + (g-2) >= hG, because
+   (g-3)(|U|-1) >= 0  (g >= 3).
+   (ii) Take (3/e) times (alpha) plus (1 - 3/e) times (beta)  (for e = 3 this is (alpha) itself).
+   Coefficients:  hE: 3(e-2)/e - 2(e-3)/e = 1;  |V|: the same, 1;  |U|: g-2;  g: -3(e-3)/e + 3(e-3)/e = 0;
+   constant: 3(2e-6)/e + (e-3)(e-6)/e = e-3;   iota: -3(g-1-e)/e - (e-3)(g-1)/e = -(g-4).   So
+        2d >= hE + |V| + (g-2)|U| + e - 3 - (g-4) iota.
+   If iota = 0: (g-2)|U| >= |U|.  If iota = 1 then |U| >= 1 and (g-2)|U| - (g-4) = (g-2)(|U|-1) + 2 >= |U|.
+   Either way 2d >= hE + |V| + |U| + e - 3.  []
+
+-------------------------------------------------------------------------------------------------------------
+6. Near case g <= Y, low hub at 1  (Lemma N1)
+-------------------------------------------------------------------------------------------------------------
+Lemma N1.  Assume e = 1, g <= Y, and the low hub has fewer leaves:  p := hE < hG =: q, and p >= 1.
+           Then g = 3, or 2d >= p.
+Argument.  D is empty, |A| = p.  Write k = |U|, j = |V|, k + j = q.  The labels g - v lie in [2, g-1]
+   (label 1 is the hub E), so V lies in [1, g-2] and j <= g-2.
+   g = 2 is impossible:  V is empty and (I) gives 2d = -p + 1 - Lam, so p = 1, Lam = 0, d = 0; Lam = 0 means
+   the length 1 is in neither A nor U; it is not X or Y (Y >= g = 2); so 1 is a gap, but d = 0.
+   So let g >= 4 (g = 3 is the exception in the statement).
+   k >= 1:  (STAR) at t = g.  If g < Y it reads [g in A] + U[1,g] = 2.  If g = Y it reads
+   [g in A] + U[1,g] = 1 and g = Y is a hub edge, not in A.  Either way U has a point <= g.
+   From (I) with e = 1:   2d = -p + (g-2)k - 2j + 3g - 5 - Lam,  and
+        Lam <= (g - 1 - iota - j) + iota (g - u1)      (u1 = the element of U below g, if iota = 1),
+   so   2d >= -p + (g-2)k - j + 2g - 4 - iota (g - u1 - 1).                                        (N)
+   Suppose 2d <= p-1.  With p <= q-1 = k+j-1, (N) gives
+        3j >= (g-4)k + 2g - 1 - iota (g - u1 - 1).                                                 (NN)
+   * iota = 0:  3j >= (g-4) + 2g - 1 = 3g-5, so j >= g-1, contradicting j <= g-2.
+   * iota = 1, k >= 2:  3j >= 3g - 8 + u1.  If u1 = g-1: 3j >= 4g-9 > 3(g-2) (as g >= 4), impossible.
+     If u1 <= g-2: V and u1 are different points of [1,g-2], so j <= g-3 and 3g-9 >= 3g-8+u1, impossible.
+   * iota = 1, k = 1:  U = {u}, u < g.  Two facts.
+     (F-a) For g <= t < Y (STAR) reads [t in A] + [t < u+g] = 2, for Y <= t < X it reads
+           [t in A] + [t < u+g] = 1.  So Y <= u+g, all of [g, Y-1] is in A, and all of [u+g, X-1] is in A:
+                p >= (Y-g) + (X-u-g) = (Y-g) + (Y-1-u) >= g-1-u.
+     (F-b) For 1 <= t <= g-1 (STAR) reads [t in A] + [u <= t] = 1 + phiV(t), i.e. with W = V + {u},
+           cW(t) - cB(t) = 1 - [t in A] is 0 or 1 and is 1 at the points of W  (B = {g-v}, as in Lemma F).
+           Sort W: w_1 < ... < w_{j+1}; sort V: v_1 < ... < v_j; b_i = g - v_{j+1-i}.  As in Lemma F:
+           w_i < b_i and b_i <= w_{i+1} for i = 1..j.   Let u = w_r.
+           If 2 <= r <= j:  w_1 = v_1 < b_1 = g - v_j, and b_j = g - v_1 <= w_{j+1} = v_j; these say
+           v_1 + v_j < g and v_1 + v_j >= g.  Impossible.  So u is the smallest or the largest point of W.
+           - u smallest and j >= 1:  V lies in [u+1, g-2], so j <= g-2-u; with (F-a):
+             p >= g-1-u > j = q-1 >= p.  Impossible.
+           - u largest (this includes j = 0):  w_i = v_i < b_i = g - v_{j+1-i} for all i, so
+             v_i + v_{j+1-i} <= g-1 and 2 sum(V) <= j(g-1).  By (T1) with e = 1, hE = p, hG = j+1:
+             2d = -p + (g-2)(j+3) - 2 sum(V) >= -p + 3g - 6 - j,  so
+             2d - p >= 3g - 6 - j - 2p >= 3(g - 2 - j) >= 0     (p <= j, j <= g-2).
+     In every sub-case the supposition 2d <= p-1 is contradicted (or the configuration cannot occur). []
+
+-------------------------------------------------------------------------------------------------------------
+7. Main Theorem, Theorem L, Corollaries
+-------------------------------------------------------------------------------------------------------------
+Main Theorem.  Let 1 <= p < q, 2d < p.  In a solution of R(p,q,d) let P, Q be the hubs with p, q leaves.
+   Then Q has label 1, or (label of P, label of Q) = (1, 3).
+Argument.  Let e be the smaller hub label.
+   e >= 2:  if g > Y, Lemma F(a) gives 2d > p.  If g <= Y, Lemma N2 gives 2d >= hG >= p (e = 2; hG is p
+            or q) or 2d >= hE + hG >= p (e >= 3).  Both contradict 2d < p.
+   e = 1 and the low hub is Q: this is the first alternative.
+   e = 1 and the low hub is P (hE = p < q = hG):  g > Y is impossible by Lemma F(b).  If g <= Y, Lemma N1
+            gives g = 3 (second alternative) or 2d >= p (contradiction).  []
+
+Theorem L.  Let p be even, q odd, p < q, l < p/2.  Then v is not an anchor of L(l; p, q).
+Argument.  If it were, Lemma R gives a solution of R(p,q,d) with d <= l, so 2d < p (hence p >= 2).  By the
+   Main Theorem the label of Q is 1 or 3, which is odd.  By (PAR) the label of Q is even.  Contradiction. []
+
+Corollary 2.  L(l; 2l+2, 2l+3):  p = 2l+2 is even, q = 2l+3 is odd, l < l+1 = p/2.  deg(v) = l+1.  []
+
+Remarks.  (1) Both exceptional configurations of the Main Theorem occur (e.g. R(3,5,1) has solutions with
+hub labels (1,3) and (5,1), (7,1); section 10), so parity is exactly what kills them in Theorem L.
+(2) The only places where "p < q" is used are Lemmas F(a), F(b), N1 and the step hG >= p.
+(3) Where do the gaps go, in words: a hub at label e >= 2 forces e-1 gaps above its own edge and then (via
+the width-e window) about one gap per leaf pair; a hub at label 1 with the fewer leaves is squeezed between
+"its up-leaves fill whole intervals" (F-a) and "the down-leaves of the other hub pair up to sums below g"
+(F-b), and only g = 3 escapes.
+
+-------------------------------------------------------------------------------------------------------------
+8. Theorem U: l = p/2 leaves suffice (explicit labelling)
+-------------------------------------------------------------------------------------------------------------
+Theorem U.  Let p = 2s >= 2 and q >= 1.  Then v is an anchor of L(s; p, q), hence of L(l; p, q) for all
+   l >= s (README Lemma 6: a leaf can be added at the vertex with the smallest label).
+Labelling (m = 3s+q+3, a = m):   v = 0,  c = a,  hub Q = 2 (edge a-2),  hub P = 3 (edge a-3);
+   leaves at v:   a-1, a-4, a-7, ..., a-3s+2                     (s leaves; label = length)
+   leaves of Q:   lengths 3, 4, ..., q+2, all up: labels 5, ..., q+4
+   leaves of P:   length 1 up (label 4), length 2 down (label 1), and for i = 1..s-1 the two lengths
+                  a-3i-3, a-3i-2, both up (labels a-3i, a-3i+1).
+Check.  Note a - 3s = q+3.
+   Labels:  0 (v) | 1 (P, length 2 down), 2 (Q), 3 (P), 4 (P, length 1 up) | 5..q+4 (leaves of Q) |
+   the block [q+5, a-1] = [a-3s+2, a-1]: its points a-3i-1 (i = 0..s-1) are the leaves of v and its points
+   a-3i, a-3i+1 (i = 1..s-1) are P-leaves; these are all 3s-2 points of the block | a (c).
+   Lengths: 1, 2 (P) | 3..q+2 (Q) | the block [q+3, a-4] = [a-3s, a-4]: its points a-3i-3, a-3i-2
+   (i = 1..s-1) are the P-pairs and its points a-3i-1 (i = 1..s-1) are leaves of v; these are all 3s-3
+   points of the block | a-3 (edge of P), a-2 (edge of Q), a-1 (leaf of v), a (edge vc).
+   Each label 0..m and each length 1..m is used once.  Leaf lengths at P are <= a-5 < a-3 and at Q are
+   <= q+2 < a-2; hub edges are < a.  By Theorem 7 this is a growth placement anchored at v.  []
+(q + 2 < a - 2 needs q + 4 < 3s + q + 3, true for s >= 1.  For s = 1 there are no P-pairs.)
+
+-------------------------------------------------------------------------------------------------------------
+9. Worked instance: L(1; 4, 5), 14 vertices -- v is not an anchor
+-------------------------------------------------------------------------------------------------------------
+p = 4 (hub P), q = 5 (hub Q), l = 1.  Suppose a growth placement with v = 0 exists.
+Step 1 (Lemma R).  c has label a = 13 (then the leaf of v has a label below 13: d = 1, N = 12) or a = 12
+   (the leaf of v is at 13: d = 0, N = 11).  Everything else lives on the line 1..N, a = N+1.
+Step 2 (PAR).  Sum of labels = sum of lengths gives 6*gP + 7*gQ = 2a + 2(down lengths): gQ is even.
+Step 3.  The numbers above the longer hub edge X = a - e are gaps, so e - 1 <= d <= 1: the low hub is at 1 or 2.
+Step 4 (low hub at 2; then d = 1, N = 12, a = 13, X = 11, the one gap is 12, every number 1..11 is used).
+   Length 10 cannot be a leaf of E (up: label 12 is the gap; down needs length < 2), and a leaf of G needs
+   10 < Y <= 10.  So 10 = Y, G is at 3.  Length 9: not a leaf of G (label 12 or negative), so E-up, label 11.
+   Length w = 8, 7, ..., 3 in turn: at G it would go up to w+3, the label already taken by the E-leaf of
+   length w+1, or down to 3-w < 1; so it is an E-leaf.  E has at least 7 leaves (lengths 3..9) > 5.  Impossible.
+   (General form: Lemma N2(i), 2d >= hG >= 4.)
+Step 5 (low hub at 1).  It is P, because gQ is even.  So Q is at an even g >= 2, X = N (no gap above X),
+   the 4 leaves of P all point up (label = length + 1), and a = 12 + d, Y = a - g.
+   Write k, j for the numbers of up- and down-leaves of Q (k + j = 5).  A down-leaf of Q has label g - w in
+   [2, g-1], so its length is in [1, g-2] and j <= g-2.
+   - g >= 8 (then Y = a - g <= 5): the 5 leaf lengths of Q are different numbers below Y, i.e. in [1,4].
+     Impossible.
+   - g = 2, 4, 6 (then g <= Y).  Identity (I) with e = 1, p = 4:
+          2d = -4 + (g-2)k - 2j + 3g - 5 - Lam,
+     Lam = (number of P-lengths below g) + (g - u1 if Q has an up-length u1 below g; at most one, by (B4)).
+     The P-lengths below g, u1 and the j down-lengths of Q are different numbers in [1, g-1].
+       g = 2: j = 0, k = 5:  2d = -4 + 0 - 0 + 1 - Lam < 0.  Impossible.
+       g = 4: j <= 2, 2d = 3 + 2k - 2j - Lam.
+              j = 2, k = 3: 2d = 5 - Lam.  Without u1: at most 3-2 = 1 P-length below 4, Lam <= 1.
+                            With u1: the down-lengths are {1,2}, so u1 = 3, no P-length below 4, Lam = 1.
+                            So 2d >= 4.
+              j = 1, k = 4: 2d = 9 - Lam, Lam <= max(2, 1+3) = 4, 2d >= 5.
+              j = 0, k = 5: 2d = 13 - Lam, Lam <= max(3, 2+3) = 5, 2d >= 8.
+       g = 6: j <= 4, 2d = 9 + 4k - 2j - Lam, and Lam <= max(5-j, 4-j+5) = 9-j in general.
+              (k >= 1 because j <= 4.)
+              j = 4, k = 1: 2d = 5 - Lam.  Without u1: Lam <= 5-4 = 1.  With u1: the down-lengths are
+                            {1,2,3,4}, u1 = 5, Lam = 1.  So 2d >= 4.
+              j = 3, k = 2: 2d = 11 - Lam >= 11 - 6 = 5.     j <= 2, k >= 3: 2d >= 17 - 7 = 10.
+     In every case 2d >= 4, i.e. d >= 2.  But d <= 1.
+   Hence no growth placement of L(1;4,5) has v at the smallest label.  []
+   (Steps 1-5 use only Lemma R, (PAR), (B1), (B4) and identity (I).)
+Machine confirmation: python3 lsol.py 1 4 5 -> "solutions=0" (all placements from the root form);
+   ./lred 4 5 0 and ./lred 4 5 1 -> no feasible hub pair; ascan/anchq-style search agrees (REPORT.txt).
+
+-------------------------------------------------------------------------------------------------------------
+10. Machine checks (all commands run in this directory)
+-------------------------------------------------------------------------------------------------------------
+python3 verify_lemmas.py 22      (log: verify_lemmas_22.log)
+   Enumerates ALL solutions of R(h1,h2,d) with N = h1+h2+2+d <= 22, h1,h2 >= 1, all parities (47,862
+   solutions) and checks on each one: (B1), (STAR) for every t, (T1), (PAR), (I), (B4), the low-count bound,
+   (alpha), (beta), Lemma N2 (i) and (ii), the steps of Lemma N1 (k >= 1, g = 2 impossible, j <= g-2,
+   fact (F-a), conclusion for g >= 4), steps F1-F3 and Lemma F(a), F(b), and the Main Theorem.  0 failures.
+   1,922 solutions have 2d < p < q; 1,414 of them have Q at 1 and 508 have (P,Q) = (1,3).
+python3 check_main.py 14 21 (log check_main_14_21.log) and python3 check_main.py 22 35 (stopped early; log
+   check_main_17_35_partial.log; uses ./lred = g++ -O2 -o lred lred.cpp)
+   Existence level, larger range: for all 1 <= p < q <= 35, p <= 17 (the completed part), 2d < p, every feasible pair of hub
+   labels is (.,1) or (1,3), and for p even, q odd none is feasible.
+python3 construct.py 30 80       (log: construct_30_80.log)
+   Theorem U's labelling checked from the definition of a growth placement for p = 2s <= 60, q <= 80.
+python3 lsol.py l h1 h2          all growth placements of L(l;h1,h2) anchored at v (small cases).

@@ -1,0 +1,307 @@
+LINE "folds": TIDIEST GROWTH PLACEMENTS AND A SMALL VOCABULARY OF STEPS
+=====================================================================
+
+Directory: src/attack2/folds/.  Definitions follow README sections 1-3 and 11. The Graceful Tree Conjecture is
+OPEN; nothing here proves it. Status words as in CLAUDE.md. "Proved" below means that a complete argument is
+written in this file. None of it has been refereed yet.
+
+0. SUMMARY
+----------
+* The author's question was whether the longest-first builds (growth placements) of a tree are made of a few local
+  "folds", with all the non-staircase work in a bounded number of them. The answer depends on what counts as a fold.
+
+  - If a fold is "any step that is not a plain staircase step on the longest run" (cost A, below), then NO.
+    The tidiest builds of typical large trees need MANY such steps. This is proved by counting (Theorem F4): for
+    any c < 0.195, all but a vanishing fraction of the trees on n vertices need at least c*n/ln n of them. In
+    exact data (all trees on n <= 18) the minimum is at most 4. A heuristic search gives upper bounds of about
+    10% of all steps at n=40 and 14-20% at n=70-100. No simple invariant of the tree predicts the minimum
+    (section 4).
+
+  - If folds are allowed to leave single-cell holes behind, a four-letter vocabulary appears to be enough for
+    every tree. The letters are S (staircase), K (skip one cell), B (step back) and F (fill a hole). The hole
+    filled must be the leftmost or the rightmost one (rule 33). Separately, with skips that go across only
+    (rule 3), any hole may be filled. Each rule gives at most 12 choices per step, which is about 3.6 bits and
+    above the 1.56-bit counting floor.
+    - Rule 33 holds for ALL trees on n <= 22 (exhaustive; 5,623,756 trees at n = 22). Rule 3 holds for all
+      trees on n <= 21.
+    - Both hold for 300 uniform random trees at each of n = 40, 70, 100.
+    - Both hold for all 418 symmetric test trees with n <= 30.
+    - Rule 33 holds for 165 of 184 symmetric trees tried with n = 31..99, and for 167 of 168 hubs with
+      n = 31..70. The remaining 20 trees are UNDECIDED (search cap hit), not failures. All of them are of the
+      kind "k stems ending in hubs", the README's hardest family.
+    Every tighter variant tried fails. The smallest counterexamples are tabulated in section 5.
+    Stated as Conjectures F33 and F3. Caution: README section 11 records that every earlier fixed bound on
+    holes eventually failed. These rules bound the SHAPE of the holes and the CHOICE of hole, not their number.
+
+* The earlier measurement ("about 60% of steps are not plain across-steps") was an artefact of the randomised
+  solver. The tidiest builds are mostly staircase. Exact share of non-staircase steps: 7% at n=20 and 7.5% at
+  n=30 for random trees, 8.7% for the symmetric trees with n <= 30. The share does, however, grow with n (above).
+
+* Where the folds sit (section 6) is consistent but not a rule. Non-staircase steps attach at a vertex where
+  three or more non-leaf branches meet about 5 times as often as elsewhere (16.4% vs 3.4% of steps, all trees on
+  16 vertices). They happen in the middle third of the build. Back steps come late, and fills almost always
+  attach a leaf. The tidiest builds are still irregular: which K/B/F appears where is not determined by the
+  local picture.
+
+1. DEFINITIONS USED HERE
+------------------------
+Cells 1..n. A growth placement is built longest bracket first. Bracket {1,n} comes first, then for t = n-2, ..., 1
+a bracket of length t joins a fresh cell x to a used cell y with |x-y| = t. (Then t = number of unused cells
+before the step; README Lemma 10.) A run is a maximal interval of unused cells. The MAIN run is the longest one,
+leftmost on ties (as in src/fold_stats.py). For a step x -> y let R be the run containing x. Let
+r = number of cells of R on the far side of x from y (cells "left behind"), and c = number of cells of R between
+x and y.
+
+  cost A: the step is a staircase step iff R is the main run and r = 0
+          (x is an end cell of the main run; y lies beyond its other end).
+  cost B: the step is a staircase step iff r = 0 (in any run).
+  tidy_A(T), tidy_B(T) = least number of non-staircase steps over all growth placements of T.
+
+Step types (show.py), in the main run:
+  S   staircase:  r = 0.
+  B   back:       c = 0, r >= 1 (x is an end cell and y is on x's own side).
+  Kj  skip:       r, c >= 1, j = min(r, c). K1 = skip one cell. "*" means the left-behind side is the longer.
+  F   fill:       x in a run of one cell (a hole).   Fs/Fb/Fk: S/B/K inside a run of >= 2 cells that is not main.
+
+Pictures (tape before the step, # used, . unused, x fresh, Y partner). In a state with no holes, of length t:
+  S   :  ##x.........Y##      x = left end of the gap, Y = first used cell past the right end
+  K1  :  ##.x........#Y#      x one cell in; the jumped end cell becomes a hole, so Y is one cell deeper
+  B   :  Y###x.......###      x = gap end, partner on the SAME side, t cells back
+  F   :  ##Y###.##x#####      a single-cell hole is filled by a short bracket
+Each open hole moves the staircase partner one used cell deeper ("H" in show.py; README Lemma 10).
+
+THE VOCABULARY RULES (tidy.cpp RULE bitmask; re-implemented independently in verify_rule.py). The unused cells
+are always the GAP (one run, what is left of 2..n-1) plus isolated single-cell HOLES. Allowed steps: S; K1 in
+either form (across: the jumped cell is behind x; back-skip: the jumped cell is between x and y); B; F.
+  rule 1  : just that (holes are single cells, any number of them).
+  bit 2   : skips must be across.        bit 4  : no B.
+  bit 8   : FIFO, only the oldest hole may be filled.     bit 16 : LIFO, only the newest.
+  bit 32  : ENDS, only the leftmost or the rightmost hole may be filled.
+  rule 3 = 1+2,  rule 33 = 1+32,  rule 35 = 1+2+32, etc.
+
+2. SOLVER (part 1 of the brief)
+-------------------------------
+tidy.cpp: an exact solver by iterative deepening on the budget K.
+* For each K it runs a complete depth-first search over longest-first builds: every root edge up to symmetry,
+  and interchangeable pending branches of the same shape are tried once.
+* It uses a transposition table of failed states (state = used set + multiset of (cell, pending-branch shape)).
+* Two sound pruning tests apply:
+  - P1: a pending vertex at cell y needs as many unused cells within distance t as it has unbuilt children.
+  - P2: with cost A and budget 0, the radius shrinks to the range staircase steps can reach.
+* Output per tree is "lb ub". The result is exact iff lb = ub.
+* Every labeling is re-checked from the definition twice: by verifyCost() in tidy.cpp, which shares no code with
+  the search, and by verify.py (Python; lib.replay checks a permutation of 1..n, lengths 1..n-1 once each, and
+  exactly one used foot when taken longest first).
+Large n: HEUR=1 and BEAM=W modes give upper bounds only (beam search plus an exact tail). FREE=1 RULE=R asks only
+whether a placement obeying rule R exists. "ub=NONE exact=1" means exhaustively none.
+Build:  g++ -O2 -o tidy tidy.cpp.   Trees: python3 ../../gentrees.py n, or gen.py (random / sym).
+
+3. EXACT TIDY NUMBERS, ALL TREES ON n <= 18 (exhaustive; data/invariants_18.log)
+--------------------------------------------------------------------------------
+   n   trees    tidy_A distribution            tidy_B distribution
+  14    3159    0:1056 1:2034 2:66 3:3          0:1056 1:2073 2:30
+  15    7741    0:2080 1:5433 2:227 3:1         0:2080 1:5602 2:59
+  16   19320    0:4160 1:14214 2:934 3:10 4:2   0:4160 1:14939 2:221
+  17   48629    0:8256 1:37054 2:3295 3:23 4:1  0:8256 1:39745 2:628
+  18  123867    0:16512 1:94459 2:12735 3:159 4:2   0:16512 1:105063 2:2292
+(n = 4..13 in the log.) Extremal trees: data/extremal_trees.log. For example, at n = 16 tidy_A = 4 for
+(((()()()))((()()()))((()()()))): three equal branches, each a path to a vertex with three leaves.
+
+Sampled (data/*.txt; table produced by `python3 tables.py`):
+  random n=20 (100 trees): tidy_A exact for all, mean 1.21, share of steps 0.067;  tidy_B mean 1.03
+  random n=25 (100):       tidy_A exact, mean 1.67, share 0.073;                     tidy_B mean 1.09
+  random n=30 (100):       tidy_A exact, mean 2.09, share 0.075 (max 3);             tidy_B mean 1.30 (max 2)
+  random n=40 (24):        tidy_A best found mean 3.67 (exact for 5); tidy_B (12 trees) best 1.50
+  random n=70 (7):         tidy_A best found 7..14 (lb only 1; heuristic);  tidy_B one tree: <= 3
+  random n=100 (8):        tidy_A best found 16..23 (heuristic, not exact)
+  symmetric n<=30 (418):   tidy_A exact, mean 1.68, max 8;  tidy_B exact, mean 1.13, max 3
+  symmetric n=31..46 (60): tidy_B exact, mean 2.73, max 4
+"Random" means uniformly random labelled trees (Pruefer sequences, gen.py random).
+"Symmetric" (gen.py sym) covers equal-leg spiders, k equal hubs on a centre, k stems of length a ending in hubs
+of m leaves, k copies of each rooted tree on <= 7 vertices round a centre, two copies joined by an edge,
+spherically symmetric trees, truncated complete k-ary trees, and the trees named as failures in README sections
+7 and 11-13.
+
+4. CLAIMS ABOUT THE TIDY NUMBER
+-------------------------------
+Theorem F1 (Proved). tidy_A(T) = 0 iff tidy_B(T) = 0 iff T is a caterpillar.
+  Proof. Suppose every step is a staircase step in the sense of cost B. Before the first step the unused cells are
+  2..n-1, one run. A cost-B staircase step from a run R of length m takes x an end cell of R with the bracket
+  covering R (r = 0). It therefore leaves R minus one end cell, still one run. By induction there is always exactly
+  one run, so it is the main run, and cost-B staircase steps are also cost-A staircase steps. With one run [lo,hi]
+  of t cells, |x - y| = t forces the bracket {lo, hi+1} or {hi, lo-1}: the next bracket shares one foot with the
+  previous inner block and moves the other foot one step inward. That is a staircase in the sense of README
+  Theorem 2, so T is a caterpillar. Conversely, a staircase placement of a caterpillar (Theorem 2, Rosa) has only
+  such steps. Cost-A zero implies cost-B zero trivially. QED
+  (Also checked: tidy = 0 exactly for the caterpillars, all 205,001 trees on 4 <= n <= 18.)
+
+Theorem F4 (counting bound; Proved). Let builds(n,K) = sum_{j<=K} C(n-2,j) (2n)^j 2^(n-2-j), and let t_n be the
+number of trees on n vertices. Then the number of trees T on n vertices with tidy_A(T) <= K is at most
+builds(n,K). Consequently:
+  (a) some tree on n vertices has tidy_A >= K_all(n), and at least half have tidy_A >= K_half(n), where
+      (counting.py)  n: 16 18 20 25 30 40 50 70 100  ->  K_all = K_half = 1 1 1 1 1 1 2 3 4
+      (K_half = 0 at 16 and 18);
+  (b) for every c < ln(alpha/2)/2 ~ 0.195 (alpha ~ 2.9558, Otter's constant), the fraction of trees on n vertices
+      with tidy_A <= c*n/ln n tends to 0.
+  Proof.
+  * A growth placement is determined by its sequence of steps (x_t, sign of y_t - x_t), t = n-2..1, because
+    y = x +- t and the edge set on cells determines the tree.
+  * In a cost-A staircase step, x is the left or the right end of the main run (the main run is determined by
+    the state). The direction is then forced (y is beyond the opposite end), so there are at most 2 options.
+  * In any other step, x is one of at most n cells and the sign is one of 2, so there are at most 2n options.
+  * Choosing which j of the n-2 steps are non-staircase gives at most C(n-2,j)(2n)^j 2^(n-2-j) placements with
+    exactly j such steps.
+  * Every tree with tidy_A <= K is the shape of at least one placement counted in builds(n,K). This gives the
+    bound and (a).
+  * For (b), use C(n-2,j) <= n^j: then builds(n,K) <= (K+1) 2^n n^(2K).
+  * With K <= c n/ln n we get n^(2K) <= e^(2cn), so builds/t_n <= poly(n) (2 e^(2c)/alpha)^n, which tends to 0
+    when 2c < ln(alpha/2).
+  * t_n ~ C alpha^n n^(-5/2) is Otter (1948) (Classical). QED
+  Meaning for the brief: under cost A, a "fixed small number of folds per tree" is impossible. Typical trees need
+  a number of non-staircase steps that grows with n. The bound does NOT apply to cost B: a cost-B staircase step
+  may use an end of ANY run, so its number of choices is not bounded by 2.
+
+Observation F5 (invariants; all 205,001 trees on n <= 18). None of the candidate invariants determines tidy_A or
+tidy_B. The candidates were:
+  leaves-2; branch vertices; leaves-2 of the derived tree (T minus leaves); vertices off a longest path of the
+  derived tree; max number of non-leaf neighbours at one vertex; branch vertices of the derived tree;
+  being a lobster.
+Best agreement: tidy_A = (branch vertices of derived tree) for 144,946 of 205,001 trees. Among non-caterpillars
+every Spearman rho is below 0.2 in absolute value (cost A: 0.199 best; cost B: 0.097 best). The high overall rho
+values (0.6-0.7) come only from separating caterpillars (tidy 0) from the rest. The plain "leaves minus 2" and
+"number of branch vertices" are anti-correlated or uncorrelated (rho -0.19 and 0.08). One inequality held:
+tidy_B(T) <= (max number of non-leaf neighbours at a vertex) for all 205,001 trees, while cost A has 5
+exceptions. That is weak, since the right side is >= 3 for every non-caterpillar while tidy_B <= 2 for n <= 18.
+(invariants.py 18 -> data/invariants_18.log; data/invariants_14.log for n <= 14.)
+
+Observation F6. tidy_B(T) <= 2 for every tree on n <= 18 (exhaustive). Max tidy_B seen in samples: 2 (random
+n <= 40), 3 (symmetric n <= 30), 4 (symmetric n = 31..46). Upper bounds for 13 random trees at n = 70:
+3 or 4 (beam search; data/random_B_70.txt, re-verified). It is not
+known whether tidy_B is bounded. F4 says nothing about it.
+
+5. THE VOCABULARY RULES (parts 3-4 of the brief)
+-----------------------------------------------
+Number of trees with NO growth placement obeying the rule (exhaustive; "." = not run; data/rules_*.log, rule_failures.log):
+ rule                                 9  10  11  12  13  14  15  16  17  18  19  20  21
+  1 single-cell holes                 0   0   0   0   0   0   0   0   0   0   .   .   .
+  3 single + across skips             0   0   0   0   0   0   0   0   0   0   0   0   0
+ 33 single + ends fills               0   0   0   0   0   0   0   0   0   0   0   0   0
+  5 single + no back                  0   0   0   0   0   0   0   0   1   1   .   .   .
+  9 single + FIFO                     0   1   0   0   0   0   .   .   .   .   .   .   .
+ 17 single + LIFO                     0   0   0   0   0   0   0   0   0   2   .   .   .
+ 35 single + across + ends            .   0   0   0   0   0   0   0   0   1   .   .   .
+ 37 single + no back + ends           .   0   0   0   0   0   0   0   1   1   .   .   .
+  7 single + across + no back         0   1   0   0   0   2   .   .   .   .   .   .   .
+ 21 single + no back + LIFO           0   0   0   1   2   3   5   6   .   .   .   .   .
+ 19, 49, 51 (LIFO combinations)       first failure n = 18 (2 trees)
+(n <= 8: no failures for any rule.) Tree counts: 317,955 (n=19), 823,065 (n=20), 2,144,505 (n=21). The n=19..21
+runs are rules_exist_19.log, rules_exist_20_r{3,33}.log and rules_exist_21_r{3,33}.log. Every search was
+decided (no node cap hit).
+
+Fails (smallest counterexamples; edges 0-based, in data/rule_failures.log):
+  FIFO (9):           n=10, the spider S(3,3,3): edges 1 0 1 2 0 4 0 7 2 3 4 5 5 6 7 8 8 9
+  across+no back (7): n=10, edges 1 0 1 2 0 5 2 3 3 4 5 6 5 8 6 7 8 9
+  no back (5):        n=17, edges 1 0 1 2 0 9 2 3 3 4 4 5 4 7 5 6 7 8 9 10 10 11 11 12 12 13 12 14 12 15 12 16
+  LIFO (17):          n=18, edges 1 0 1 2 0 10 2 3 3 4 3 7 4 5 5 6 7 8 8 9 10 11 11 12 12 13 13 14 13 15 13 16 13 17
+                       (and tree 20239 below)
+  across+ends (35):   n=18, tree 20239:
+                       1 0 1 2 0 9 2 3 3 4 3 7 4 5 4 6 7 8 9 10 10 11 11 12 11 13 11 14 11 15 11 16 11 17
+So B (step back) is needed; LIFO and FIFO orders are too rigid; and rules 3 and 33 do not combine. Rule 33 needs
+back-skips, and rule 3 needs fills of interior holes. rulecheck.py (data/rulecheck.log) re-derives the failures
+and the successful labelings of the neighbouring rules for the same trees with a second, Python search.
+
+Relation to README section 11. Rule 1 with at most two holes is README's "two-skip rule", which fails at n = 22
+for one tree. That tree (data/tree22_twoskip.txt) HAS builds obeying rules 1, 3, 33 and 35, so the README failure
+was about the NUMBER of holes, not their shape (data/tree22_rule*.txt, all verified). Its rule-33 build
+(python3 show.py data/tree22_twoskip.txt data/tree22_rule33.txt 0) reads: S S K1 K1 S F S S K1 K1 S F S S S S S S S S.
+That is two skip-fill pairs, each skip opening a hole that is filled a few steps later, with the hub's leaves laid
+down by long staircase runs.
+
+Conjecture F33 (ends normal form). Every tree has a growth placement in which, at every moment, the unused cells are
+one interval (the gap) plus isolated single cells (holes), and every step is one of:
+  S  an end cell of the gap, partner beyond the other end;
+  K1 a cell one in from an end of the gap (the jumped end cell becomes a hole), partner on either side;
+  B  an end cell of the gap, partner on its own side;
+  F  the leftmost or the rightmost hole.
+Each step has at most 12 choices (S: 2, K1: 4, B: 2, F: 4), so log2 12 ~ 3.58 bits per step, which is consistent
+with the counting floor of ~1.56 bits. F33 implies Conjecture B (hence GTC).
+  Evidence:
+  * exhaustive, all trees on n <= 22 (5,623,756 trees at n = 22, rules_exist_22_r33.log). This includes the
+    README's n = 22 counterexample to the two-skip rule;
+  * 300 uniform random trees at each of n = 40, 70, 100 (all found; labelings kept in data/relab/ and re-verified
+    by verify.py --rule 33);
+  * 418/418 symmetric trees n <= 30 (re-verified);
+  * symmetric n = 31..99: 165 found (re-verified), 0 proved none, 19 undecided (cap 3,000,000 nodes per
+    budget, 60 s) of the first 184 of pop/sym_large.txt (the last 5 were not run);
+  * hubs n = 31..70 (pop/hubs_31_70.txt): 167 found, 1 undecided.
+  The undecided trees are all "k stems of length a ending in hubs" or spherically symmetric:
+    n=71  5 stems of length 2 ending in a hub of 12 leaves;  n=71 7 stems of length 1, hubs of 9;
+    n=85  spherically symmetric (4,4,4);  n=91 (9,9);
+    n=91  stems 5x4/14, 6x1/14, 6x3/12;  n=92 stems 7x1/12, 7x2/11, 7x3/10, 7x4/9;
+    n=97  stems 6x1/15, 6x2/14, 6x3/13, 8x1/11, 8x2/10, 8x3/9;  n=99 stems 7x1/13, 7x2/12;
+    n=66  5 stems of length 2 ending in hubs of 11 (hubs file).
+  These are exactly the shapes where every earlier rule in the README failed, so F33 is least trusted there.
+
+Conjecture F3 (across normal form). The same, but skips must be across (the jumped cell lies behind x) and any
+hole may be filled. Here the choices per step are not bounded, because there can be many holes. Evidence:
+exhaustive n <= 21; 300 random trees at each of n = 40, 70, 100; 418/418 symmetric n <= 30 (all re-verified).
+Not run on the large symmetric population.
+
+Cost of the restriction (exhaustive n = 14, data/all_A_14_rule{3,33}.txt). The least cost-A count rises by 1 for
+24 of 3,159 trees under rule 33, and for 82 trees (by up to 3) under rule 3. On 100 random trees with n = 30 it
+rises for 30 (rule 33) and 42 (rule 3) trees. So the vocabulary rarely costs extra folds.
+
+6. WHERE THE FOLDS SIT (part 3)
+-------------------------------
+foldscan.py over one tidiest (cost-A optimal) build per tree. Caveat: the solver returns ONE optimal build, so type
+frequencies are not canonical.
+* All 19,320 trees on 16 vertices (data/foldscan_all_16.log): 270,480 steps, 16,120 non-staircase.
+  Rate of non-staircase steps:
+    parent has >= 3 non-leaf neighbours: 16.4%   vs   <= 2: 3.4%
+    fresh vertex is a leaf: 3.6%                 vs   not a leaf: 8.2%
+    by thirds of the build: 2.4% / 9.0% / 6.6%
+  Types:
+    K1 (5,180): parent degree >= 3 in 96%, mean distance of the parent from the centre 0.71
+                (skips happen at the centre or next to it).
+    B (4,385):  80% in the last third.
+    F (182):    the attached vertex is a leaf in 99%; 89% in the last third.
+* Random n = 20..30 (300 builds) and symmetric n <= 30 (418 builds) show the same pattern (foldscan_random_20_30.log,
+  foldscan_sym_small.log). Fills attach leaves 94% and 85% of the time.
+The local rule suggested is: "skip when the partner you need is a branch point that the staircase will not return
+to; fill the hole late with a leaf". It is a description, not a rule. In the symmetric population the same local
+picture leads to different choices in trees of different sizes, as with the parity effect of README section 11.
+No deterministic choice rule was found.
+
+7. DEAD ENDS
+------------
+* Cost A as the measure of "folds": unbounded by Theorem F4. The heuristic upper bounds at n = 70 and 100 (7-23)
+  are far from the proved lower bounds (1), so the true growth rate is not known.
+* Invariant formulas (section 4): none survives exhaustive testing at n <= 18.
+* Hole-order disciplines FIFO and LIFO, no-back-step, across + ends: all fail (section 5) at n = 10..18.
+* README's two-skip rule fails at n = 22 (README section 11); F33 and F3 survive that tree.
+
+8. HOW TO CHECK
+---------------
+  cd src/attack2/folds; g++ -O2 -o tidy tidy.cpp
+  python3 ../../gentrees.py 14 > t14.txt; ./tidy < t14.txt > a14.txt; python3 verify.py t14.txt a14.txt A
+  ./rules_pipe.sh 33 18        # exhaustive rule check, n = 18; n = 22 took about 30 min on one core
+  FREE=1 RULE=33 ./tidy 3000000 60 < pop/random_100_x300.txt > o.txt; python3 verify.py --rule 33 pop/random_100_x300.txt o.txt
+  python3 counting.py          # Theorem F4 table
+  python3 tables.py            # sample tables
+  python3 show.py data/tree22_twoskip.txt data/tree22_rule33.txt 0   # a build drawn on the tape
+Exhaustive rule runs use QUIET=1 (no labelings stored). Their placements are checked inside tidy.cpp by
+verifyCost() (growth property only; rule compliance holds by construction of the search). All sample labelings
+are stored and re-checked by verify.py together with verify_rule.py, which re-implements the rule independently.
+
+ADDENDUM: run bookkeeping
+-------------------------
+* The n = 22 exhaustive rule-33 run finished: all 5,623,756 trees have a placement (folded into sections 0 and 5).
+* Stopped to save resources:
+  - the rule-33 run on pop/sym_large.txt at 184 of 189 trees;
+  - the queued rule-3 run on the same file (never started);
+  - the queued cost-A beam runs on sym_large_{a,b,c};
+  - the cost-B runs at n = 70 (13 of 16 trees done) and n = 100 (never started);
+  - the cost-A beam run at n = 70 (7 trees kept).
+* Partial outputs are kept in data/. The prefixes of the tree files that match them are
+  data/sym_large_first184.txt and data/random_70_first13.txt.
+* Compiled binaries were deleted.

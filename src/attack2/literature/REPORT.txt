@@ -1,0 +1,608 @@
+LITERATURE LINE: NOVELTY CHECK FOR THE RESULTS IN README.md
+=============================================================
+Written 2026-11-24.  No new mathematics.  The Graceful Tree Conjecture is open and nothing here
+bears on that.  This file says, for each result in README.md, what the closest statement in print
+is.  Verdict words used: KNOWN, SPECIAL CASE OF A KNOWN RESULT, NOT FOUND.  "Not found" means only
+that this search did not find it; it never means "new".  The search was done by an AI system in one
+session and is not a substitute for an expert's reading.
+
+How sources were read.  "READ" = the full text was downloaded and the passage quoted below was
+copied from it.  "SECONDARY" = the paper itself could not be opened (ScienceDirect, Wiley and
+Springer refused automated access with HTTP 403 / a login redirect) and the statement is taken from
+a named paper that restates it.  Quotations are copied from the extracted PDF/HTML text with line
+breaks removed; mathematical symbols are transliterated to ASCII (phi, alpha, >=, "not in"),
+displayed formulas are set inline, and "[...]" or "..." marks an omission or a symbol that the
+text extraction lost.
+
+Main sources READ in full or in the relevant part:
+ [G29]  J. A. Gallian, A Dynamic Survey of Graph Labeling, Electron. J. Combin. #DS6, "Twenty-ninth
+        edition, November 6, 2026".  https://www.combinatorics.org/ojs/index.php/eljc/article/view/DS6
+        (section 2.1 Trees read in full; sections 3.1-3.3 in part).  README section 5 cites the
+        28th edition (October 30, 2025).
+ [Hor]  M. Horton, Graceful Trees: Statistics and Algorithms, Bachelor of Computing with Honours
+        thesis, University of Tasmania, 2003.  https://doi.org/10.25959/23212346
+        (file https://ndownloader.figshare.com/files/40911215)
+ [BR]   L. Brankovic, M. J. Reynolds, Computer search for graceful-like labelling: A survey,
+        Electron. J. Graph Theory Appl. 10 (1) (2022) 319-336, DOI 10.5614/ejgta.2022.10.1.23.
+        https://ejgta.org/index.php/ejgta/article/download/1057/pdf_225
+ [Fang] W. Fang, A computational approach to the graceful tree conjecture, arXiv:1003.3045v2 (2010).
+ [Fang12] W. Fang, blog post "Every tree with at most 39 vertices is graceful", 2012-12-04.
+        https://fwjmath.wordpress.com/2012/12/04/every-tree-with-at-most-39-vertices-is-graceful/
+ [AV]   M. Arnold, F. Vitor, A Flexible Edge Search Algorithm for Graceful Tree Labeling, Internat.
+        J. Comput. Sci. Math. Theory 12 (3) (2026) 295-333, DOI 10.56201/ijcsmt.vol.12.no3.2026.pg295.333.
+        https://www.iiardjournals.org/get/IJCSMT/VOL.%2012%20NO.%203%202026/A%20FLEXIBLE%20EDGE%20SEARCH%20ALGORITHM%20295-333.pdf
+ [VB02] F. Van Bussel, Relaxed graceful labellings of trees, Electron. J. Combin. 9 (2002) #R4.
+        https://www.combinatorics.org/ojs/index.php/eljc/article/view/v9i1r4
+ [Sup]  M. C. Superdock, The Graceful Tree Conjecture: a class of graceful diameter-6 trees,
+        Princeton senior thesis 2013, arXiv:1403.1564 (survey in its section 2).
+ [BLW]  P. Bahls, S. Lake, A. Wertheim, Gracefulness of families of spiders, Involve 3 (2010)
+        241-247.  https://msp.org/involve/2010/3-3/involve-v3-n3-p01-s.pdf
+ [SZ]   S. Shan, Y. Zhong, Graceful labeling of two families of spiders, arXiv:2605.14295v2 (2026);
+        [G29] lists it as Graphs and Combin. 42(5) (2026).
+ [Rhys] K. Rhys, Every Spider with at Most Six Legs Is Graceful, preprint v1.0, 2026-09-18,
+        https://zenodo.org/records/22837484 ("This version has not been peer reviewed.")
+ [DN]   B. Dumitru, M. Nacu, Alternating Extremes in Graceful Labelings of Full Binary Trees and
+        Spider Trees, arXiv:2607.12597v2 (2026).
+ [Rofa] R. I. Rofa, 0-rotatability of classes of rooted symmetric trees, arXiv:2312.16235 (2023);
+        R. Rofa, On the 0-Rotatability of Regular Spider Trees of Leg Length 4, arXiv:2611.29448
+        (2026-11-22; abstract only).
+ [Niu]  T. Niu, Graceful labelings of spiders with three-edge legs and pendant leaves at the
+        center, arXiv:2605.02303 (2026; abstract only).
+ [KRT81] K. M. Koh, D. G. Rogers, T. Tan, Another class of graceful trees, J. Austral. Math. Soc.
+        (A) 31 (1981) 226-235, doi:10.1017/S1446788700033516.
+ [BK]   C. Barrientos, E. Krop, Improved bounds for relaxed graceful trees, Graphs Combin. 33
+        (2017) 287-305, arXiv:1402.0196.
+ [Ok]   O. Okechukwu, Graceful supertrees with at most 2m - diam(T) edges, arXiv:2611.01340v1
+        (2026-10-31).
+ [LPW]  S. Letzter, A. Pokrovskiy, E. Williams, On the gracesize of trees, arXiv:2511.11331v2.
+ [AAGH] A. Adamaszek, P. Allen, C. Grosu, J. Hladky, Almost all trees are almost graceful, Random
+        Structures Algorithms 56 (2020) 948-987, arXiv:1608.01577 (abstract).
+ [MB]   C. Barrientos, S. Minion, Enumerating families of labeled graphs, J. Integer Seq. 18
+        (2015) Article 15.1.7.  https://cs.uwaterloo.ca/journals/JIS/VOL18/Minion/minion3.pdf
+ [MW]   E. W. Weisstein, "Graceful Tree Conjecture", MathWorld, page dated "Updated: Tue Nov 24 2026".
+        https://mathworld.wolfram.com/GracefulTreeConjecture.html
+ [OEIS] A033472, https://oeis.org/A033472
+ [Li]   S. Li, Rainbow maps and the number of graceful labelings of trees, arXiv:2610.34877v1 (2026).
+ [Gn]   E. K. Gnang, A proof of the Kotzig-Ringel-Rosa Conjecture, arXiv:2202.03178 (v1 2022-02-04,
+        v2 2023-08-14, v3 2025-01-31); P. Chalise, A. Clark, E. K. Gnang, arXiv:2409.01981
+        (v3 2026-09-01, withdrawn).  Abstract pages only.
+
+COULD NOT BE OPENED (statements below marked SECONDARY rest on the restating paper):
+ F. Van Bussel, 0-centred and 0-ubiquitously graceful trees, Discrete Math. 277 (2004) 193-218
+   (https://www.sciencedirect.com/science/article/pii/S0012365X03001912, HTTP 403);
+ K. M. Koh, T. Tan, D. G. Rogers, Two theorems on graceful trees, Discrete Math. 25 (1979) 141-148;
+ M. Mavronicolas, L. Michael, Discrete Math. 309 (2009) 3757-3766;
+ D. A. Sheppard, Discrete Math. 15 (1976) 379-388;  R. Cattell, Discrete Math. 307 (2007) 3161-3176;
+ P. Hrnciar, A. Haviar, Discrete Math. 233 (2001) 133-150;  M. Burzio, G. Ferrarese, Discrete
+   Math. 181 (1998) 275-281;  D. Anick, Discrete Appl. Math. 198 (2016) 65-81;
+ A. Panpa, T. Poomsa-ard, J. Appl. Math. 2016; A. Panpa, S. Imnang, T. Wasuanankul, J. Appl. Math.
+   2025, Article 5826777 (Wiley, blocked);  P. Jampachon, K. Nakprasit, T. Poomsa-ard, Thai J.
+   Math. 12 (2014) 621-630 (link in [G29] returns "404 page not found");
+ A. G. Luiz, C. N. Campos, R. B. Richter, Graphs Combin. (2020), DOI 10.1007/s00373-020-02226-0
+   (login redirect);  M. Haviar, M. Ivaska, Vertex Labellings of Simple Graphs, Heldermann 2015
+   (book; no online text found);  F. R. K. Chung, F. K. Hwang, Ars Combin. 11 (1981) 239-250;
+ A. Rosa, Labeling snakes, Ars Combin. 3 (1977) 67-74;  C. Huang, A. Kotzig, A. Rosa, Util. Math.
+   21c (1982) 31-48;  R. Stanton, C. Zarnke 1973;  S. L. Zhao 1989;  S. Poljak, M. Sura 1982;
+ G. Sethuraman, P. Ragukumar, P. J. Slater, Discrete Math. 340 (2017) 96-106;
+ D. E. Knuth, TAOCP Vol. 4 Fascicle 7 (2025), section 7.2.2.3;  I. Cahit's working paper on
+   zero-rotatable trees.
+
+
+0. THE FIVE THINGS THAT CHANGE WHAT THE README SHOULD SAY
+---------------------------------------------------------
+(1) Conjecture B is in print.  It is Horton's "edge search conjecture" (2003), restated as
+    Conjecture 3 in the refereed survey [BR] (2022), and Horton reports it checked for every tree
+    with at most 29 vertices.  README section 5 says "What was not found: the growth property
+    stated as a property of labelings or as a conjecture"; that sentence is now wrong, and the
+    repository's exhaustive range for Conjecture B (n <= 23, n <= 26 with three runs) lies inside
+    Horton's.  See (a).
+(2) The "non-anchors are arithmetic" rule H2 of section 16 has the same arithmetic as Van Bussel's
+    2004 criterion for diameter-4 trees with two branches (formula identity checked for every
+    m <= 200; brute force for m <= 22).  See (b).
+(3) Spiders: the families of section 15 are known to be graceful with the centre at 0 ([SZ]
+    Theorem 4, 2026; [BLW] 2010), but the published labelings are not deals (checked by
+    re-implementing them).  "At most five legs" is now "at most six" in a non-refereed preprint
+    [Rhys] listed in [G29].  The centre-0 half of Conjecture S is a special case of Rofa's 2023
+    conjecture that all spiders are 0-rotatable.  See (d).
+(4) Verified range: [MW] and Fang's own 2012 post report an unpublished verification to 39
+    vertices; the published record is still 35.  A 2024 preprint by Chalise, Clark and Gnang
+    claiming a proof was withdrawn on 2026-09-01 with the comment quoted in (h).
+(5) The 2n-2 bound of section 16 ("one spare label", proved part) is a slightly weaker form of a
+    labelling already in the literature (Van Bussel's level labelling, in the reflected form of
+    [Ok]).  See (e).
+
+
+(a) GROWTH PLACEMENTS, THEOREM 7, CONJECTURE B
+----------------------------------------------
+README: a growth placement is a graceful labeling in which, for every k, the edges of length >= k
+form a connected tree; Theorem 7: equivalently, rooted at the vertex labelled 1, edge lengths
+strictly decrease along every path away from the root; Conjecture B: every tree has one.
+
+Closest published statements.
+
+[Hor] section 4.1 (READ):
+  "The edge search algorithm applies the edge labels in sequence, starting with edge label n-1,
+   then putting edge n-2 adjacent to that, then n-3 adjacent to one of the existing edges,
+   continuing until edge label 2 and edge label 1 are applied. Edge search assumes that a graceful
+   labelling exists where every edge smaller that n-1 can be fitted adjacent to an edge with a
+   greater label. This leads to a conjecture that is discussed in section 4.5."
+[Hor] section 4.5, "The edge search conjecture" (READ):
+  "The edge search algorithm does not consider every possible node labelling, due to its
+   requirement that each edge be applied adjacent to previous edges. At every stage, the labelled
+   edges will form a subtree."
+  "Despite this, the edge search always appears to generate a graceful labelling. This leads us to
+   conjecture that all trees admit a graceful labelling where every edge label other than n-1 is
+   adjacent to one edge of greater label."
+  "This form of graceful labelling is already known; Cahit's algorithm for labelling caterpillars
+   will always generate a labelling of this type (Cahit & Cahit 1975). However, it has not been
+   previously suggested that all trees admit this form of graceful labelling."
+[Hor] section 5.3 (READ):
+  "The edge search algorithm found graceful labellings for all trees in this range, so all trees
+   with 1 to 29 nodes are graceful and satisfy the edge search conjecture."
+[Hor] section 4.8 (READ): "The edge search conjecture is a stronger form of graceful labelling, so
+   a proof that every tree of a class can be labelled under the edge search conjecture also proves
+   that every tree of that class is graceful."
+[BR] section 4.2 (READ):
+  "It is important to note that Horton's algorithm is only able to discover graceful labellings
+   with a property that each edge, except the edge labelled with the larger label n - 1, is
+   adjacent to an edge labelled with a greater label."
+  "Conjecture 3. [33] All trees admit a graceful labelling where every edge label other than n-1
+   is adjacent to one edge of greater label."
+  "Horton used the Edge search algorithm to verify the above conjecture on all trees with n <= 29
+   vertices."
+[AV] section 3 (READ): "Furthermore, the Edge Search Algorithm cannot find all graceful labelings
+   for a given tree. Indeed, some roots have no findable solution via the Edge Search Algorithm."
+   and section 4.1: "In the original Edge Search Algorithm, the largest edge label was assigned
+   first, and then the second largest, and so on."
+[Fang] section 2.1 (READ): "Our deterministic search tries to construct a graceful labelling f
+   with f (r) = 0 for r the root. This is done by assigning values to vertices one by one. At each
+   recursive call, it tries to make sure that a new value k appears in the induced labelling g.
+   The value k decreases as we go deeper in the decision tree, from n - 1 to 1."  and  "Though
+   efficient, this back-tracking search misses a lot of potential solutions, due to the choice to
+   label the root 0."   (This part of README section 5 was already correct.)
+
+Why Horton's property is exactly the growth property (Proved; three lines, no new content).
+  Claim.  For a graceful labeling of a tree with n vertices the following are equivalent:
+   (H) every edge other than the edge of length n-1 is adjacent to an edge of greater length;
+   (G) for every k the edges of length >= k form a connected subgraph (README growth placement);
+   (R) rooted at the vertex labelled 1, lengths strictly decrease away from the root (Theorem 7).
+  Proof.  (G) <=> (R) is README Theorem 7.  (G) => (H): the edges of length >= k are connected and,
+  for k < n-1, there are at least two of them, so the edge of length k shares a vertex with a
+  longer one.  (H) => (G): by downward induction on k; the edge of length n-1 alone is connected,
+  and the edge of length k is adjacent to a longer edge, which lies in the connected set of edges
+  of length >= k+1.  QED.
+  Also [Hor] section 4.2 starts every search with "Set the label of the starting node to 1" and
+  then calls FindEdge(Size-1), so each labelling it outputs is a growth placement whose starting
+  node is an anchor in the README's sense.
+
+Verdicts.
+ * Growth placement as a class of labelings: KNOWN (Horton 2003, the labellings reachable by edge
+   search; [BR] 2022; described again in [AV] 2026).  No separate name was found: the terms
+   searched for and NOT found attached to this property are "0-rotatable", "strongly graceful"
+   (in [G29] that means a special alpha-labeling: Maheo 1980, Broersma-Hoede 1999), "ordered",
+   "heap", "monotone", "0-centred" (Van Bussel: label 0 at the centre, no order condition),
+   "range-relaxed" (more labels than vertices).
+ * Conjecture B: KNOWN.  It is Horton's edge search conjecture; checked by Horton for all trees
+   with n <= 29 (honours thesis; the repository's own runs reproduce n <= 26, so only the
+   range 27..29 rests on Horton's program alone as far as this search found).  Fang's table gives a centre-anchored growth placement for more than 99.998% of trees
+   at each n from 20 to 35 (README section 5).
+ * Theorem 7 (root-monotone form): NOT FOUND as a stated theorem.  It is a short reformulation of
+   Horton's condition (proof above); [AV] use the same fact implicitly ("minimum depth": "the m
+   largest edge labels are connected").
+ * Aldred-McKay 1998 (hill climbing / tabu, n <= 27) does not use this order.
+ * Conjecture B3 (three runs), the R-run and skip tables, Lemma 10 (balance rule), Lemma 12
+   (offset rule), Theorem 9 (alpha + growth forces a staircase), clean cuts / gap splits: NOT
+   FOUND.  Nearest: [MW] gap insertion, "insert a gap at [...] in the graceful labeling by
+   increasing every label greater than or equal to [...] by 1, then attaching a new leaf labeled
+   [...] to the root vertex" (the symbol is an image on the page; attributed there to "E. Pegg,
+   Jr. (pers. comm., Aug. 12, 2026)" and "(E. Weisstein, Aug. 20, 2026)"; checked there for
+   rooted trees through order 22) - README sections 8-9 already cite it.
+ * Number of growth placements 4, 12, 32, 116, 412, 1764, 7888, 40220, ...: NOT FOUND (OEIS search
+   for "4,12,32,116,412,1764,7888,40220" returned no sequence on 2026-11-24).
+ * README section 4, "tree placements" 164, 752, 4020, 23576, 155632, 1112032, 8733628, 73547332
+   for n = 7..14: KNOWN.  This is OEIS A033472, "Number of n-vertex labeled graphs that are
+   gracefully labeled trees" (terms 1,1,2,4,12,40,164,752,4020,23576,155632,1112032,8733628,
+   73547332,...; "independently verified ... up to a(31)", D. Knuth, Feb 09 2021).
+
+
+(b) ANCHORS versus 0-ROTATABLE / 0-CENTRED
+------------------------------------------
+Definitions in print.  [Sup] Definition 2.2 (READ): "(Chung & Hwang [15], Bloom [9]) A tree T is
+0-rotatable if, for each vertex v of T , there exists a graceful labeling f of T with f (v) = 0."
+[G29] (READ): "A graph is said to be k-ubiquitously graceful (also called "k-rotatable") if for
+every vertex there is a graceful labeling which assigns that vertex the label k."  [AV] (READ):
+"The root is graceful if it allows a graceful labeling. A tree that is graceful at every possible
+root was first called 0-rotatable by Chung and Hwang in 1981 [10] and also later named
+0-ubiquitous by Van Bussel in 2003 [26]."
+
+An anchor is a vertex that can carry the end label in a GROWTH labeling.  So every anchor is a
+vertex that can carry 0 in a graceful labeling, and the converse fails:
+ * path on 7 vertices: every vertex can carry 0 (Rosa 1977, SECONDARY via [Sup] Theorem 2.3 "The
+   path Pn is 0-rotatable for all n"; brute force here), but the three middle vertices are not
+   anchors (README section 7; brute force here);
+ * H(1,1,8) (n = 14): the centre can carry 0 in a graceful labeling, but is not an anchor.
+   Command: python3 anchor_vs_zero.py   (about 30 s; output in anchor_vs_zero.log)
+So the anchor question is NOT the 0-rotatability question; it is the "which starting nodes work
+for Horton's edge search" question, which [Hor] section 4.8 and [AV] raise without stating results:
+[Hor]: "Best of all would be to reject bad starting nodes without testing. This is the field of
+'zero-rotatability', where nodes that cannot be labelled with 1 or n as part of a graceful
+labelling are identified (Cahit)."
+
+Known non-rotatable results (SECONDARY, [Sup] Theorems 2.54-2.57, restating Van Bussel 2004):
+  "Theorem 2.54. (van Bussel [52]) Let T be a tree of diameter 4, with n edges and two branches
+   T1 , T2 at the central vertex v. Let m1 , m2 be the number of leaves of T1 , T2 other than v, and
+   assume m1 >= m2 . Then T is 0-centered graceful if and only if there exist integers x and r such
+   that m1 = (m2 + 2 - x)(r - 1) - x where x, r are not both odd, and 2 <= r <= n/2,
+   0 <= x <= min(r - 1, m2 )"
+  "Theorem 2.56. (van Bussel [52]) Let T be a tree of diameter at most 4. Then T is 0-centered
+   graceful if and only if T not in D."   "Theorem 2.57. ... Then T is 0-rotatable if and only if
+   T not in D'."   "Moreover, van Bussel conjectures, based on empirical evidence: D contains all
+   trees that are not 0-centered graceful. D' contains all trees that are not 0-rotatable."
+  (D = the diameter-4 two-branch trees failing 2.54; D' = a path attached by a leaf to the centre
+   of a tree in D.)  [AV] call the trees of D' "scorpions" and report (READ): "Every non-graceful
+   root was found to be at the end of a scorpion tail, or at the center of a scorpion itself if the
+   tail had length zero."  (their experiments: all trees with 15 nodes; scorpions to 50 nodes).
+
+README section 16, "non-anchors are arithmetic", rule H2 (src/attack/anchors/PROOFS.txt): for
+DH(p,q) = path c1 - v - c2 with p leaves on c1 and q on c2, m = p+q+2, v is an anchor iff for
+x = p or q there is a divisor s >= 2 of m, t = m/s, j = x-(s-2), 0 <= j <= t-1, (t even or j even).
+  Comparison.  Put n = m, r = t, x_VB = j, m2 = x.  Van Bussel's equation m1 = (m2+2-x)(r-1) - x
+  is the same as n = (m2+2-x) r, i.e. s = m2+2-x divides n with quotient r; "x, r not both odd" is
+  "t even or j even"; 0 <= x <= r-1 is 0 <= j <= t-1.  The two rules are the same statement up to
+  the choice of which branch is called m2.
+  Checked: python3 vb_check.py 200 22   (2 s; vb_check.log)
+    "formulas: 9801 trees DH(p,q), 1<=p<=q, m<=200: 4867 with v not an anchor by H2; H2 rule vs Van
+     Bussel rule disagreements: 0"
+    "brute force: 100 trees, m<=22: anchor == 0-centred graceful == rule in all but 0 cases"
+  Verdict.  The non-anchor half of H2 (and its corollary "m prime => v is not an anchor") is a
+  SPECIAL CASE OF A KNOWN RESULT: by Van Bussel's theorem v cannot carry 0 in any graceful
+  labeling at all.  The anchor half says slightly more than Van Bussel (his labelings exist; H2
+  says a growth labeling exists); for this family the two properties coincide (Observation,
+  m <= 22 by brute force; for all m if both theorems are right).  Caveat: Van Bussel's paper was
+  not opened; the comparison uses Superdock's restatement.
+ * Rule H3 (centre with three neighbours carrying 1, 1, k leaves; non-anchor for m = 60i+13):
+   NOT FOUND, and it is not a 0-rotatability statement: by Van Bussel (Theorem 2.56 above) every
+   such tree is 0-centred graceful.  Same for the 24-vertex degree-4 non-anchor L(3;8,9).
+ * Leaf rule (README section 7: a leaf is an anchor of T iff its neighbour is an anchor of T
+   minus the leaf): the same statement for graceful roots is [AV] Theorem 4.2 (READ): "A root is
+   graceful if and only if a new leaf attached to it is graceful in the induced tree."  Verdict:
+   KNOWN for graceful roots; the growth version has the same two-line proof.
+ * Lemma 6 (leaf at the vertex labelled 1 or n): KNOWN, folklore; e.g. [SZ] proof of Theorem 4,
+   [Rofa] introduction ("a gracefully labelled tree with n vertices can be gracefully 'grown' by
+   adding k new leaves (vertices) with labels n, n+1, ..., n+k to the vertex labelled 0").
+ * "Any vertex becomes an anchor once enough leaves are attached" (Theorem M): NOT FOUND.  Nearest:
+   [AV] "Conjecture 7.1. Attaching a leaf to a non-graceful root will have [it] be graceful in the
+   induced tree." (symbols lost in the PDF text) and [DN] Corollary 3.6, "For all sufficiently
+   large t, the ST S(c, L1 , . . . , Lr , 1^t) has a graceful labeling with hub label 1."
+ * Path anchors (distance 2 from the end; m = 3s+2, 5s+4, 7s+3): NOT FOUND.  Known without the
+   growth condition: Rosa 1977 and Cattell 2007 ([G29]: "Cattell [761] has shown that when finding
+   a graceful labeling of a path one has almost complete freedom to choose a particular label i
+   for any given vertex v.").
+ * Corona observation (every vertex of S is an anchor of the corona of S, |S| <= 14): NOT FOUND.
+   Nearest: the corona is S Delta K2, and [Sup] Theorem 2.20 (READ): "(Chung & Hwang [15]) Let S, T
+   be 0-rotatable trees. Then S Delta T is 0-rotatable."
+ * Anchor tables (numbers of non-anchors by n): NOT FOUND (OEIS searches for "1,2,2,4,4,5,14,18,24"
+   and "4,6,11,19,21,37,54,84,117,154" returned nothing).  [AV] Table 1 reports that Horton's
+   descending-order search "failed to find solutions before the cutoff time for roots in 409
+   trees" among the 7,741 trees with 15 nodes; that is a cutoff count (10^5 iterations), not a
+   proof of non-anchors, and is not comparable with README's exact tables.
+
+
+(c) COMPOSITION: THEOREM 13, THEOREMS A AND B, RULES T, N, B, D
+---------------------------------------------------------------
+What is in print.
+ * alpha-labeling + graceful labeling at the 0 vertex.  [SZ] Lemma 1 (READ): "Lemma 1 ([6]). Let
+   G and H be vertex-disjoint graphs with u in V (G) and v in V (H). If G admits an alpha-labeling
+   with index alpha such that u is labeled by alpha or 0, and H admits a graceful labeling such
+   that v is labeled by 0, then the graph obtained from G and H by identifying u and v is
+   graceful."  [6] = Huang, Kotzig, Rosa 1982.
+   => README section 7 "gluing at the top" and section 13 "one more leg of any length": the
+   graceful statement is KNOWN (Huang-Kotzig-Rosa 1982; README section 5 attributes it to
+   Stanton-Zarnke and Koh-Rogers-Tan, which this search could not confirm).  That it preserves
+   growth: NOT FOUND (and by README Theorem 9 the alpha-labelled part is then a caterpillar).
+   Rule P (run filling) of results/composition/REPORT.md contains this case; beyond it: NOT FOUND.
+ * Delta-construction.  [Sup] Definition 2.16 / Theorem 2.17 (READ): "(Stanton & Zarnke [50]) If
+   S, T are graceful, then S Delta T is graceful."  (one copy of T at every vertex of S; copy
+   labels i*nT + g(x) on one side of the bipartition and (nS-i-1)*nT + g(x) on the other.)
+   Theorem 2.19, Delta+1: "If S, T have graceful labelings f, g, with f (u) = nS - 1 and g(v) = 0
+   ... then S Delta+1 T is graceful."  Burzio-Ferrarese generalise both (edges between copies may
+   join any pair of corresponding vertices) and get "The tree obtained from a graceful tree by
+   subdividing each edge once is graceful."
+ * Koh-Rogers-Tan products.  [KRT81] (READ): "let H be a labelled tree on m + 1 vertices and let
+   [G] be a set of rooted trees G_i ... we denote by H{G} (respectively, H(G)) the tree obtained by
+   identifying the root of G_i with the i-th vertex of H ... Also <G> is the tree obtained by
+   identifying the roots of the G_i".  Its Theorem A gives conditions for the star product, e.g.
+   "(A1) G_i is an isomorphic copy of a tree G on n vertices with graceful valuation theta", with
+   "Moreover, in all these cases, S*_m has a graceful valuation under which the apex is the base",
+   and says "this theorem, like Theorems 5 and 6 in KRT, may also be regarded as giving sufficient
+   conditions under which an amalgamated product is graceful."
+   [G29] section 3.1 (READ), describing Mavronicolas-Michael: "When theta(w) = |E(T)| the garland
+   construction due to Koh, Rogers, and Tan [1981] gracefully labels the tree consisting of h
+   copies of <T, w> with their roots connected to a new vertex r. In the case when
+   theta(w) = |E(T)| and whenever uw in E(T) and theta(u) != 0, then vw in E(T) where
+   theta(u) + theta(v) = |E(T)|, the attachment construction of Koh, Tan and Rogers [1988]
+   gracefully labels the tree formed by identifying the roots of h copies of <T, w>."
+   and: "They use this concept to show that a number of known constructions of new graceful trees
+   using several identical copies of a given graceful rooted tree can be extended to the case
+   where the copies are replaced by a set of pairwise gracefully consistent trees."
+   [G29]: "In [4160] Wang, Yang, Hsu, and Cheng generalized the constructions of Stanton and Zarnke
+   and Koh, Rogers, and Tan for building graceful trees from two smaller given graceful trees."
+
+Verdicts.
+ * Theorem 13 (S with m edges and 2m+1 copies of T glued at their anchored roots): NOT FOUND.
+   Closest: the Koh-Tan-Rogers attachment construction (h copies of one rooted graceful tree
+   identified at the root, under a symmetry condition on the root's neighbours) and the garland /
+   Delta+1 construction (copies joined to a new vertex).  Theorem 13 differs in three ways: an odd
+   number 2m+1 of copies tied to a second tree S with m edges, no symmetry condition on T, and
+   the conclusion that lengths decrease away from the root.  Koh-Tan-Rogers 1979 could not be
+   opened, so it is not excluded that Theorem 13 without the growth conclusion is a special case
+   of their Theorems 5-6.
+ * Theorem B (mixed bunch: the copies may differ, equal in pairs under parity conditions):
+   NOT FOUND; in the same spirit as Mavronicolas-Michael's "gracefully consistent" substitution
+   (2009, SECONDARY via [G29]).
+ * Theorem A (core fattening: multiply the branches hanging off a subtree containing the root):
+   NOT FOUND; nearest is the generalized Delta-construction of Burzio-Ferrarese (SECONDARY, [Sup]).
+ * Rule D (mirror windows): SPECIAL CASE OF A KNOWN RESULT as a graceful labeling - it is the
+   Stanton-Zarnke Delta-construction with a star, as results/composition/REPORT.md already says.
+   The growth condition (mirror inequality) on top of it: NOT FOUND.
+ * Rule B (block designs: multiply by t, fill residues with leaves): NOT FOUND in this generality.
+   Labelings built from multiples of a step with the residues filled separately are standard: the
+   Delta-construction, [Rhys] Theorem 3.1 (equal legs, "the root-edge labels are L, 2L, . . . ,
+   rL"), [DN] Theorem 3.4 (label set {q+1, 2q+1, ..., Lq+1}, difference set {q, 2q, ..., Lq}).
+ * Rule T (completion transplant), Rule N (nesting at a clean cut): NOT FOUND.
+ * Consequences of Theorem 13 in README section 15 as graceful trees: "2j+1 copies of T glued at
+   v plus j leaves" NOT FOUND; equal-leg spiders in towers are KNOWN to be graceful (all equal-leg
+   spiders: [BLW], Poljak-Sura 1982 per [BLW]: "Theorem 1 is not a new result. It follows from
+   [Poljak and Sura 1982]").
+ * "Fails: identify an anchor of one tree with an anchor of another" - NOT FOUND (for graceful
+   labelings in general it is the known need for an alpha-labeling on one side).
+
+
+(d) SPIDERS
+-----------
+State of the art as of [G29] (READ, section 2.1):
+  "Bahls, Lake, and Wertheim [438] proved that spiders for which the lengths of every path from
+   the center to a leaf differ by at most one are graceful."
+  "Panpa and Poomsa-ard [2761] showed that all spider graphs with at most four legs of lengths
+   greater than one admit a graceful labeling. Panpa, Imnang, and Wasuanankul [2760] showed that
+   every spider graph with five legs is graceful. In [3170], Rhys proved that every six-legged
+   spider is graceful."
+  "Shan and Zhong [3465] showed that spiders with legs L1 , . . . , Ls (s >= 1) satisfying
+   |E(L2 )| >= 2|E(L1 )| + 4 and |E(Li+1 )| >= 2|E(Li )| + 2 for i in 2, . . . , s - 1 are graceful.
+   They further gave explicit graceful labelings for spiders with one leg of arbitrary length and
+   all others of length at most two such that the center is labeled by 0."
+  Also listed: Jampachon-Nakprasit-Poomsa-ard 2014 (classes of three-legged spiders),
+  Huamani-Bravo-Poma 2025, Saengsura-Poomsa-ard 2025, Kanetkar-Sane (arithmetic progressions, at
+  most six paths), trees with at most 4 end-vertices (Huang-Kotzig-Rosa).
+  [SZ] (READ): "The general question whether all spiders are graceful is still open".
+  [SZ] Theorem 5: "If S is a spider with all but three legs of length at most 2, then S is graceful."
+  [Rhys] is a 6-page Zenodo preprint marked "This version has not been peer reviewed."; it uses
+  from Panpa-Imnang-Wasuanankul 2025 (not opened) "that every three-legged spider is hub-zero
+  graceful ... and S(2^2 , n) is hub-zero graceful for n >= 3", and its Theorem 3.1 gives, for
+  r equal legs of length L >= 2, labelings with the root at 0 (offsets 0..L-1).
+  [Niu] (abstract): k legs of length 3 plus m leaves at the centre, using "that S_{k,3} admits
+  exactly such an apex-zero labeling, a fact already implicit in Bahls-Lake-Wertheim (2010)."
+  [Rofa] 2023 (abstract): "we conjecture that all spiders are 0-rotatable"; proved there for
+  equal-leg spiders with leg length at most 3, and in arXiv:2611.29448 for leg length 4.
+  [DN]: largest-difference-first search for spiders; "These computations do not prove that the
+  ordering always succeeds." (README section 5 quotes this correctly.)
+
+Conjecture S (every spider has a graceful labeling with the centre at 0 AND lengths decreasing
+outward on every leg; checked in README for n <= 37).
+ * Without the decreasing condition this is "every spider is hub-zero graceful", a SPECIAL CASE of
+   Rofa's conjecture (2023, preprint) that all spiders are 0-rotatable; known cases: three legs
+   (Panpa et al. 2025, SECONDARY via [Rhys]); odd number of legs with lengths in {m, m+1} ([BLW],
+   READ: "The labeling phi places 0 at the spider's center"); one long leg and all others of
+   length at most 2 ([SZ] Theorem 4); equal legs ([Rhys] Theorem 3.1, not refereed).
+ * With the decreasing condition: NOT FOUND as a conjecture or theorem for spiders.  It is the
+   restriction to spiders of the question "is the centre a valid start for Horton's edge search".
+ * The published centre-0 labelings are not deals.  Re-implemented from the papers and tested:
+     python3 spider_lit_check.py     (spider_lit_check.log)
+     "Bahls-Lake-Wertheim: 756 spiders (odd l<=15 legs, m<=12): graceful with centre 0: 756; of
+      these with lengths decreasing outward on every leg (a deal): 14"   (the 14 are m = 1 with
+      at most one leg of length 2)
+     "Shan-Zhong Thm 4: 440 spiders (2<=s<=12 legs of length 2, long leg 1..40): graceful with
+      centre 0: 440; of these deals: 1"
+   Reason, visible in the formulas: in [BLW] the even-numbered legs start with the small labels
+   1, 2, ... (first edge short, later edges long); in [SZ] the long leg has lengths
+   15, 10, 5, 8, 11, 6, ... (their Figure 3).  [Rhys] Theorem 3.1 gives the root edges the lengths
+   L, 2L, ..., rL, which are not the longest.
+README section 15 families.
+ * "All legs of length 2, valid deal for every k": as graceful trees KNOWN ([BLW]; diameter 4,
+   Zhao 1989); with centre 0 KNOWN ([SZ] Theorem 4, [BLW] for odd k); as deals NOT FOUND.
+ * "One long leg and k legs of length 2" (README: r + k = 1 mod 3 above a threshold, and r >= 2k
+   when 3 | k): as graceful trees with centre 0 this is a SPECIAL CASE OF A KNOWN RESULT ([SZ]
+   Theorem 4 covers every r and every k); as deals NOT FOUND.
+ * Stacking / "2j+1 legs of length L plus j legs of length 1" / towers: graceful KNOWN where all
+   legs are equal ([BLW]); with extra leaves at the centre NOT FOUND except L = 3 ([Niu]) and the
+   "sufficiently many leaves" statement of [DN] Corollary 3.6; as deals NOT FOUND.
+ * Lemma 11 (k legs of length 2 have no zigzag deal when k = 2 mod 3): NOT FOUND.
+ * "Legs of length 1 can be ignored": KNOWN ([SZ] proof of Theorem 4, first paragraph; [Niu]).
+ * S(a,2,c) from path anchors: three-legged spiders are KNOWN to be graceful (Huang-Kotzig-Rosa
+   1982: at most 4 end-vertices); as growth placements NOT FOUND.
+Slides.  "Conjecture A holds for every spider with legs of length at most 2" (section 16): the
+trees are KNOWN to be graceful (diameter <= 4); the statement about a route of legal right slides
+from the star: NOT FOUND (see (f)).
+Skip counts for spiders (section 12): NOT FOUND.
+
+
+(e) ONE SPARE LABEL / RANGE-RELAXED
+-----------------------------------
+In print.  [VB02] (READ): "Theorem 1 Every tree T on m edges has a range-relaxed graceful
+labelling f with vertex labels in the range 0, . . . , 2m - diameter(T )."  His construction is a
+level labelling from a root; he shows "the edge labelling g of E(T ) is monotonically increasing
+going from left to right and from top to bottom in the tree" - lengths INCREASE away from the
+root.  His open question: "For a tree T on m edges and n = m + 1 vertices, is there any eps > 0
+for which we can guarantee a range-relaxed graceful labelling within the range (2 - eps)m ...?"
+[BK] Theorem 2.2 (READ, text partly cut by the PDF layout): every tree of size m has a
+range-relaxed graceful labeling with labels in the range 0, ..., m + ex(T) (ex = their "excess");
+for lobsters "vertex labels no greater than 3/2 m - 1/2 d".  [G29]: "In 2017 Sethuraman,
+Ragukumar, and Slater [3441] improved the bound on the range-relaxed graceful labeling given by
+Van Bussel".  [AAGH] (abstract): labels from {1,...,(1+c)n} suffice for large trees of maximum
+degree O(n/log n).  [LPW] (READ): "for every eps > 0, there exists n0 such that every tree on
+n > n0 vertices satisfies gs(T ) >= (1 - eps)n."
+[Ok] (READ) reflects Van Bussel's labelling: "Our labeling (3) is obtained from his provisional
+coordinates by a cyclic reflection", with "|f (u) - f (v)| = M + 1 - |l(u) - l(v)|" (eq. (7)),
+f(root) = 0 and M = 2m - h - t_h + 1 (h = height from the chosen root, t_h = number of vertices at
+distance h).
+One spare label has a name: [G29] section 3.3 (READ): "Rosa [3203] invented another analogue of
+graceful labelings by permitting the vertices of a graph with q edges to assume labels from the
+set {0, 1, . . . , q + 1}, while the edge labels induced by the absolute value of the difference
+of the vertex labels are {1, 2, . . . , q - 1, q} or {1, 2, . . . , q - 1, q + 1}. He calls these
+rho-hat-labelings. Frucht [1152] used the term nearly graceful labeling".
+
+Verdicts.
+ * README section 16, proved part ("for every tree and every root there is a labeling with
+   distinct edge lengths decreasing away from the root that uses labels up to 2n-2"): THE SAME
+   LABELLING, IN A SLIGHTLY WEAKER FORM, IS ALREADY IN PRINT.  Since Van Bussel's lengths increase
+   with depth and [Ok] replaces each length d by M+1-d, the reflected labelling has root 0,
+   distinct lengths decreasing away from the root, and uses M + 1 = 2n - h - t_h labels, for ANY
+   root.  The labelling of src/attack/asymptotic (breadth-first index, even depths counted up
+   from 1, odd depths down from N) uses N = 1 + (n-1) + (n-1-t_h) = 2n - 1 - t_h labels, i.e.
+   h - 1 more: it is the reflected Van Bussel labelling without the saving of one label per
+   level.  (The count N = 2n-1-t_h is a one-line consequence of the formula in that report: the
+   two largest breadth-first indices on opposite parities are n-1 and n-1-t_h.)  [Ok] does not
+   state the monotonicity; it follows from the two quoted statements, and was checked directly
+   from formula (3):
+     python3 reflected_vb_check.py 20000 60     (reflected_vb_check.log)
+     "20000 random rooted trees with 2..60 vertices: failures 0; largest M/m seen 1.898"
+   Without the decreasing condition the 2n-2 bound is a SPECIAL CASE of [VB02] Theorem 1.
+ * Observation (n <= 18): with n+1 labels every vertex can be the root of a labeling with
+   decreasing lengths: NOT FOUND.  Nearest named notion: nearly graceful / rho-hat labelings and
+   range-relaxed labelings with m' = m+1; no theorem that every tree has one was found (it would
+   follow from the Graceful Tree Conjecture only without the root and order conditions).
+ * "A one-pass random longest-first process needs about 6-10% spare labels": NOT FOUND; [AAGH]
+   analyse a different randomized algorithm.
+
+
+(f) SLIDES; THE (n-1)! MODEL
+----------------------------
+ * The placement model (one position per length; (n-1)! placements): KNOWN.  [G29] (READ):
+   "Sheppard [3504] has shown that there are exactly q! gracefully labeled graphs with q edges."
+   [MB] (READ): "In 1976, Sheppard [10] counted the number of different alpha- and beta-labeled
+   graphs with n edges. He used a sequence of integers to represent the labelings ... In addition,
+   Haviar and Ivaska [7] use, in their book, a similar tool to count these types of labeled graphs,
+   providing an alternative proof to Sheppard's result."  [G29] also mentions characterisations
+   "via Sheppard's labeling sequences [3504] introduced in the 1970s, as well as via labeling
+   relations and graph chessboards" (Haviar and Kurtulik).  Neither Sheppard's paper nor the
+   Haviar-Ivaska book could be opened; the "one dot on each diagonal" description in README
+   section 5 could not be checked against the book.
+   [Li] (READ, abstract) uses the same encoding under the name "rainbow map" ("The acyclic rainbow
+   maps are exactly the graceful labelings, and the number of all rainbow maps is the Whitty number
+   W (N ) (OEIS A134983)") and proves that cycles "can be removed by changing O(c log N ) edges".
+ * Slides (move one length by one step, tree before and after), the slide graph, islands,
+   Conjecture A, Lemma 4, Theorem 3, Observations C and D, frozen brackets, two-element islands:
+   NOT FOUND.  No paper was found that studies a graph on the graceful labelings of trees whose
+   edges are single-length moves, or its connectivity.  Searches tried: "labelling sequence" with
+   "adjacent"/"move"/"connected"; "reconfiguration", "flip graph", "Markov chain" with "graceful
+   labeling"; [G29] searched for "Sheppard", "chessboard", "transfer".  Nearest in print:
+     - transfers of Hrnciar-Haviar 2001 (move leaves between two vertices keeping all labels;
+       SECONDARY via [Sup]) and the "component moving transformations" of Mishra-Panigrahi listed
+       in [G29]; these move many edges at once and are proof tools, not a move graph;
+     - the cycle-removal edge changes of [Li], used for counting.
+   The blog post "Graceful Graph Moves" (https://prideout.net/blog/graceful-moves/, 2026) is an
+   exposition of the leaf extension and transfers and says of itself that nothing in it is novel.
+
+
+(g) DIAMETER 4 AND 5
+--------------------
+ * In print ([G29], READ): trees "with diameter at most 5 [4329] and [1453]" are graceful, where
+   [4329] = S. L. Zhao, All trees of diameter four are graceful (1989) and [1453] = Hrnciar and
+   Haviar, All trees of diameter five are graceful (2001); also Jin-Meng-Wang 1993 for diameter 4.
+   Diameter 6 is open in general ([Sup], Superdock arXiv:1402.6570; Panda-Mishra classes in [G29]).
+   With label 0 at the centre: Van Bussel 2004 (SECONDARY, quoted in (b)): a tree of diameter at
+   most 4 is 0-centred graceful iff it is not in D.
+ * README section 16 explicit families (centre joined to three stars; centre joined to d stars
+   with a leaves each and one more star with at least d-1 leaves): as graceful trees KNOWN (Zhao
+   1989); with the centre at 0 KNOWN whenever the centre has at least three branches (Van Bussel
+   2004, SECONDARY: such trees are not in D); as closed-form GROWTH placements: NOT FOUND.
+ * Conjecture "all-up comb" (every diameter-4 tree has a growth placement of one given shape,
+   checked n <= 26): NOT FOUND.  That every diameter-4 tree with n <= 29 has SOME growth placement
+   is covered by Horton's check.
+ * The "counterexample hunt" observations (all diameter-4 trees to n = 42, diameter-5 to n = 32
+   have growth placements): beyond Horton's n <= 29 these are NOT FOUND in print.
+
+
+(h) VERIFIED RANGE AND RECENT CLAIMS (2023-2026)
+------------------------------------------------
+ * Published record: 35.  [G29] (READ): "in 2010 Fang [1065] used a deterministic back-tracking
+   algorithm to prove that all trees with at most 35 vertices are graceful."  [MW] table: "16 Rosa
+   (1965; cited in Knuth 2025, p. 24)  27 Aldred and McKay (1998)  29 Horton (2003)  35 Fang
+   (2010)", then: "Fang (2012) later reported an unpublished verification through 39 vertices."
+   [Fang12] (READ): "recently I have completed a verification of the graceful tree conjecture for
+   trees with at most n=39 vertices, advancing the recent verification record for n up to 35" and
+   "An article summarizing my recent verification efforts ... is being prepared."  No such article
+   was found.  So: 35 published (arXiv, not a journal); 39 claimed in a blog post only.
+   [G29] also says of Eshghi-Azimi: "They used this method to verify that all trees with 30, 35, or
+   40 vertices are graceful."; [BR] describes the same work as "tested it on randomly generated
+   graphs with up to 40 vertices", so this is not an exhaustive verification.
+ * Status statements, 2026: [MW]: "no proof or refutation has been discovered to date."  [LPW]:
+   "in full generality it remains open."  [G29]: "Despite the efforts of many, the graceful tree
+   conjecture remains open even for trees with maximum degree 3."
+ * Proof claims.  [G29] (READ): "In 2022 Gnang [1277] posted a paper with a proof on arXiv of the
+   Graceful Tree Conjecture. See [1278] for a newer proof by Gnang."  arXiv:2202.03178 is at v3
+   (2025-01-31), no journal reference.  The follow-up arXiv:2409.01981 (Chalise, Clark, Gnang,
+   "Every tree on n edges decomposes K_{nx,nx} and K_{2nx+1}"), whose abstract said "A proof of
+   the graceful tree conjecture (1967) follows as an immediate consequence", was withdrawn on
+   2026-09-01 with the arXiv comment: "Withdrawn due to an error in the proof of Lemma 4.3
+   (Composition Lemma), which was based on the argument in arXiv:2202.03178v2".  No published
+   referee verdict on 2202.03178v3 was found; the three status statements above postdate it and
+   treat the conjecture as open.  Older claims on arXiv (Gilbert 0709.2201; Mehendale
+   math/0503484) have no journal reference.
+ * Other 2023-2026 items found: asymptotic gracesize [LPW]; six-legged spiders [Rhys] (not
+   refereed); [SZ]; [DN]; [Niu]; [Rofa]; [AV]; [Ok]; [Li]; the MathWorld leaf-extension
+   computation (Pegg, Weisstein, August 2026; "This is not yet an inductive proof"); A. Younso, "A
+   Finite Certificate for Graceful Labelings of Subcubic Lobsters", software and Lean sources,
+   https://doi.org/10.5281/zenodo.23932907 (described by [MW] as "A reported AI-developed result
+   on Bermond's lobster conjecture [that] covers every lobster graph of maximum vertex degree at
+   most 3"; not opened).  Ringel's conjecture for large n (Montgomery-Pokrovskiy-Sudakov;
+   Keevash-Staden) does not go through graceful labelings.
+ * README items confirmed: Dumitru-Nacu arXiv:2607.12597 exists and says what section 5 says;
+   Letzter-Pokrovskiy-Williams arXiv:2511.11331 likewise; the MathWorld paragraph and its dates
+   (Aug. 12 and Aug. 20, 2026) are as quoted in section 8.
+
+
+SUGGESTED CORRECTIONS TO README.md (not made here; this line may not edit it)
+----------------------------------------------------------------------------
+ 1. Section 5, "What was not found: the growth property stated as a property of labelings or as a
+    conjecture" -> it is Horton's edge search conjecture (2003; [BR] Conjecture 3), checked by him
+    for n <= 29.  Conjecture B should be credited to Horton; "Horton's 2003 thesis" is an honours
+    thesis, and it is now online.
+ 2. Section 5, state of the conjecture: add Fang's unpublished 39 (2012); six legs ([Rhys], not
+    refereed); [SZ]; Gallian 29th edition (2026).
+ 3. Sections 5 and 7: the alpha + graceful gluing is Huang-Kotzig-Rosa 1982 (as cited by [SZ]).
+ 4. Section 16, anchors: the double-hub rule is Van Bussel's 2004 criterion; say so.
+ 5. Section 16, one spare label: the 2n-2 bound is the reflected Van Bussel level labelling
+    ([VB02], [Ok]) without its saving of one label per level; cite it.
+ 6. Section 15, novelty paragraph: the two spider families are known to be graceful with centre 0
+    ([SZ] Theorem 4); what is not in print is that they have deals.
+ 7. Section 4: the tree-placement column is OEIS A033472.
+ 8. Section 13: the centre-0 half of Conjecture S is a case of Rofa's 0-rotatability conjecture.
+
+
+DEAD ENDS AND LIMITS OF THIS SEARCH
+-----------------------------------
+ * ScienceDirect, Wiley and Springer pages returned 403 or a login redirect, so Van Bussel 2004,
+   Koh-Tan-Rogers 1979, Mavronicolas-Michael 2009, Sheppard 1976, Cattell 2007, Hrnciar-Haviar
+   2001, Anick 2016, both Panpa papers and Luiz-Campos-Richter were not read.  Every statement
+   taken from them is marked SECONDARY with the restating source.
+ * The Haviar-Ivaska book and Stanton-Zarnke 1973 are not online; Chung-Hwang 1981, Rosa 1977,
+   Huang-Kotzig-Rosa 1982 (Ars Combin. / Util. Math.) were not found online.
+ * No name was found for growth labelings other than "labellings found by edge search"; the
+   candidate names listed in the task ("strongly graceful", "ordered", "heap", "monotone",
+   "0-centred", "range-relaxed") all mean something else or do not occur in [G29].
+ * Nothing was found on slides or on connectivity of any move graph on graceful labelings; this is
+   the weakest "not found", because the natural home for such a result (the Haviar-Ivaska book on
+   chessboards) could not be read.
+ * Web search engines returned nothing for the phrase "edge search conjecture"; it was found only
+   by opening Horton's thesis.  Other statements may be hidden in theses in the same way.
+ * Mathematical reviews (MathSciNet, zbMATH) were not consulted.
+
+FILES IN THIS DIRECTORY
+-----------------------
+ REPORT.txt               this file
+ vb_check.py, .log        README rule H2 versus Van Bussel's criterion (formula and brute force)
+ anchor_vs_zero.py, .log  anchor versus 0-rotatable on P7 and H(1,1,8), brute force
+ spider_lit_check.py, .log  Bahls-Lake-Wertheim and Shan-Zhong labelings re-implemented; are they deals?
+ reflected_vb_check.py, .log  the reflected Van Bussel labelling decreases away from the root
+No compiled binaries were produced.  Downloaded papers were kept outside the repository.

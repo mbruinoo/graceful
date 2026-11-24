@@ -39,5 +39,5 @@ src/growfam
 src/growcheck
 src/hunt_*.log
 results/counterexample-hunt/counts/*.tmp
-# second panel, in progress and unrefereed; vetted results are added by hand
+# second panel: reports and sources are tracked (added with git add -f); logs, data and binaries are not
 src/attack2/

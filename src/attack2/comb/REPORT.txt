@@ -1,0 +1,623 @@
+LINE "comb" -- trees of diameter 4 (second panel)
+==============================================
+
+The Graceful Tree Conjecture is open and nothing here changes that.  This file is about ONE family, the
+trees of diameter 4, and about one strengthening of gracefulness on it (growth placements, README
+section 2).  "Every tree of diameter 4 has a growth placement" is NOT proved here.  What is here:
+
+  * a certificate-backed check of the all-up comb conjecture for every tree of diameter 4 with n <= 44
+    (was n <= 26), and, as a by-product, infinitely many trees for each certificate (section 2);
+  * five closed-form families with complete arguments (Theorems P, R, C, Q, O; sections 4-8), which
+    together with the two theorems of the first panel (three-hub, equal-hub) are everything that is
+    proved by hand;
+  * an exact account of what is still open (section 10) and how this relates to Hrnciar-Haviar
+    (section 11); dead ends in section 12.
+
+Status words are those of CLAUDE.md.  "Proved" below means: a complete argument is written in this
+file.  NO referee has read this file yet, so by the repository rule these are "proved, awaiting the two
+referees".  Novelty against the literature has not been checked beyond section 11.
+
+Notation.  Labels are 0..m (m = n-1 edges); add 1 for README labels.  A tree of diameter 4 is a centre
+whose neighbours ("hubs") carry leaves; a hub with 0 leaves is just a leaf of the centre.
+D(a1; S) = centre + one hub with a1 leaves (the ROOT hub) + hubs with the sizes in the multiset
+S = (s_1 >= ... >= s_k), k = |S| >= 1, entries >= 0.  n = a1 + k + sum(S) + 2.  a^d means d copies of a.
+
+
+0. STATUS TABLE
+---------------
+  Comb Lemma, Lemmas D, M, S, G (section 1, 3)                        Proved (short)
+  All-up comb conjecture (largest hub at label 0)                     Conjecture; Observation n <= 44
+  For each of the 63,218 multisets S with |S|+sum(S)+max(S)+2 <= 44:  explicit comb with w <= max(S),
+        machine-checked (verify.py); with the Comb Lemma this proves a growth placement of D(a1; S)
+        for ALL a1 >= w(S).  So: every tree of diameter 4 with n <= 44 has a growth placement
+        (Observation n <= 44 in the repository's sense: exhaustive, by certificate, not by argument).
+  Theorem P  (pairs of equal hubs + one more)                         Proved; formula checked n <= 200
+  Theorem R  (rounds in front of a paired comb)                       Proved; checked n <= 200 (see 5)
+  Theorem C  (caravans: hub labels a block)                           Proved; checked n <= 200 (see 6)
+  Theorem Q  (D(a1; 2^k))                                             Proved for k = 2 (mod 4) outright;
+                                                                      for other k Proved given Skolem's
+                                                                      theorem (Classical, Skolem 1957)
+  Theorem O  (D(a1; 1^k))                                             Proved given Classical theorems
+                                                                      (Skolem 1957, O'Keefe 1961 for
+                                                                      k = 0,2 mod 3; Rosa 1966 for
+                                                                      k = 1 mod 3; Peltesohn 1939)
+  Every tree of diameter 4 has a growth placement                     OPEN (Conjecture); see section 10
+  Closed-form rules cover every tree of diameter 4 with n <= 11       computed by coverage.py
+  Smallest trees inside no closed-form family (n = 12)                D(4;2,1,0) and D(1;1,1,1,1,0)
+        (both have certificates)
+  Smallest trees with neither rule nor certificate (n = 45)           4,496 trees, e.g. hub sizes
+                                                                      6,6,6,6,6,6,1 (not searched)
+
+
+1. THE SETTING: ALL-UP COMBS
+----------------------------
+Comb Lemma (first panel, restated; Proved).  Let y >= 1, distinct h_1..h_k in [1,y-1], sets
+U_i in [1, y-1-h_i] with |U_i| = s_i, and W in [1,y-1] with |W| = w, such that
+   (L)  {y-h_i}, U_1..U_k, W  partition [1,y-1]        (as edge LENGTHS)
+   (C)  {h_i}, h_1+U_1, .., h_k+U_k, W  partition [1,y-1]   (as CELLS = vertex labels).
+Then for every a1 >= w the tree D(a1; S) has a growth placement: root hub at 0, centre at y, hub i at
+h_i, its leaves at h_i+u (u in U_i), root leaves at the cells of W and at y+1..m (m = y + a1 - w).
+Counting (C): y - 1 = k + sum(S) + w.
+
+Proof.  Labels: 0, y, y+1..m, and by (C) each of 1..y-1 once.  Lengths: root edges have lengths y, W,
+y+1..m; hub edges y-h_i; leaf edges U_i; by (L) each of 1..m once.  Growth: take brackets longest
+first.  Lengths m..y+1 are root leaves {0,x}: foot 0 is used (after the very first bracket), x is new.  Length y is {0,y}: y is new.
+A length below y is a root leaf {0,x} (x new), or a hub edge {h_i,y} (y used; h_i is new because its
+other edges are leaf edges of length u <= y-1-h_i < y-h_i, placed later), or a leaf edge {h_i,h_i+u}
+(h_i used, because the hub edge y-h_i > u came earlier; the leaf is new).  QED
+
+Picture.  Draw the points 1..y-1 twice, once as lengths, once as cells.  A leaf of hub h is an arrow
+from the length u to the cell u+h: a jump to the right by the hub's own label.  A filler (element of
+W) is a point that is its own length and cell.  A hub is a cell h with no arrow into it; a hub length
+y-h is a point with no arrow out of it.  So a comb is: k PATHS, each starting at a hub cell and ending
+at a hub length, every step of every path a jump by some hub label, hub h used for exactly s_h jumps,
+the paths visiting every point of [1,y-1] that is not a filler exactly once.  ("Token picture": sweep
+left to right; k tokens are alive at any time; the leftmost token must jump by a hub label or stop.)
+All constructions below are drawn in this picture.
+
+Two remarks that matter for bookkeeping.
+(a) ONE comb for S serves infinitely many trees: D(a1; S) for every a1 >= w.  The smallest tree in
+    which a largest hub is the root is a1 = max(S), n = |S| + sum(S) + max(S) + 2.
+(b) All-up comb conjecture (first panel): every S has a comb with w <= max(S).  This is what makes a
+    LARGEST hub the root.  For "has a growth placement" any hub may be the root, and then w <= a1 is
+    the only requirement.
+
+
+2. PART (1): THE EXHAUSTIVE CHECK, n <= 44
+----------------------------------------
+Statement (Observation, n <= 44; each instance is backed by a certificate).  For every multiset S with
+|S| + sum(S) + max(S) + 2 <= 44 there is an all-up comb with w <= max(S).  Equivalently: every tree of
+diameter 4 with n <= 44 vertices has a growth placement with a largest hub at label 1 (README labels),
+of the all-up form.  By remark (a) the same certificates give a growth placement for D(a1; S) for
+EVERY a1 >= w(S), with no bound on n: e.g. the single line "S 2 1 0 | w 0 y 7 | 1:1,5 3:2 4: | W"
+settles D(x; 2,1,0) for all x >= 0.
+
+Counts (multisets S with |S|+sum+max+2 = n; every one certified):
+   n=5: 1  n=6: 1  n=7: 3  n=8: 3  n=9: 6  n=10: 7  n=11: 11  n=12: 13
+   n=13: 20  n=14: 23  n=15: 33  n=16: 40  n=17: 54  n=18: 65  n=19: 87  n=20: 104
+   n=21: 136  n=22: 164  n=23: 209  n=24: 252  n=25: 319  n=26: 382  n=27: 477  n=28: 573
+   n=29: 707  n=30: 846  n=31: 1038  n=32: 1237  n=33: 1506  n=34: 1793  n=35: 2166  n=36: 2572
+   n=37: 3093  n=38: 3659  n=39: 4377  n=40: 5169  n=41: 6152  n=42: 7244  n=43: 8590  n=44: 10086
+Total 63,218 certificates for 5 <= n <= 44.
+
+Method.  combx.cpp is an exact-cover search: the items are the lengths 1..y-1 and the cells 1..y-1; at
+every node it branches on the item with the fewest candidates (hub / filler / leaf of a placed hub /
+leaf of a new hub).  For n <= 34 it ran without a cap (first session of this line).  For n >= 35 it is
+cut off early (ext.sh: attempts of 20,000, 160,000 and 1,280,000 nodes for each w), and the multisets it gives up on -- 7 at n = 35 rising
+to 492 at n = 44, all with many small hubs, e.g. S = 2 2 2 1^11 -- are solved by CP-SAT (cpsat.py,
+ortools).  Every certificate, whichever program produced it, is then checked by verify.py, which
+knows nothing about combs: it builds the tree D(max S; S) (and D(w; S)) on labels 1..n and checks
+labels, lengths, growth order, tree shape and root from README section 1.
+verify.py --complete also checks that no multiset is missing.
+
+Commands (4 cores; n = 35..41 take about 7 minutes together, n = 42 five, n = 43 six, n = 44 eleven):
+   g++ -O2 -o combx combx.cpp
+   ./combx 30 5 1 > logs/exact_5_30.txt              # exact least w for n <= 30 (no node cap)
+   ./combx 34 27 0 p 3 > logs/any_27_34_part$p.txt   # p = 0,1,2
+   ./ext.sh 35 44 > logs/ext_35_44.log               # writes certs/n35.txt.gz .. certs/n44.txt.gz
+   python3 verify.py --complete 5 34 logs/exact_5_30.txt.gz logs/any_27_34_part?.txt.gz
+   python3 verify.py --complete 35 44 certs/n??.txt.gz
+(the binaries are deleted; logs are gzipped; verify.py reads .gz).
+
+What the data says beyond yes/no (logs/exact_5_30.txt.gz, python3 wstats.py):
+  * Exact least w for all 4,536 multisets with n <= 30: w = 0 for 4,429 of them, then 67, 19, 12, 5, 3,
+    1 multisets with least w = 1..6.  So a comb with NO inside filler is the rule.
+  * Observation (n <= 30): for every S with k >= 4 hubs the least w is EXACTLY the smallest w >= 0
+    allowed by the divisibility condition of Lemma G (g | k(w+1-k), g = gcd(s_i+2)).  For k = 3
+    there are 41 multisets whose least w is above that bound, e.g. S = 1 1 0 (w = 1), 5 5 2 (w = 2);
+    for k = 2 there are 28.
+  * CP-SAT reports infeasible exactly where Lemma G says so in the cases I looked at
+    (certs/hardnotes_*.txt: 3^8 needs w = 2 (mod 5), 5^5 needs w = 4 (mod 7), 7^4 needs w = 3 (mod 9)).
+    These infeasibility reports are not used as evidence for anything.
+
+Not done: n >= 45.  The number of multisets grows by about 18% per vertex and the hard fraction
+grows too (1% at n = 39, 3% at n = 42, 5% at n = 44); nothing structural stops the run.
+
+
+3. SMALL TOOLS
+--------------
+Lemma D (reflection; Proved).  If (y; h_i, U_i; W) is a comb, so is (y; h_i, y-h_i-U_i; y-W), with
+the same hub labels and sizes.
+Proof.  x -> y-x maps [1,y-1] to itself.  New lengths: {y-h_i}, y-h_i-U_i, y-W = y - ({h_i}, h_i+U_i,
+W), a partition by (C).  New cells: {h_i}, y-U_i, y-W = y - ({y-h_i}, U_i, W), a partition by (L).
+1 <= y-h_i-u <= y-1-h_i.  QED   (Picture: turn the number line around; arrows stay arrows.)
+
+Lemma M (mirror combs; Proved).  Let heads t_1..t_k in [1,y-1] be distinct, U_i in [1,t_i-1] with
+t_i - U_i = U_i, and W with y - W = W, such that {t_i}, U_i, W partition [1,y-1].  Then hubs
+h_i = y - t_i with the sets U_i and W form a comb.
+Proof.  (L) is the hypothesis.  x -> y-x sends t_i to h_i, u in U_i to y-u = h_i + (t_i-u) in h_i+U_i,
+and W to W; so the cells are the reflected lengths.  u <= t_i-1 = y-1-h_i.  QED
+(Mirror combs are the combs fixed by Lemma D.  Each hub is a "ruler": a head t and teeth in mirror
+pairs {u, t-u}, plus the middle tooth t/2 if the size is odd.  The root is the ruler with head y.)
+
+Lemma S (shift; Proved).  If S + {s} has a comb with w = 0 in which a hub of size s has label 1, then
+S has a comb with w = s: lower every other hub label by 1, keep every U_i, put W = U of the removed
+hub, and y' = y-1.
+Proof.  Old lengths: {y-h_i}, U_i, and for the removed hub y-1 and U_1.  New hub lengths
+y'-(h_i-1) = y-h_i are unchanged, so the new lengths are [1,y-1] minus {y-1}.  Old cells: 1, {h_i},
+h_i+U_i, 1+U_1.  New cells {h_i-1}, h_i-1+U_i, U_1 are the old cells other than 1, lowered by one:
+[1,y-2].  QED   (Picture: the hub at label 1 slides onto the root and becomes the root.)
+
+Lemma G (divisibility; Proved).  In any comb, sum_i (s_i+2) h_i = k y.  Hence with g = gcd(s_i+2),
+g divides k (w + 1 - k).  For equal hubs S = a^k: w = k-1 modulo (a+2)/gcd(a+2,k).
+Proof.  Sum of all cells = sum of all lengths: sum h_i + sum_i (s_i h_i + sum U_i) + sum W =
+sum (y-h_i) + sum_i sum U_i + sum W.  Reduce k y = k (k + sum(S) + w + 1) modulo g, using
+s_i = -2.  QED
+
+Moment remark.  Writing h_i = k + d_i:  sum_i (s_i+2) d_i = k (w + 1 - k).  So the hub labels,
+weighted by size+2, average to about k, and every filler must be paid for by hubs with labels above k.
+(Picture: at every cut of the line exactly k arrows cross; an arrow of hub h covers h cuts.)
+
+
+4. THEOREM P (PAIRS)                                                            status: Proved
+--------------------
+Statement.  Let b_0, .., b_{J-1} >= 0 (J >= 0), and optionally c >= 0; k = 2J, or 2J+1 if c is
+present; k >= 1.  If c is present and odd, assume c >= k.  Let S consist of two hubs of size b_g for
+every g, and one hub of size c if present.  Then S has an all-up comb with w = k-1; so D(a1; S) has a
+growth placement with the a1-hub at label 1 for every a1 >= k-1.
+
+The rule.  Hubs sit at the odd labels 1,3,..,2k-1.  Pair g owns the labels 2g+1 and 2k-2g-1 (they add
+up to 2k); the hub of size c owns the middle label k.  Put e = c/2 if c is even (or absent: e = 0),
+e = (c-k)/2 if c is odd, and N = b_0 + .. + b_{J-1} + e.  List N "chains" i = 1..N: first b_0 chains
+of group 0, then b_1 of group 1, .., finally e chains of group J (the middle).  Chain i of group g has
+   x = 2i-1,   h = 2g+1,   z = x + h          (x odd, z even)
+and gives  hub h the length x (leaf at cell z)  and  hub 2k-h the length z (leaf at cell x+2k).
+(For the middle, h = 2k-h = k: the hub gets both lengths.)   Let Z be the set of all z.
+  c even or absent:  y = 2k+2N;  W = even numbers in [2,y-2] not in Z.
+  c odd:  y = 3k+2N;  the middle hub also gets the k lengths 2N+1, 2N+3, .., 2N+2k-1 (leaves at these
+          +k);  W = (even numbers in [2,y-2k-1] not in Z) + (odd numbers in [y-k+1,y-2]).
+
+Picture: every odd point x <= 2N-1 makes two hops, x -> x+h -> x+2k, so the odd points form k strings
+with step 2k; the first hop is paid by a hub of the pair, the second by its partner.
+Example  b = (2,1), c = 2 (S = 2,2,2,1,1; k = 5, N = 4, y = 18):
+   1:1,3  3:5  5:7,12  7:8  9:2,4   W = 6,10,14,16      (hub:lengths)
+
+Proof.  The z are distinct and increasing: z_i = 2i-1+h, and h does not decrease along the list.
+Largest z: 2N-1+h with h <= k (h <= 2J-1 <= k-1 for a pair, h = k for the middle).
+Case c even or absent (y even).  Hub lengths y-h, h odd in [1,2k-1]: the odd numbers in
+[2N+1, 2N+2k-1].  Lengths: odd x in [1,2N-1]; Z; W; hub lengths = all odd numbers of [1,y-1] and all
+even numbers of [2,y-2] (Z lies in [2,y-2] since 2N-1+k <= y-2).  Cells: hubs = odd [1,2k-1]; x+2k =
+odd [2k+1,2k+2N-1] = odd up to y-1; Z; W.  Again everything once.  Leaf cells are <= y-1, so every
+u is <= y-1-h.  Sizes: hub 2g+1 gets b_g lengths x, hub 2k-2g-1 gets b_g lengths z, the middle 2e = c.
+|W| = (y-2)/2 - N = k-1.
+Case c odd (k odd, y odd).  Hub lengths y-h are the even numbers in [y-2k+1, y-1].  Odd lengths:
+x in [1,2N-1]; the extra middle lengths, odd in [2N+1, 2N+2k-1] = [.., y-k-1]; W's odd part, odd in
+[y-k+1, y-2] (y-k is even): all odd numbers below y.  Even lengths: Z and W's even part fill the even
+numbers of [2, y-2k-1] (Z is inside: 2N-1+k = y-2k-1); the hub lengths fill the rest.  Cells: odd:
+hubs [1,2k-1], x+2k up to 2N+2k-1 = y-k-1, W's odd part.  Even: Z, W's even part, and the cells of
+the extra middle leaves 2N+1+k, .., 2N+3k-1, i.e. the even numbers in [y-2k+1, y-1].  All leaf cells
+are <= y-1.  Middle size 2e+k = c.  |W| = (y-2k-1)/2 - N + (k-1)/2 = k-1.
+The Comb Lemma finishes.  QED
+
+Check.  python3 rules.py paired-all 60 24 : every member with n <= 60 (29,752 size patterns; every
+order of the pairs for n <= 24).  python3 rules.py two 200 : every member with at most two distinct
+non-root sizes, n <= 200 (80,571 patterns).  python3 rules.py random 200 5000.  All pass (logs/tests.log).
+
+The two first-panel rules were re-run to n = 200 as well (python3
+../../attack/gamestrategy/comb_rules.py 200: 210,738 trees D(a1;p,q) and 69,303 triples (d,a,a1)).
+
+Hubs of two distinct sizes, from Theorem P.  D(a1; a^d b^e), k = d+e, a1 >= k-1, is covered when
+   d and e are both even (any a, b >= 0), or
+   exactly one of d, e is odd and the size with odd multiplicity is even, or is >= k.
+Not covered by P: d and e both odd; an odd size < k with odd multiplicity; a1 < k-1.
+w = k-1 cannot be lowered for equal hubs when a+2 > k-1 and gcd(a+2,k) = 1 (Lemma G).
+
+
+5. THEOREM R (ROUNDS IN FRONT OF A PAIRED COMB)                                  status: Proved
+----------------------------------------------
+Hub labels are again 1,3,..,2k-1.  Number the hub cells i = 0..k-1 (cell 2i+1).
+A ROUND is a pair (B, pi): B an odd positive integer, pi a permutation of {0..k-1}, such that every
+   B + 2(pi(i) - i),  i = 0..k-1,   is one of the labels 1,3,..,2k-1.
+Statement.  Let (B_1,pi_1), .., (B_T,pi_T) be rounds with B_t + B_{t+1} >= 2k for all t < T, and let
+(b_0..b_{J-1}; c) be as in Theorem P; if T >= 1 assume B_T >= k-1, and B_T >= k if c is odd.
+Let S be the multiset in which the hub with label h has
+     s_h = (its size in Theorem P)  +  #{ (t,i) : B_t + 2(pi_t(i) - i) = h }.
+Then S has an all-up comb with  w = k-1 + sum_t (B_t - k)  (this number is >= 0).
+
+The rule.  sigma_t = B_1 + .. + B_t, sigma = sigma_T, A_t = { sigma_t + 2i + 1 : i = 0..k-1 }.
+Round t gives the length sigma_{t-1}+2i+1 (a point of A_{t-1}) to the hub B_t + 2(pi_t(i)-i); the leaf
+sits at sigma_t + 2 pi_t(i) + 1 (a point of A_t).  After the rounds place the REFLECTED (Lemma D)
+comb P' of Theorem P, shifted by sigma: every length u of P' becomes u + sigma.  y = y_P + sigma.
+W = all points of [1,y-1] not in A_0, .., A_{T-1} and not in sigma + (non-fillers of P').
+
+Picture: the k tokens stand on k consecutive odd (or even) points; in a round ALL of them jump, landing
+on the same pattern B further right, in a permuted order.  pi = identity means all k jumps are by the
+hub B.  Then the tokens enter a paired comb.
+Examples.  k = 4, one round (5, id), pairs b = (1,2):  S = 6,2,1,1, w = 4, y = 19:
+   1:17  3:11,13  5:1,3,5,7,6,8  7:10   W = 2,4,9,15
+k = 3, one round (3, pi = 1,0,2), b = (1), c = 2:  S = 3,2,2, w = 2, y = 13:
+   1:3,11  3:5,4,7  5:1,6   W = 2,9
+k = 5, round (5, pi = 1,2,0,4,3), b = (0,1), c = 2:  S = 7,4,2,1,0, w = 4, y = 24 (five distinct sizes).
+
+Proof.  (1) The A_t are pairwise disjoint: A_t and A_t' (t < t') have the same parity only if t'-t is
+even, and then sigma_t' - sigma_t >= B_{t+1} + B_{t+2} >= 2k, while A_t has width 2k-2.
+(2) Round t maps A_{t-1} bijectively onto A_t, because pi_t is a permutation.
+(3) Let Q be the set of non-fillers of P' in [1,y_P-1].  In P' (as in any comb) the leaf lengths and
+hub lengths together are Q, and the hub cells H = {1,3,..,2k-1} and leaf cells together are Q.
+(4) A_t for t <= T-2 lies in [1,sigma]: its largest point is sigma_t+2k-1 <= sigma-1.  The points of
+A_{T-1} above sigma are sigma + q with q = 2i+1-B_T even, 2 <= q <= 2k-1-B_T.  These q are fillers of
+P': if c is even or absent the fillers of P are the even numbers outside Z, Z <= 2N-1+k, so the
+fillers of P' = y_P - (fillers of P) contain every even number below y_P - (2N-1+k) = k+1, and
+2k-1-B_T <= k.  If c is odd the fillers of P contain the odd numbers in [y_P-k+1, y_P-2], so those of
+P' contain the even numbers in [2,k-1], and 2k-1-B_T <= k-1.  Hence A_0..A_{T-1} are disjoint from
+sigma + Q.
+(5) Lengths used: A_0..A_{T-1} (rounds), sigma + (leaf lengths of P'), and the hub lengths
+y-h = sigma + (y_P-h); by (3) that is A_0 + .. + A_{T-1} + (sigma+Q) + W = [1,y-1], each once.
+Cells used: hubs A_0; round leaves A_1..A_T; sigma + (leaf cells of P'); and A_T = sigma + H, so by
+(3) again A_0 + .. + A_{T-1} + (sigma+Q) + W.  Each once.
+(6) Every leaf cell is <= y-1, so u <= y-1-h.  The sizes are as stated; w = y-1-k-sum(S) =
+(k-1) + sigma - kT.  The Comb Lemma finishes.  QED
+
+Check.  python3 rounds.py test 200 30 : every member with identity rounds, at most 3 rounds, n <= 30
+(2,070 combs); 30,000 random members with k <= 14, up to 6 rounds, random permutations, n <= 200.
+python3 rounds.py two 200 : Corollary R1, every member with n <= 200 (6,289 size patterns).  All pass.
+The random part is a sample, not "all members up to n = 200": the family has too many parameters to
+enumerate; the two sub-families that have few parameters (P and R1) are enumerated completely.
+
+Corollary R1 (two sizes, both multiplicities odd; Proved).  Let d, e be odd, k = d+e, j >= 1, b >= 0.
+Then S = (b+kj)^d b^e has an all-up comb with w = k-1+j; so D(a1; (b+kj)^d b^e) has a growth placement
+for a1 >= d+e-1+j.
+Proof.  Theorem R with j rounds (k+1, identity) (k+1 is odd, 2(k+1) >= 2k, k+1 >= k-1): the hub with
+label k+1 gets kj extra leaves.  Pairs: (d-1)/2 pairs of size b+kj, (e-1)/2 pairs of size b, and the
+pair with labels k-1, k+1 of size b.  w = k-1 + j(k+1-k).  QED
+For k = 2 this is case A of the three-hub theorem (sizes q and q+2j).
+
+Corollary R2 (unequal trades; Proved, k odd).  One round (k, pi) with pi the rotation of a block of
+a+b tokens (a, b <= (k-1)/2) and the identity elsewhere gives hub k+2a b leaves, hub k-2b a leaves
+and the middle hub k-a-b leaves, at no cost in fillers (w stays k-1).  So sizes need not come in
+equal pairs; what a sequence of rounds with B = k must satisfy is only sum_h s_h (h-k) = 0 and
+"k leaves per round".
+
+What R does not do.  The total moment is forced: sum_h (s_h+2)(h-k) = k (w+1-k) (section 3), so with
+hubs on the odd labels and w = k-1 the sizes must balance about k.  D(4;2,1,0) is the smallest tree
+that no choice of rounds reaches.
+
+
+6. THEOREM C (CARAVANS: HUB LABELS A BLOCK)                                      status: Proved
+-------------------------------------------
+Now the hub labels are a block L = {l, l+1, .., l+k-1}, l >= 1.
+A MOVE is (delta, pi): delta >= 0, pi a permutation of {0..r-1}, 1 <= r <= k, with r = k if delta > 0,
+such that every  k + delta + pi(j) - j  (j < r) is in L.
+Lemma C.  Let M_1..M_T be moves; c_0 = l, c_t = c_{t-1} + r_t + delta_t.  Give, in move t, the length
+c_{t-1}+j to the hub k + delta_t + pi_t(j) - j (leaf at cell c_{t-1}+k+delta_t+pi_t(j)), j < r_t.
+Let y = c_T + l + k - 1 and W = [1,l-1] + (the blocks [c_{t-1}+k, c_{t-1}+k+delta_t-1]) + [y-l+1, y-1].
+This is an all-up comb, with w = 2(l-1) + sum_t delta_t; hub h has as many leaves as it was named.
+
+Picture: the k tokens are k consecutive cells c..c+k-1 (at the start: the hub cells).  delta = 0: the
+r leftmost tokens jump onto the r cells just right of the block, in the order pi.  delta > 0: first
+leave delta fillers right of the block, then all k tokens jump over them.  The block is whole again
+after every move.
+
+Proof.  Claim: after t moves the lengths used are exactly [1,c_t-1] and the cells used are exactly
+[1,c_t+k-1].  At the start: fillers [1,l-1] (length and cell), hub cells [l,l+k-1].  Move t with
+c = c_{t-1}: the new lengths c..c+r-1 are cells already used and not yet lengths; if delta > 0 then
+r = k, so with the filler block the lengths used become [1,c+k+delta-1] = [1,c_t-1]; if delta = 0
+they become [1,c+r-1] = [1,c_t-1].  The new leaf cells are c+k+delta+pi(j), j < r, i.e. the r cells
+right of the block (and of the fillers): the cells used become [1,c+k+delta+r-1] = [1,c_t+k-1].
+At the end the k points c_T..c_T+k-1 = y-l-k+1..y-l are the hub lengths y-h, h in L, and the top
+fillers complete [1,y-1] on both sides.  Leaf cells are <= y-l <= y-1.  Comb Lemma.  QED
+
+Named moves:  Z = (0, id on 1 token): one leaf for hub k.
+              R(a,b) = (0, rotation of a+b tokens): b leaves for hub k+a, a leaves for hub k-b.
+              B(a) = (a, id on k tokens): k leaves for hub k+a, a fillers.
+Theorem C.  Let n_0, x_{a,b}, z_a be non-negative integers (n_0 = 0 unless k is in L; x_{a,b} = 0
+unless k+a and k-b are in L; z_a = 0 unless k+a is in L).  The sizes
+     s_k = n_0,   s_{k+a} = sum_b b x_{a,b} + k z_a,   s_{k-b} = sum_a a x_{a,b}
+on the labels of L have an all-up comb with w = 2(l-1) + sum_a a z_a.   (Lemma C; the moves may be
+made in any order.)
+Example  k = 3, l = 2, moves R(1,1), Z, B(1):  S = 4,1,1, w = 3, y = 13:
+   2:3  3:4  4:2,5,6,7   W = 1,8,12
+Corollary C1 (Proved).  For all s, t, z >= 0: D(a1; s+3z, t, s) has a growth placement for a1 >= z+2
+(k = 3, labels 2,3,4: s moves R(1,1), t moves Z, z moves B(1)).
+Corollary C2.  k = 2, l = 2 (labels 2,3): Z and B(1) give S = (p, 2z), w = z+2: case B of the
+three-hub theorem of the first panel.
+Corollary C3 (Proved).  Let k >= 3, 2 <= l <= k-1, and sizes s_h on L with
+     sum_h s_h (h-k) = k B,  B >= 0,   and   s_{k-1} >= sum_{a>=2} a s_{k+a}.
+Then there is an all-up comb with w = 2(l-1)+B.
+Proof.  Moves: s_{k+a} times R(a,1) for a >= 2; s_{k-b} times R(1,b) for b >= 2;
+t = s_{k-1} - sum_{a>=2} a s_{k+a} times R(1,1); B times B(1); s_k times Z.  Hub k-1 gets
+sum a s_{k+a} + t = s_{k-1}; hub k+1 gets sum_{b>=2} b s_{k-b} + t + kB, which is s_{k+1} by the moment
+equation.  QED   (Hubs k-1 and k+1 act as currency: a leaf of hub k+a costs a leaves of hub k-1.)
+
+Necessary for any caravan: sum_h s_h (h-k) = k sum(delta) (each filler block is jumped by all k
+tokens).  So S = 2,1,0 has no caravan at all (no assignment to a block makes the moment a multiple of
+3 with w small), and equal hubs a^k with k even, a odd have none.
+
+Check.  python3 caravan.py test 200 : Corollary C1 for every (s,t,z) with n <= 200 at a1 = w, w+1,
+w+7 in two move orders (318,500 combs); 20,000 random caravans with moves Z, R, B (k <= 12);
+20,000 random instances of Corollary C3; 20,000 random caravans with arbitrary permutation moves;
+all n <= 200, all pass.  As for R, the random parts are samples.
+
+
+7. THEOREM Q: D(a1; 2^k)             status: Proved for k = 2 (mod 4); otherwise Proved given Skolem 1957
+------------------------
+Statement.  S = 2^k has an all-up comb with w = 0 if k = 0,1 (mod 4), w = 1 if k = 2 (mod 4), w = 2 if
+k = 3 (mod 4).  So D(a1; 2^k) has a growth placement for every a1 >= w; in particular the tree with
+k+1 hubs of two leaves each (a1 = 2), e.g. D(2^9), for every k.
+
+A Skolem sequence of order n is a set of pairs (a_i, b_i), i = 1..n, with b_i - a_i = i, covering
+1..2n exactly.  Classical (Skolem 1957): it exists iff n = 0,1 (mod 4).
+Proof.  All three cases are mirror combs (Lemma M).
+k = 0,1 (mod 4): take a Skolem sequence of order k, y = 3k+1, head t_i = b_i + k, teeth
+U_i = {i, a_i + k}.  i + (a_i+k) = t_i, i <= k < a_i + k, and the heads and teeth are [1,k] and
+[k+1,3k].  W empty.
+k even (used for k = 2 mod 4): pairs, for r = 1..k/2,
+     difference 2r:   (k/2+1-r, k/2+1+r)         difference 2r-1:  (3k/2+2-r, 3k/2+1+r).
+The first family covers [1,k+1] except k/2+1, the second covers [k+2, 2k+1].  y = 3k+2, heads b+k,
+teeth {i, a+k}, W = {y/2} = {3k/2+1}, the one hole, and y - y/2 = y/2.  (Two nests: draw them.)
+k = 3 (mod 4): K = k+1, Skolem sequence of order K, y = 3K.  The triples {i, a_i+K, b_i+K} partition
+[1,3K].  The triple whose largest element is 3K = y gives W = {i, a_i+K} (two numbers adding to y);
+the other k triples are the hubs.  (The ruler with head y is the root: section 3.)   QED
+The explicit Skolem sequences used (rules.py skolem, the usual ones): for n = 4s, s >= 2:
+(4s+r-1, 8s-r+1) r=1..2s; (r, 4s-r-1) r=1..s-2; (s+r+1, 3s-r) r=1..s-2; (s-1,3s), (s,s+1), (2s,4s-1),
+(2s+1,6s).  For n = 4s+1, s >= 2: (4s+r+1, 8s-r+3) r=1..2s; (r, 4s-r+1) r=1..s; (s+r+2, 3s-r+1)
+r=1..s-2; (s+1,s+2), (2s+1,6s+2), (2s+2,4s+1).  n = 1, 4, 5 by hand.  I did not write out a proof that
+these formulas are Skolem sequences for all s; the program confirms it for every order <= 68.
+Check.  python3 rules.py twos 200 : every k <= 65, a1 = w, 2, 3 and the largest with n <= 200.
+Examples: k = 4: 1:4,8  2:2,9  3:3,7  7:1,5 (y = 13).   k = 6: 1:5,14 2:3,15 3:1,16 7:6,7 8:4,8 9:2,9,
+W = 10 (y = 20).
+
+By Lemma G nothing smaller is possible: 4 | k(w+1-k) forces w odd when k = 2 (mod 4) and
+w = 2 (mod 4) when k = 3 (mod 4).
+
+
+8. THEOREM O: D(a1; 1^k)                                  status: Proved given the Classical theorems named
+------------------------
+Statement.  S = 1^k has an all-up comb with w = 0 if k = 0,1 (mod 3) and w = 1 if k = 2 (mod 3).
+So D(a1; 1^k) has a growth placement for all a1 >= w: in particular the tree with k+1 hubs of one leaf
+each, for every k.
+
+Heffter triples.  Let c = 2K+1.  A Heffter system for K is a set of triples (p,q,r) of positive
+integers with p+q+r = c which, together with the point c/3 when K = 1 (mod 3), contain exactly one
+number of each pair {z, c-z}, z = 1..K.  Classical (Heffter 1897, Peltesohn 1939): it exists for
+every K = 0,1 (mod 3) except K = 4.
+Lemma (triples are combs; Proved).  From a Heffter system for K one gets a comb for 1^K with w = 0,
+y = c: for each triple, hub q with leaf length p, hub r with leaf length q, hub p with leaf length r;
+for the point z0 = c/3, a hub z0 with leaf length z0.
+Proof.  A triple uses the lengths p, q, r (leaves) and c-q, c-r, c-p (hubs), and the cells q, r, p
+(hubs) and q+p = c-r, r+q = c-p, p+r = c-q (leaves): the same six numbers, i.e. three full pairs
+{z, c-z}.  The point z0 uses z0 and 2z0 = c-z0 both ways.  By hypothesis the pairs are all of [1,c-1].
+p < c-q etc.  QED   (Picture: a three-cycle of frogs; frog p jumps by q and lands on c-r.)
+Construction of Heffter systems (rules.py heffter).  K = 3j: from pairs (a_i,b_i), b_i-a_i = i, i=1..j,
+take the triples (i, a_i+j, c-(b_i+j)): i + (a_i+j) = b_i+j.  With a Skolem sequence (j = 0,1 mod 4)
+the numbers a_i+j, b_i+j are [j+1,3j]; with a hooked Skolem sequence (pairs covering [1,2j+1] minus
+2j; O'Keefe 1961; j = 2,3 mod 4) they are [j+1,3j+1] minus 3j, and 3j+1 = c-3j.  Either way one
+number of each pair {z,c-z}, z <= 3j, occurs.   K = 3j+1 (c = 6j+3, fixed point 2j+1): the same with
+pairs covering [1,2j+1] minus j+1 (Rosa 1966; j = 0,3 mod 4) or [1,2j+2] minus {j+1, 2j+1} (hooked;
+j = 1,2 mod 4, j >= 2).  j = 1 (K = 4) has no solution.
+Proof of the theorem.  k = 0,1 (mod 3), k not 4: the Lemma.  k = 4: the comb 1:2  2:6  4:3  5:1
+(y = 9, checked).  k = 2 (mod 3): K = k+1 = 0 (mod 3); in the comb of the Lemma the number 1 is the
+"i" of the first triple, hence a hub label; Lemma S removes that hub: w = 1.   QED
+Examples.  k = 3: 1:4  2:1  4:2 (y = 7).   k = 5: 1:6 2:1 4:2 5:5 8:3, W = 9 (y = 12).
+Explicit formulas: Skolem as in section 7; hooked Skolem (rules.py hooked_skolem) for n = 4s+2:
+(r,4s-r+2) r=1..2s; (4s+r+3, 8s-r+4) r=1..s-1; (5s+r+2, 7s-r+3) r=1..s-1; (2s+1,6s+2), (4s+2,6s+3),
+(4s+3,8s+5), (7s+3,7s+4); for n = 4s-1: (4s+r, 8s-r-2) r=1..2s-2; (r,4s-r-1) r=1..s-2; (s+r+1,3s-r)
+r=1..s-2; (s-1,3s), (s,s+1), (2s,4s-1), (2s+1,6s-1), (4s,8s-1).  For the Rosa sequences I have NO
+formula: rules.py finds them by a small search, which succeeds for every order needed up to k = 98.
+So for k = 1 (mod 3) the theorem rests on Rosa's existence theorem, quoted from memory and from
+secondary sources (section 11), and the labels are explicit only up to k = 98.
+Check.  python3 rules.py ones 200 : every k <= 98, a1 = w, 1, 2 and the largest with n <= 200.
+
+By Lemma G nothing smaller is possible: 3 | k(w+1-k), so k = 2 (mod 3) forces w = 1 (mod 3).
+
+
+9. WHAT PART (2) ASKED FOR, IN ONE PLACE
+----------------------------------------
+"Hubs of two distinct sizes" D(a1; a^d b^e), k = d+e:
+   d, e even                                   a1 >= k-1          Theorem P
+   one multiplicity odd, that size even or >= k        a1 >= k-1          Theorem P
+   d, e odd, a - b = kj, j >= 1                a1 >= k-1+j        Corollary R1
+   further sporadic sub-families from Theorems R and C (e.g. C1: sizes s, t, s+3z)
+   NOT proved: d, e odd with a-b not a multiple of k; an odd size < k of odd multiplicity; a1 < k-1
+   (except 1^k, 2^k); all of these have certificates as far as section 2 reaches.
+"Many small equal hubs with a small root":
+   D(a1; 1^k) all k, a1 >= 0 or 1 (Theorem O);   D(a1; 2^k) all k, a1 >= 0, 1 or 2 (Theorem Q);
+   D(a1; a^k) for a1 >= k-1 (equal-hub theorem; also Theorem P when k is even or a is even or a >= k).
+   NOT proved in general: a^k with a >= 3 and root smaller than k-1, e.g. D(3; 3^5), the tree with
+   six hubs of three leaves (certificate: yes).
+   For such S the least w is pinned modulo (a+2)/gcd(a+2,k) by Lemma G, so any rule has to produce a
+   filler count that depends on k mod (a+2): there is no uniform "w = 0" rule for equal hubs.
+
+
+10. PART (3): THE FULL STATEMENT IS OPEN
+----------------------------------------
+Conjecture (unchanged): every tree of diameter 4 has a growth placement; stronger: an all-up comb
+rooted at a largest hub.  NOT proved.
+
+What is proved by a written argument.  Let Sigma be the multiset of leaf counts of the centre's
+neighbours.  The tree has a growth placement if it is a caterpillar (Rosa 1967), or if for some
+neighbour r of the centre, S = Sigma - {r} and r satisfy one of:
+   T3  S = {p,q}, p >= q >= 1, r >= p                       (three-hub theorem, first panel)
+   EQ  S = a^d, r >= d-1                                    (equal-hub theorem, first panel)
+   P   S as in Theorem P, r >= |S|-1
+   R   S as in Theorem R, r >= k-1+sum(B_t-k)
+   C   S as in Theorem C, r >= 2(l-1)+sum(a z_a)   (or Lemma C with any moves)
+   Q   S = 2^k, r >= 0,0,1,2 for k = 0,1,2,3 (mod 4)
+   O   S = 1^k, r >= 0,0,1 for k = 0,1,2 (mod 3)
+   Z   Sigma = Sigma' + (one or more 0's), where Sigma' satisfies one of the above with r EQUAL to the
+       comb's w (then the centre has the largest label and README Lemma 6 adds leaves to it).  r may
+       itself be a 0, i.e. the root may be a leaf of the centre: Sigma = S + 0^z, z >= 1, is covered
+       whenever S has a comb with w = 0.
+coverage.py evaluates exactly this list (C with moves Z, R(a,b), B(a) and, for k <= 6, all
+permutation moves; R with all permutations for k <= 7; covergen.py does the bookkeeping, and
+covercheck.py tests it against the exact data and CP-SAT).  "Covered" below means: inside one of
+these closed-form families, no computer certificate used.  Result (logs/coverage_30.log,
+logs/coverage_46_cert44.log):
+
+    n      trees of diameter 4   caterpillars   covered by a rule   no rule
+     9                    14              9                   5         0
+    10                    21             12                   9         0
+    11                    32             16                  16         0
+    12                    45             20                  23         2
+    13                    65             25                  36         4
+    14                    88             30                  54         4
+    15                   121             36                  78         7
+    16                   161             42                 109        10
+    17                   215             49                 148        18
+    18                   280             56                 198        26
+    19                   367             64                 262        41
+    20                   471             72                 347        52
+    21                   607             81                 454        72
+    22                   771             90                 591        90
+    23                   980            100                 761       119
+    24                  1232            110                 967       155
+    25                  1551            121                1230       200
+    26                  1933            132                1546       255
+    27                  2410            144                1932       334
+    28                  2983            156                2393       434
+    29                  3690            169                2956       565
+    30                  4536            182                3622       732
+    36                 14848            272               11507      3069
+    40                 31146            342               23751      7053
+    44                 63218            420               47457     15341
+    45                 75131            441               56226     18464
+All trees of diameter 4 with n <= 11 are inside a closed-form family.  At n = 22, the first panel's
+two theorems with P, Q, O left 494 of 771 without a rule; with R and C (and the root allowed to be a
+leaf of the centre) 90 remain.  The share without a rule grows again with n (16% at n = 30, 24% at
+n = 44); most of the rule coverage is Theorem C.
+
+A tree without a rule is still settled if it has a certificate: the tree minus one largest hub, S,
+satisfies |S|+sum(S)+max(S)+2 <= 44 (section 2; this covers D(a1;S) for EVERY larger a1 too).  A
+certificate is a short explicit comb, and the Comb Lemma turns it into a proof for its whole family:
+for instance D(x; 2,1,0), which no rule reaches, is settled for every x >= 0 by
+   hubs 1:{1,5}, 3:{2}, 4:{}   (y = 7; lengths 1,5,2 and 6,4,3; cells 1,3,4 and 2,6,5).
+
+Exactly which trees remain open.  A tree Sigma of diameter 4 is NOT known to have a growth placement
+iff both
+   (i)  |S|+sum(S)+max(S)+2 > 44 for S = Sigma - {one largest entry}     (no certificate), and
+   (ii) no neighbour r of the centre satisfies T3, EQ, P, R, C, Q, O or Z above  (no rule).
+(i) fails for every tree with n <= 44, and for every larger tree whose largest hub is big enough
+that the rest is small.  At n = 45 exactly the trees whose largest size occurs at least twice
+satisfy (i); of the 75,131 trees of diameter 4 with 45 vertices, 4,496 satisfy (i) and (ii)
+(coverage.py 46 list cert=44).  The smallest in the enumeration order are
+   6,6,6,6,6,6,1    6,6,6,6,6,5,2    6,6,6,6,6,4,3    15,15,2,1,1,1,1,0    14,14,3,1,1,1,1,1
+(the multiset Sigma of all hub sizes).  These are the smallest trees of diameter 4 for which this
+line of work knows no growth placement; none of them has been searched, so "open" here means
+"not looked at", not "resisted".  Two caveats on the count 4,496: coverage.py tries Theorem R with
+arbitrary permutations only for k <= 7 and Lemma C's permutation moves only for k <= 6 (beyond that
+only Z, R(a,b), B(a)), and it uses a certificate only with a largest hub as root; so a few of the
+4,496 may in fact be inside a family or follow from a certificate with another root.
+Described by shape, the patterns without a rule (all of them, n <= 22, in logs/coverage_22.log) are:
+   - three or more hubs of pairwise different sizes whose moments cannot be balanced on a block or on
+     the odd labels: S = 2,1,0;  3,2,1;  4,2,0;  5,1,0; ..  (each settled for all roots by a
+     certificate, but with no formula that produces the comb from the sizes);
+   - many small hubs of mixed sizes with a small largest hub, where no filler can be afforded:
+     2^a 1^b (a, b >= 1, e.g. Sigma = 2,2,1,1,1), 3^a 1^b, 3^a 2^b, and the same with leaves on the
+     centre;
+   - 1^k and 2^k with leaves on the centre when k is in the residue class that needs w > 0 and the
+     root would have to be one of the 1's or 2's (e.g. Sigma = 1,1,1,1,1,0);
+   - k+1 equal hubs of size a with 3 <= a <= k-2 (root too small for the equal-hub theorem), and
+     near-equal ones such as 6,6,6,6,6,6,1.
+The first kind is harmless (finitely many certificates settle each S for all roots).  The other three
+are the real gap: S itself grows, so no finite list of certificates can cover them.
+
+Why I could not close it (honest reading).  The token picture turns the problem into a one-dimensional
+tiling with k tokens.  Rules exist where the tokens keep a rigid formation (a block: Theorem C; the
+odd lattice: Theorems P, R; mirror pairs: Q; three-cycles: O).  A rigid formation forces a moment
+identity on the sizes, and general sizes violate each of them.  The certificates (97.6% with w = 0 for
+n <= 30) show that the true solutions are not rigid: they look like Skolem/Langford sequences with
+prescribed multiplicities, for which I know no general existence theorem.  A proof for all S seems to
+need either such a theorem or an inductive step (adding one leaf to a hub, or one hub) that I did not
+find: every local change I tried shifts the centre and with it all k hub lengths at once.
+
+
+11. RELATION TO HRNCIAR AND HAVIAR (2001)
+-----------------------------------------
+P. Hrnciar and A. Haviar, "All trees of diameter five are graceful", Discrete Math. 233 (2001)
+133-150, prove that every tree of diameter at most 5 is graceful (Classical for this notebook).
+I had no access to the paper.  From secondary sources (M. Superdock, "The Graceful Tree Conjecture: a
+class of graceful diameter-6 trees", arXiv:1403.1564, and the survey remarks found by web search) the
+method is: start from a gracefully labelled star and move ("transfer") batches of leaves between
+vertices in the order 0 -> n -> 1 -> n-1 -> .., where a batch whose labels pair up to a fixed sum can
+be moved from one vertex to another without changing the set of edge lengths.  As far as I can tell
+this means that in their labelings of diameter-4 trees the CENTRE keeps the extreme label (0, or n by
+complement), the hubs get the labels n, 1, n-1, 2, .. alternately, and each hub's leaves form
+intervals of labels.
+How the present constructions relate, as far as I can tell:
+  * They are different labelings.  Here a HUB has label 0 and the centre sits in the interior at y;
+    there the centre has label 0.  A labeling with the centre at an end label is a growth placement
+    only if every hub's leaf edges are shorter than its edge to the centre, and the first panel found
+    by exhaustive search that for some trees (D(8;1,1), n = 14; D(12;1,1), n = 18) no growth placement
+    has the centre at label 1 at all.  So no relabeling "of their type" can prove Conjecture B on
+    diameter 4; a different normal form is needed, and the comb is one.
+  * Their theorem is stronger in scope (all trees of diameter <= 5, graceful); the statements here
+    are stronger in kind (growth placement, i.e. edge 1 pendant, then edge 2, ..) but cover only the
+    families listed, plus the certified range.
+  * The mechanism is cousin to theirs: a transfer moves leaves whose labels pair up to a constant; a
+    mirror comb (Lemma M) is exactly a partition into pairs with prescribed sums, and Theorem P's
+    two-hop chains x -> x+h -> x+2k pair the two hubs h and 2k-h in the same way.
+I have not verified any of the statements about their paper against the paper itself.
+The classical facts on Skolem, hooked Skolem and Rosa sequences and on Heffter's difference problems
+(existence conditions as quoted in sections 7-8, including the exceptions order 1 and v = 9) were
+confirmed only against secondary sources (Francetic-Mendelsohn's survey of Skolem sequences, two
+theses at Memorial University), not against the original papers.
+
+
+12. DEAD ENDS (kept)
+--------------------
+1. Deterministic exact cover alone does not get past n = 35: S = 2 1^14 and S = 2 2 2 1^11 ran for
+   minutes without result (most-constrained-cell ordering thrashes on many equal small hubs).
+   Randomised tie-breaking with restarts solved the first in 0.5 s but not the second in 15 CPU
+   minutes; CP-SAT solves both in seconds.  For a few minutes S = 2 2 2 1^11 looked like a
+   counterexample to the all-up comb conjecture; it is not (w = 0 comb in certs/n35.txt.gz).
+2. Mirror combs (symx.cpp) are not universal: S = 2 1^14 has none with w <= 2 (the search is
+   exhaustive and instant).  Hubs of odd size need the midpoint t/2, which is too rigid.
+3. A caravan with all hub labels above k costs 2(k-1) boundary fillers plus (h-k)/k per leaf: useless
+   for small roots.  With labels 1..k it is rigid (only hub k can ever jump): this is dead end 3-4 of
+   the first panel seen from the token side.
+4. "Insert a period" (cut the line at p, insert a block, let every crossing arrow repeat): works only
+   when the crossing arrows' labels h_j satisfy sum 1/h_j <= 1 with the block a common multiple; it
+   reproduces the equal-hub residue dealing and the identity rounds of Theorem R, nothing more
+   general.  Partial periods break the formation and I found no repair gadget.
+5. Reducing "both multiplicities odd" (a^d b^e) to Theorem P by choosing a different root only moves
+   the odd multiplicity around; Corollary R1 is the only progress and needs k | a-b.
+6. Adding a leaf to the centre (a hub of size 0) to an arbitrary comb: no general lemma found.  In
+   caravans and rounds a 0 is free (a label that is never used); in general it needs w = a1 and
+   README Lemma 6, which costs the "largest hub is the root" form.
+7. Explicit Rosa sequences: I did not reconstruct the formulas; Theorem O for k = 1 (mod 3) therefore
+   has explicit labels only as far as the search in rules.py was run (k <= 98).
+Not attempted: diameter 5; lobsters; n >= 45 for the certificate run; a proof that the Skolem
+formulas quoted in sections 7-8 are valid for all orders (they are standard, and checked to order 68
+resp. 33).
+
+
+13. FILES
+---------
+  REPORT.txt      this file
+  combx.cpp       exact-cover search for all-up combs (all S of a given n; single S with restarts)
+  ext.sh          two-pass driver for n >= 35 (combx capped, then cpsat.py)
+  cpsat.py        CP-SAT model of a comb for one S (needs ortools)
+  symx.cpp        mirror-comb search (dead end 2)
+  verify.py       independent check of certificates from README section 1; --complete
+  rules.py        Theorems P, Q, O (paired, twos, ones) and their checks
+  rounds.py       Theorem R, Corollary R1
+  caravan.py      Lemma C, Theorem C, Corollaries C1, C3
+  covergen.py, coverage.py, covercheck.py   which trees are covered by a written proof
+  wstats.py       least w against the divisibility bound
+  nextS.py        lists the multisets a cut-off combx run had not reached
+  apsearch.py, nestsearch.py, fixhub.py, hp.py   exploration tools of the first session (kept, unused)
+  run_tests.sh    re-runs every formula check quoted here -> logs/tests.log
+  logs/           exact_5_30.txt.gz, any_27_34_part?.txt.gz (certificates n <= 34), ext_*.log,
+                  coverage_22.log (every uncovered pattern, n <= 22), coverage_30.log, tests.log
+  certs/          n35.txt.gz .. (certificates n >= 35), hardnotes_*.txt (CP-SAT infeasibility notes)
+Nothing outside src/attack2/comb/ was changed.  No git command was run.

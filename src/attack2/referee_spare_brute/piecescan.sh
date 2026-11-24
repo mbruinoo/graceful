@@ -1,0 +1,2 @@
+# for each b = 3 mod 4, find the least j <= b with a crossing one-spare piece (arms (b,j), j-tip innermost). usage: piecescan.sh REF lo hi
+for b in $(seq $1 4 $2); do for j in $(seq 1 $b); do o=$(python3 gen.py PIECE $b $j | timeout 300 $REF 1 2000000000 2 2>/dev/null); s=$(echo "$o" | cut -d' ' -f2); if [ "$s" != "NONE" ]; then echo "$o"; break; fi; done; [ "$s" = "NONE" ] && echo "b=$b: NONE for all j<=$b"; done

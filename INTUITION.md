@@ -65,9 +65,15 @@ independently; Claude re-derived the second without knowing of it.
   (1976) and the "graceful chessboard" of Haviar and Ivaška (2015).
 * Placing edge labels longest first, each on a vertex whose parent is already
   labelled, is the backtracking order of Horton (2003) and Fang (2010).
+* A later literature pass (README §19) found more: the conjecture that every
+  tree can be built this way (README Conjecture B) is Horton's "edge search
+  conjecture" (2003), which Horton checked for all trees on up to 29
+  vertices. An earlier version of this file and of the README said it had
+  not been found in print; that was wrong.
 
-Sliding as a move between placements, and everything in README §7–11 that is
-marked proved or conjectured, was not found.
+Sliding as a move between placements was not found. Of README §7–11, the
+growth conjecture itself is Horton's; the other items marked proved or
+conjectured there were not found (by a web search only).
 
 ## Attribution in short
 

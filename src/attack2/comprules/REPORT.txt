@@ -1,0 +1,586 @@
+LINE "comprules" -- the composition rules of results/composition/REPORT.md, restated for referees
+==========================================================================================
+
+The Graceful Tree Conjecture is open and nothing here changes that.  Conjecture B of the README (every
+tree has a growth placement) is open too.  This file does three things:
+
+  1. restates Rules T, P, N, B, D, Propositions 1 and 2, the failing rules F1-F3 and the closure
+     Observation of results/composition/REPORT.md ("the source") as self-contained claims, each with
+     its full proof.  The proofs are the source's; where I changed wording or filled a step I say so
+     in a line marked [changed] or [added].
+  2. reports an independent brute-force check of every one of them.  The programs in this directory
+     were written from README sections 1-3 and from the rule statements; they share no code with
+     results/composition/.  (I compiled and ran the source's closure.cpp once, for one comparison,
+     see 5.3.)
+  3. answers the question "does any combination of these rules give a labelling recipe for a new
+     infinite family, e.g. trees made of equal branches and nothing else?"   Answer: NO, not that I
+     could find; section 6 says exactly what was tried, what is proved about why it fails, and what
+     the rules do give.
+
+Status words are those of CLAUDE.md.  "Proved" below means: a complete argument is written in this
+file.  NO referee has read it yet, so by the repository rule these are "proved, awaiting the two
+referees".  Novelty against the literature was not checked by me.
+
+ONE THING I COULD NOT CONFIRM (details in 5.3).  The source's table says that Rules C, T, D reach
+all 106 trees at n = 10 and that their smallest unreached trees have 13 vertices.  My two independent
+engines, AND the source's own closure.cpp, reach 105 of 106 at n = 10: the tree "centre with two legs
+of length 2 and one more neighbour that carries two legs of length 2" is not reached.  Every other
+number of the source that I recomputed agrees exactly.
+
+Everything else was confirmed.  Two things go beyond the source:
+  * Theorem G (section 5.3): the closure of a set of placements under Rule T is the set of all paths
+    of a small graph (the "tape graph").  This makes the closure a 20-second computation at n = 16
+    and extends the closure Observation from n <= 16 to n <= 19 (C, T, B) and from n <= 14 to
+    n <= 16 (C, T, Lemma 8).
+  * Lemma B1 (converse of Rule B for t = 2), Lemma N1 and Lemma S (small proved obstructions used
+    in section 6).
+
+
+0. CONVENTIONS
+--------------
+Labels are 0..m, m = n-1 (README labels are these plus 1).  The bracket of length k is the edge
+{p_k, p_k + k}, 0 <= p_k <= m-k.  A placement has one bracket of each length 1..m.  It is a GROWTH
+placement if, taking brackets longest first, every bracket after the first has exactly one foot on
+a label already used (README section 2).  The first bracket is always {0, m}.  By README Theorem 7
+this is the same as: rooting the tree at the vertex labelled 0, edge lengths strictly decrease along
+every path away from the root.
+
+For a growth placement f on n vertices and 0 <= k <= m:
+  time k        the moment when exactly the brackets longer than k are placed;
+  Free_k(f)     the k labels still unused at time k (never 0 or m when k <= m-1);
+  prefix        of f at time k: its brackets longer than k;   completion: its brackets of length <= k;
+  l(v)          for a label v != 0: the length of the bracket that added v (so l(m) = m).
+"Rule C" is the complement p_k -> m-k-p_k (labels i -> m-i); it maps growth placements to growth
+placements because the definition is symmetric (README, end of section 1; Classical).
+
+The picture for all of it: draw the labels 0..m as a row of cells (the tape), filled when used.
+Whether a bracket may be placed depends only on which cells are filled, not on how they were joined.
+
+
+1. RULE T (completion transplant)                                              STATUS: Proved
+-----------------------------------------------------------------------------------------------
+Statement.  Let f and h be growth placements, with m_f and m_h edges, and 1 <= k < min(m_f, m_h).
+Call a label a of h TOUCHED if it is used at time k (in h) and is a foot of a bracket of h of
+length <= k.  Suppose there is an integer s with
+   (1)  Free_k(f) = Free_k(h) + s, and
+   (2)  for every touched label a of h, a + s is a label of f (0 <= a+s <= m_f) used at time k in f.
+Then the prefix of f at time k, followed by the completion of h shifted by s (bracket i <= k goes to
+{p_i(h)+s, p_i(h)+s+i}), is a growth placement on m_f + 1 vertices.  It draws the tree of the prefix
+of f with the forest drawn by the completion of h attached, each touched label a identified with the
+vertex of f labelled a+s.
+
+      f :  X X . . . . X X X      prefix of f kept            (X used at time k, . free)
+      h :    X . . . . X X X X    completion of h moved by s = -1; it touches the cells
+                                  next to the run
+
+Proof (source's, wording tightened).  The new placement has one bracket of each length 1..m_f.  Its
+brackets longer than k are those of f, so at time k its used set is that of f.
+Claim: for i = k, k-1, .., 0, at time i a label x in Free_k(f) is used in the new placement iff
+x - s is used in h at time i.  This holds at i = k (neither is used).  Take the bracket of length
+i <= k of h, with feet a (used in h at time i) and b (unused in h at time i).  Then b is in
+Free_k(h), so b+s is in Free_k(f) and is unused by the claim.  For a there are two cases.  If a is
+in Free_k(h), then a+s is in Free_k(f) and is used by the claim.  Otherwise a was already used at
+time k, so a is touched, and a+s is a label of f used at time k by (2); it stays used.  So the
+shifted bracket lies inside 0..m_f and has exactly one used foot, and it fills the cell b+s: the
+claim holds at time i-1.  At time 0 every bracket has been placed with exactly one used foot.  The
+tree statement is read off the labels.  QED
+[changed: "k >= 1" made explicit; the sentence "lies inside 0..m_f" added; nothing else.]
+
+Remark T1 (Proved; [added], it is what the programs use).  Given (1), hypothesis (2) is equivalent to
+     (2')  every bracket of h of length <= k, shifted by s, lies inside 0..m_f.
+Proof.  A foot of such a bracket is either in Free_k(h) -- then its shift is in Free_k(f), inside
+1..m_f - 1 -- or it is touched.  So (2') says exactly that a+s is in 0..m_f for every touched a.  And
+a touched label is not in Free_k(h), so a+s is not in Free_k(f) = Free_k(h)+s: if a+s is a label of f
+at all, it is used at time k.  QED
+So the source's sentence "hypothesis 2 is needed: if a touched label lands on an unused or missing
+cell ..." can be sharpened: under (1) a touched label can never land on an unused cell, only outside
+the tape, and then the result is not a placement on 0..m_f at all.  Under (1): product is a growth
+placement  <=>  (2).
+
+Check (check_TPN.py; every pair f, h of growth placements with 2..6 edges, every k, the s forced by
+(1)):  86,420 applications with (1) and (2), all growth placements; 9,888 with (1) but not (2), none
+a growth placement.  Both numbers equal the source's.  Extended to 2..7 edges (8 vertices):
+1,150,684 and 159,096, same outcome.
+
+What it gives.  No family by itself: it needs two placements whose tapes agree.
+
+
+2. RULE P (run filling)                                                        STATUS: Proved
+-----------------------------------------------------------------------------------------------
+Statement.  Let f be a growth placement on n vertices and 1 <= k <= m-1 such that Free_k(f) is one
+run [x, x+k-1].  Let g be any growth placement on k+1 vertices (labels 0..k).  Then the prefix of f
+at time k followed by g placed on [x-1, x+k-1] (bracket i of g goes to p_i(g) + x - 1), or on
+[x, x+k] (to p_i(g) + x), is a growth placement.  Its tree is the prefix tree R of f with the tree
+of g attached: the vertex of R labelled x-1 is identified with the vertex of g labelled 0
+(respectively: the vertex labelled x+k with the vertex of g labelled k).
+
+Proof (source's; second position spelled out).  0 and m are used from the start, so 1 <= x and
+x+k-1 <= m-1; x-1 and x+k are labels of f, not in the run, hence used at time k.  First position:
+the top bracket of g lands on {x-1, x+k-1}: one foot used, one not.  From then on, inside
+[x-1, x+k-1] the used cells are exactly those of g's own build after its top bracket (both ends
+used, the rest free), and g's brackets do not leave that interval; so each has exactly one used
+foot.  Second position: the top bracket lands on {x, x+k}, x free and x+k used, and the same
+argument applies (or apply Rule C to f and g).  Lengths: g uses 1..k, the prefix k+1..m.  QED
+[changed: the second position is argued, the source only states it.]
+
+Special cases (source's remarks, checked by reading):
+  * k = m-1: the prefix is the top bracket; this is README Lemma 6.
+  * README section 7 ("gluing at the top"): given O as there, raise its high labels and fill the gap
+    with any placement; that is an f whose prefix is O and whose free set is one run.  So P contains
+    the gluing statement.  [changed: the source says "f a staircase: this is the gluing statement";
+    more exactly, the gluing statement is P for prefixes all of whose brackets jump over the run,
+    and P also allows prefixes with brackets that lie on one side of the run.]
+
+Check (check_TPN.py): 12,860 applications (f with <= 6 edges, every k with one run, every g, both
+positions), all growth placements, tree statement correct in all (source: 12,860).  With <= 7
+edges: 146,756, all correct.
+
+
+3. RULE N (nesting at a clean cut)                                             STATUS: Proved
+-----------------------------------------------------------------------------------------------
+Statement.  Let f be a growth placement of T on n vertices and 1 <= L <= m a cut (between labels
+L-1 and L) such that the brackets jumping over it (one foot <= L-1, one foot >= L) are exactly the
+c longest.  Put j = n - c; the brackets that do not jump are those of lengths 1..j-1.  Suppose
+u = L - j >= 0 and the label u is 0 or was added by a jumping bracket (l(u) >= j).  Let h be a
+growth placement on g + j vertices, g >= 1, in which the labels 1..j-1 are the last j-1 to be added
+(no condition if j = 1), and let U' be the tree drawn by its brackets of length >= j: its root has
+label 0 and its other g vertices have the labels j..j+g-1.  Then the following is a growth placement
+on n + g vertices of T with U' glued by its root at the vertex labelled u:
+   * labels of f that are >= L move up by g (a gap [L, L+g-1] opens);
+   * the g brackets of U' are placed with label 0 -> u and label y -> u + y.
+(The mirror statement follows by Rule C.)
+
+Proof (source's, with two sentences added).  U' is connected and contains 0 because the brackets of
+length >= j are a prefix of h; it has g brackets, and its labels other than 0 are those not among
+1..j-1, i.e. j..j+g-1.  [added]
+Lengths: the jumping brackets grow by g and become j+g..m+g; U' uses j..j+g-1; the others keep
+1..j-1.  Labels: U' occupies u and u + [j, j+g-1] = [L, L+g-1], the gap; u <= L-1 is not moved.
+Order (longest first): first the c jumping brackets; they are the c longest of f, so they are f's
+prefix, placed in the same order on the relabelled cells, with the same used/unused pattern.  Now u
+is used (it is 0 or was added by a jumping bracket).  Next the brackets of U': its top bracket is
+{u, L+g-1}, one used foot; the gap cells are not labels of f, so inside {u} + gap the build is that
+of h.  Finally the non-jumping brackets of f: each lies on one side of the cut, its feet are labels
+of f, and the cells of f are used or not exactly as in f at that moment (U' filled only gap cells).
+QED
+
+The condition on u is necessary: otherwise the top bracket of U' has no used foot (u is a label of f
+that is not yet used when the jumping brackets are done).
+
+Special cases (source's): g = 1 is README Lemma 8 (U' an edge).  j = 1: all brackets jump, f is a
+staircase (README Theorem 9) and the statement is Rule P.  Every cut of a staircase is clean (its
+brackets are nested intervals, so the ones containing a cut are the longest).
+
+Lemma N1 (Proved; [added]).  In Rule N, if g <= j then U' is a star centred at its root.  So Rule N
+inserts a piece that is not a bunch of leaves only when the piece has more edges than the number of
+non-jumping brackets plus one.
+Proof.  Root U' at label 0.  A child of the root has label = its edge length x in [j, j+g-1].  A
+vertex at depth 2 would have label x + y or x - y with y != x another length in [j, j+g-1].  But
+x + y >= 2j + 1 > j + g - 1 and |x - y| <= g - 1 < j when g <= j, so neither is a label of U'.  QED
+
+Check (check_TPN.py): 27,871 applications (T, T' on <= 7 vertices, every clean cut, every admissible
+h), all growth placements, tree statement correct; 1,234 with u >= 0 but the condition on u violated,
+none a growth placement (source: 27,871 and 1,234).  On <= 8 vertices: 252,187 and 10,506, same
+outcome.  check_misc.py: j = 1 only for staircases (127 cases), every cut of every staircase with
+<= 7 edges is clean, and Lemma N1 on all h with <= 8 edges (4,091 truncations with g <= j, all stars).
+
+What it adds (Observation, n <= 14; source's, confirmed): started from staircases, C + N derives
+exactly the same placements as C + Lemma 8: 66, 178, 502, 1408, 4064, 11600, 33644, 96768 placements
+and 10, 21, 43, 93, 205, 474, 1112, 2663 trees for n = 7..14 (logs/C_N.log, logs/C_L8.log; here h
+ranges over derived placements).
+
+
+4. RULE B (block designs) AND RULE D (mirror windows)                          STATUS: Proved
+-----------------------------------------------------------------------------------------------
+Setting.  Let f be a growth placement of T on p vertices and t >= 2.  Multiply every label by t.
+The labels in 0..(p-1)t that are not multiples of t fall into BLOCKS j = 0..p-2, block j being
+jt+1, .., jt+t-1 (between the vertices labelled j and j+1).  The lengths that are not multiples of
+t fall into BANDS b = 0..p-2, band b being bt+1, .., bt+t-1.
+A DESIGN gives each block j an owner v(j) in {0..p-1}.  Its band is
+        beta(j) = j - v(j)       if v(j) <= j,          beta(j) = v(j) - j - 1    if v(j) > j
+(the number of labels of T strictly between the owner and the block).  The design is VALID if
+   (1) beta is a bijection from the blocks onto {0..p-2}, and
+   (2) for every block, beta(j) < l(v(j))   (no condition when v(j) = 0).
+
+Rule B.  If the design is valid then for every t >= 2 the tree T with (t-1) * #{blocks owned by v}
+new leaves on each vertex v has a growth placement on (p-1)t + 1 vertices: the vertex labelled i
+gets label ti, and the leaves of the owner of block j get the labels of block j.
+
+      t = 3, T = star 0-2 0-1, block 0 owned by label 2, block 1 owned by label 1
+      label   0   1   2   3   4   5   6
+              X   .   .   X   .   .   X        X = T times 3: brackets 0-6 and 0-3
+                 block 0     block 1           block 0 hangs on 6: lengths 5, 4 (band 1)
+                                               block 1 hangs on 3: lengths 2, 1 (band 0)
+      placement, longest first:  0-6 1-6 2-6 0-3 3-5 3-4
+
+Proof (source's; the sentences on labels and on the owner 0 are added).  Labels: T takes the
+multiples of t, and every other label lies in exactly one block, which has one owner.  Lengths: a
+leaf at jt+d (1 <= d <= t-1) on the owner tv has length (j-v)t + d = beta*t + d if v <= j, and
+(v-j)t - d = beta*t + (t-d) if v > j; as d runs over 1..t-1 these are the t-1 lengths of band beta.
+By (1) the leaf lengths are all the non-multiples of t below (p-1)t, once each, and the brackets of
+T are the multiples.  Order: a bracket of length t*i joins two multiples of t, and the multiples of
+t are filled only by such brackets, so these behave as in f.  A leaf bracket of band beta needs its
+owner used and its leaf unused.  The leaf label is the foot of no other bracket.  The owner 0 is
+used from the first bracket on.  An owner v != 0 was added by the bracket of length t*l(v), which
+is longer than every length of band beta (at most beta*t + t - 1) iff l(v) >= beta + 1.  QED
+
+Lemma B1 (Proved; [added] -- the source states the "only if" half as a computed fact).  Let M be
+even.  A growth placement on M+1 vertices in which every odd label is a leaf is exactly a Rule B
+product with t = 2 of a growth placement on M/2 + 1 vertices and a valid design; and the design is
+determined by it.  Consequently:  if T with lambda(v) new leaves on v has a growth placement in
+which T sits on the even labels, then T with (t-1)*lambda(v) new leaves on v has a growth placement
+for every t >= 2.
+Proof.  Let every odd label be a leaf.  An edge at an odd label is its only edge, so no edge joins
+two odd labels; the M/2 edges at odd labels have odd lengths, hence are all the odd lengths, and
+the other M/2 edges join even labels and have the even lengths.  Removing leaves keeps a tree, so
+the even labels carry a tree T; a bracket between even labels has exactly one used foot when it is
+placed and even cells are filled only by such brackets, so halving gives a growth placement f of T.
+Let the leaf 2j+1 hang on 2v.  Its length is 2*beta + 1 with beta as in the definition; lengths are
+distinct, so (1) holds; the leaf bracket needs 2v used, i.e. v = 0 or 2*beta + 1 < 2*l(v), i.e.
+beta < l(v): that is (2).  The converse is Rule B.  QED
+
+Remarks (source's, checked).
+  2. The band-0 leaves are the last t-1 brackets and fill one block, a run with a vertex of T on
+     each side.  By Rule P that bunch of t-1 leaves can be replaced by any growth placement on t
+     vertices, glued by its label 0 at the left neighbour or by its label t-1 at the right one.
+  3. Leaves on the vertex labelled 0 can be added afterwards (README Lemma 6).
+  4. Placements that use the residues in other ways exist (S(2,2,2) = 0-6 0-5 1-5 0-3 4-6 2-3 is the
+     star 0-2 0-1 times 3 with a path through two blocks; verified growth); no rule was found.
+
+Rule D.  Let f be a growth placement of T on p vertices and 1 <= w <= p.  Suppose for every label
+1 <= i <= w-1:     l(i) >= w - 2i  if 2i <= w-1,      l(i) >= 2i - w + 1  if 2i >= w.
+Then for every t >= 2 the tree T with t-1 leaves on each vertex labelled 1..w-1 and (p-w)(t-1)
+leaves on the vertex labelled 0 has a growth placement: the leaves of the vertex labelled i take
+block w-1-i, the vertex labelled 0 takes the blocks >= w-1.
+Proof (source's).  This is the design v(j) = w-1-j for j < w-1, v(j) = 0 for j >= w-1.  The bands
+of the root's blocks are j >= w-1.  For 1 <= i <= w-1 the block is j = w-1-i and the band is
+w-1-2i if 2i <= w-1 (then i <= j) and 2i-w if 2i >= w (then i > j): the numbers below w-1 of the
+parity of w-1, respectively of w, each once.  So (1) holds, and (2) is the hypothesis.  QED
+For w = p, with t-1 more leaves on the root by Lemma 6, this is the labelling of "T Delta K_{1,t-1}"
+of Stanton-Zarnke / Koh-Rogers-Tan (Classical); see F3.
+
+Check (check_BD.py, check_misc.py, famcount.py, check_traces.py):
+  * 143,752 applications of B (T on <= 7 vertices, every valid design, t = 2..5): all growth
+    placements, all with the stated tree (source: 143,752).
+  * t = 2, T on <= 6 vertices, all 5,914 assignments satisfying (1): growth exactly when (2) holds;
+    2,936 fail (2), none of them growth (source: 2,936).
+  * Lemma B1: for p = 2..7 the set of growth placements on 2p-1 vertices with all odd labels on
+    leaves equals the set of t = 2 products: 2, 8, 40, 304, 2624, 32960 placements.
+  * Rule D: for every f on <= 7 vertices and every w the window design satisfies (1), and the
+    hypothesis is equivalent to (2); 2,184 applications (t = 2..5), all correct.
+  * The source's census of families (pairs (T, numbers of blocks per vertex) up to isomorphism with a
+    valid design) recounted independently: 4, 15, 75, 427, 2897 for p = 3..7, of which 0, 0, 8, 109,
+    1324 give non-caterpillars; from windows 4, 10, 30, 73, 242, of which 0, 0, 4, 18, 105.  Equal to
+    the source's table in every entry.
+  * The source's worked example and its two smallest non-caterpillar families (p = 5) reproduce.
+
+
+5. FAILING RULES, PROPOSITIONS, CLOSURE
+---------------------------------------
+5.1  F1, F2, F3.
+
+F1.  STATUS: Fails, smallest n = 6.  "If v is an anchor of T and v' an anchor of T', the vertex
+obtained by identifying v with v' is an anchor of the union."  Smallest failure: T = path on 3
+vertices rooted at an end, T' = K_{1,3} rooted at a leaf; the union has 6 vertices.  Among the 3,240
+unordered pairs of anchored rooted trees with 2..7 vertices each, 21 fail.
+F2.  STATUS: Fails, smallest n = 6.  "If v, v' are anchors of T, T', then after joining v to v' by
+an edge both ends are anchors."  Among the 3,321 unordered pairs (1..7 vertices each) 48 have an end
+that is not an anchor.  There are two smallest pairs, both with 6 vertices: (path on 3 rooted at an
+end) -- (path on 3 rooted at its centre), which the source gives, and K_2 -- (K_{1,3} rooted at a
+leaf), which it does not mention.  In 8 pairs neither end is an anchor; smallest n = 7: paths on 3
+and on 4 vertices joined end to end (the path on 7 vertices).
+Check (check_F12.py + rootsolve.cpp, an exhaustive rooted search written from the definition): 85
+rooted trees with <= 7 vertices, 81 anchored (the 4 non-anchors: one with 6 vertices, three with 7);
+21 / 48 / 8 as stated; equal to the source's numbers.
+
+F3 and Proposition 2.  Take growth placements f of T (p vertices) and g of T' (q vertices), v' the
+vertex of T' labelled 0.  Blocks here are [iq, iq+q-1], i = 0..p-1.  Put the vertex x of copy i at
+label iq + g(x) if x is at even distance from v', and at (p-1-i)q + g(x) otherwise; join the copies
+at v' along T (copy i's v' to copy i''s v' for every edge {i, i'} of f).
+  * Observation: the result is a graceful tree for all 361 pairs of placements with 2 <= p, q <= 5
+    (the construction is Classical: Stanton-Zarnke, Koh-Rogers-Tan).
+  * It is a growth placement in 28 of the 361, and in each of those T' is a star centred at v'.
+    Smallest failure: T = K_2, T' = path on 3 vertices rooted at an end: 0-5 1-5 0-3 2-4 2-3, and the
+    bracket 2-4 has no used foot.
+  * For the 76 pairs in which T' is a star centred at v', the labelling is a growth placement
+    exactly when f satisfies the hypothesis of Rule D with w = p (my addition; 76 of 76 agree).
+Proposition 2 (STATUS: Proved).  For p >= 2 this labelling is a growth placement only if T' is a
+star centred at v'.
+Proof (source's).  For an edge e of T' let s(e) = g(end at odd distance from v') - g(other end);
+|s(e)| <= q-1.  In copy 0 the edge e joins 0*q + g(even end) to (p-1)q + g(odd end): length
+(p-1)q + s(e).  In copy p-1 it has length (p-1)q - s(e).  The vertex labelled 0 is v' of copy 0, and
+the path from it to any vertex of copy 0 or of copy p-1 enters that copy at its v'; by README
+Theorem 7 lengths must decrease along paths leaving v' in both copies.  For two consecutive edges
+e_1, e_2 on a path leaving v' that needs s(e_1) > s(e_2) and -s(e_1) > -s(e_2).  So T' has no vertex
+at distance 2 from v'.  QED
+Check: check_BD.py, numbers above; equal to the source's (361, 28, the smallest failure).
+
+5.2  Proposition 1 (STATUS: Proved).  If f, g, h are staircases, then the complement of f, every
+Rule P product of f with g, and every Rule T product of f with h are staircases.  Hence Rules C, P,
+T, started from staircases, derive only staircases, i.e. only caterpillars (README Theorem 2).
+Proof (source's, expanded).  A staircase is p_m = 0, p_k - p_{k+1} in {0, 1}.  C: the difference
+becomes 1 - (p_k - p_{k+1}).  At time k a staircase f has used cells [0, a] + [b, m], its bracket
+k+1 is {a, b} and the free set is the run (a, b).  P: the top bracket of g goes to {a, b-1} or
+{a+1, b}, which is a staircase step from {a, b}, and g continues as a staircase.  T: at time k the
+staircase h has used cells [0, a'] + [b', m_h]; its bracket k is {a', b'-1} or {a'+1, b'}; a shift
+matching the runs has s = a - a' and b = b' + s, so the shifted bracket is {a, b-1} or {a+1, b} and
+the rest continues as in h.  QED
+Check: check_BD.py (63 staircases with <= 6 edges; 2,604 P-products and 13,908 T-products, all
+staircases); closure "C P T" reaches exactly the caterpillars for n <= 14 (logs/CPT.log:
+10, 20, 36, 72, 136, 272, 528, 1056 trees, 2^(n-2) placements).
+
+5.3  The closure, and the tape graph.
+
+Definition.  Start from all staircases of every size.  Apply the rules switched on until nothing
+new appears, size by size (C within a size; T with h of the same or a smaller size; P with g
+smaller; B, D from p to (p-1)t+1 vertices; Lemma 8 from n to n+1; N from n to n+g with h derived).
+
+Theorem G (tape graph; STATUS: Proved; [added]).  Fix n.  Let Gamma be the graph with nodes (k, F),
+0 <= k <= m-1, F a k-subset of {1..m-1}, and an arrow (k, F, p) from (k, F) to (k-1, F - {p, p+k})
+whenever exactly one of p, p+k lies in F (0 <= p <= m-k).  Growth placements on n vertices are
+exactly the paths from the source (m-1, {1..m-1}) to the sink (0, {}): the node passed at level k is
+(k, Free_k), the arrow is the bracket of length k.  For a growth placement h on n' <= n vertices, an
+integer s and 1 <= i <= min(m', m) - 1 (and i <= m-1) such that every bracket of h of length <= i,
+shifted by s, lies in 0..m and Free_i(h) + s avoids 0 and m, call (i, Free_i(h)+s, p_i(h)+s) a
+SHIFTED ARROW of h.  Let X be a non-empty set of growth placements on n vertices and D' a set of growth
+placements on fewer vertices.  Let A* be the smallest set of arrows that contains
+   (a) the arrows of the members of X,        (b) the shifted arrows of the members of D',
+   (c) the shifted arrows of every source-sink path all of whose arrows are in A*,
+   (d) with every arrow (k, F, p) its mirror (k, m - F, m-k-p).
+Then the smallest set S of growth placements on n vertices that contains X and is closed under
+Rule C and under Rule T (with h in S or in D') is the set of ALL source-sink paths with arrows in A*.
+Proof.  By Remark T1, Rule T applies to (f, h, k, s) iff Free_k(f) = Free_k(h)+s and the arrows
+(i, Free_i(h)+s, p_i(h)+s), i = k..1, are shifted arrows of h; its product is the path that follows
+f down to the node (k, Free_k(f)) and then those arrows.  Rule C maps a path to the path of mirror
+arrows.
+ (S is contained in Paths(A*).)  Paths(A*) contains X; it is closed under C by (d); and a T-product
+of f in Paths(A*) with h in Paths(A*) or D' uses arrows of f and shifted arrows of h, all in A* by
+(b), (c).
+ (Paths(A*) is contained in S.)  Call an arrow alpha at node (k, F) GOOD if for every f in S with
+Free_k(f) = F there is f' in S that agrees with f on the brackets longer than k and whose bracket k
+is alpha.  If all arrows of A* are good then every path pi in Paths(A*) is in S: all placements
+share the top bracket, and if f_k in S agrees with pi above k, goodness of pi's arrow at level k
+gives f_{k-1} in S agreeing with pi above k-1; f_0 = pi.  A* is the union of stages A_0 (a, b),
+A_{r+1} = A_r + (c applied to Paths(A_r)) + (d applied to A_r); we show by induction on r that all
+arrows of A_r are good (hence Paths(A_r) is in S).  (a): if x in X uses alpha at (k, F) and f in S
+passes (k, F), then T(f, x, k, 0) is in S and is the required f'.  (b), (c): if alpha is the
+shifted arrow (i, Free_i(h)+s, .) of h in D', or of h in Paths(A_r), which lies in S by induction,
+and f in S passes that node, then T(f, h, i, s) is allowed (Remark T1) and is the required f'.
+(d): if alpha is good and f in S passes the node of the mirror arrow, then C(f) in S passes the
+node of alpha, some f' in S follows C(f) and then alpha, and C(f') follows f and then the mirror
+arrow.  QED
+Picture: a derived placement is a walk down the tape graph; Rule T says "two walks that meet at a
+node may swap tails", so the closure is "all walks along arrows that have been seen", and the only
+bookkeeping is which arrows have been seen (2^24 bits at n = 16).
+
+Programs.  clos.cpp has two engines.  Engine 1 (no T) keeps explicit sets of placements.  Engine 2
+(with T) keeps, per size, the arrow set A* and computes it by iterating (a)-(d); seeds from B, D
+and Lemma 8 enter as (a).  Every placement that is enumerated is re-tested against the definition.
+clos2.cpp is engine 2 with wider bit fields (n <= 20), path counting by dynamic programming and an
+early stop once every tree shape has been seen.  Cross-checks of engine 2: a naive all-pairs
+implementation of Rule T on explicit sets ("T = 3" in clos.cpp) gives the same numbers of placements
+and trees for C T B (n <= 11), C T D (n <= 12), C T Lemma 8 (n <= 10; see logs/naive_*.log); and engine 2 reproduces every
+placement count the source prints (below).  The number of trees is compared with the known number of
+trees on n vertices (1, 1, 1, 2, 3, 6, 11, 23, 47, 106, 235, 551, 1301, 3159, 7741, 19320, 48629,
+123867, 317955 for n = 1..19; mode "T = 2" of clos.cpp, which enumerates all growth placements, reproduces
+these and the README's numbers of growth placements for n <= 14).
+
+Trees reached (my recomputation; "*" marks the one entry that differs from the source):
+
+   n   trees  caterp.  C P T  C P D  C P B  C+L8  C P+L8  C T D   C T B  C T +L8
+   7      11     10      10     11     11    10     11      11      11      11
+   8      23     20      20     23     23    21     23      23      23      23
+   9      47     36      36     45     45    43     47      47      47      47
+  10     106     72      72     94     95    93    105     105*    106     106
+  11     235    136     136    195    212   205    235     235     235     235
+  12     551    272     272    419    450   474    546     551     551     551
+  13    1301    528     528    879   1059  1112   1288    1298    1301    1301
+  14    3159   1056    1056   1851   2276  2663   3128    3141    3159    3159
+  15    7741                                                       7741    7741
+  16   19320                                                      19320   19320
+  17   48629                                                      48629
+  18  123867                                                     123867
+  19  317955                                                     317955
+
+Derived placements, C T B:  96, 272, 1216, 3664, 13976, 42744, 274272, 983056, 4227136, 14256216,
+137886480, 562354768, 2944047916 for n = 7..19  (source: 983,056 / 4,227,136 / 14,256,216 at n = 14, 15, 16).
+C T + Lemma 8:  116, 412, 1732, 7756, 39036, 206156, 1209312, 7446732, 49611288, 346672732 for
+n = 7..16.   C T + Lemma 8 + B:  1764, 7888, 40092, 211880, 1254320, 7820452 for n = 9..14, against
+1764, 7888, 40220, 214600, 1275368, 7926160 growth placements in all (source: the same six pairs).
+
+Note on what is re-tested: for n <= 16 every derived placement is enumerated and re-tested against
+the definition; for n = 17, 18, 19 (clos2) the number of derived placements is a path count and the
+enumeration stops as soon as every tree shape has been drawn by an enumerated, re-tested placement
+(36,526,591 / 178,859,669 / 851,864,101 placements enumerated).
+
+OBSERVATION (n <= 19; source: n <= 16).  Every tree on at most 19 vertices has a growth placement
+derived from staircases by Rules C, T and B.
+OBSERVATION (n <= 16; source: n <= 14).  The same with README Lemma 8 in place of B.
+(n = 20 for C T B was started and stopped by hand at the 40-minute limit, unfinished: no result.)
+
+Smallest trees not reached (confirmed unless marked):
+   C, P, T                  n = 7:  S(2,2,2); every non-caterpillar is missed (Proposition 1).
+   C, P, D  and  C, P, B    n = 9:  the spiders S(2,2,2,2) and S(3,3,2)  (identified from dumps).
+   C + Lemma 8              n = 7:  one tree missed (10 of 11), S(2,2,2).
+   C, P + Lemma 8           n = 10: S(3,3,3)  (identified: logs, parenthesis form (((()))((()))((()))) ).
+   C, T, D            (*)   n = 10: one tree, (((())(()))(())(())) = a centre with two legs of length 2
+                            and one more neighbour that carries two legs of length 2.  At n = 13 three
+                            more trees are missed, the ones the source lists:  S(2,2,2,2,2,2); a centre
+                            with four neighbours each carrying two leaves; the path on 5 vertices with
+                            two pendant paths of length 2 on each end vertex.
+   C, T, B                  none for n <= 19.
+   C, T + Lemma 8           none for n <= 16.
+
+(*) THE DISCREPANCY.  The source's table has 106 in column "C T D" at n = 10, its text says "C T D:
+100 % up to 12", and its list of smallest unreached trees says n = 13.  I get 105 at n = 10 from
+engine 2, from the naive engine, and from the source's own program:
+        results/composition$ g++ -O2 -o closure closure.cpp && ./closure 11 0 0 1 1
+        10      106       72      105     99.1%         1840  (((())(()))(())(()))
+(placements 84, 228, 680, 1840, 5100 for n = 7..11, equal to mine).  So this is a transcription
+error in the source's table and text, not a disagreement between programs.  It does not touch the
+two Observations, which are about C T B and C T + Lemma 8.
+
+The two printed derivations (S(2,2,2) in 5 steps, S(3,3,3) in 10 steps) were replayed step by step
+from the rule statements (check_traces.py): every step is a legal application and gives the printed
+placement; #9 uses shift 1, #10 shift 0; the last placements draw S(2,2,2) and S(3,3,3).
+
+
+6. IS THERE A RECIPE FOR A NEW INFINITE FAMILY?     ANSWER: NO (none found)
+------------------------------------------------------------------------
+Target: trees made of k >= 3 equal branches at one vertex and nothing else (they defeat README
+Theorem 13, which needs 2m+1 copies PLUS a tree S with m edges).  Call these "equal-branch trees".
+A star does not count.
+
+What each rule can do, and why it does not give them.
+
+(a) Rules C, T, P only recombine.  T needs a second placement whose tape matches; P needs a prefix
+    whose free set is one run.  Neither says where such a placement comes from.  From staircases they
+    give only caterpillars (Proposition 1, Proved).  Theorem G makes the same point as a picture:
+    the closure is "all walks along arrows already seen", so T creates new walks but no new arrows
+    except by shifting.  That the closure reaches every tree for n <= 19 is an Observation about
+    existence, not a recipe: it does not say which walk draws a given tree.
+
+(b) Rule N at the root.  Lemma N1 (Proved): a nested piece with g <= j is a star.  Take the star
+    0-1, .., 0-m.  Every cut L is clean with j = L and u = 0, so a piece U' with g edges may be nested
+    at the centre at a cut L, where it occupies the labels and the lengths [L, L+g-1]; by Lemma N1 it
+    is a star unless L < g.  A cut L above all pieces nested so far is again clean with j = L, u = 0
+    (the brackets jumping it are the root edges to the labels >= L, and those are exactly the
+    brackets of length >= L).  So if copies of a rooted tree R with e edges are nested side by side,
+    one above the other, the second cut is at L >= e + 1 > g = e and the second copy must be a
+    star.  Dead end, Proved for nesting side by side at the label 0; cuts below or inside an earlier
+    piece, and N at other vertices, were not ruled out by argument.
+
+(c) Rule B on a star.  The natural attempt for "d equal hubs with a leaves each" (the depth-2
+    equal-branch trees; in the notation of src/attack2/comb, the cases 3 <= a <= d-3 are the ones
+    with no proved rule in this repository) is: T = K_{1,d}, every leaf owns exactly one block,
+    t = a + 1.
+    Lemma S (Proved; [added]).  For d >= 3 the star K_{1,d} has no valid design in which every leaf
+    owns exactly one block.
+    Proof.  A star has only two growth placements, centre at 0 or at d (a bracket of length k at a
+    centre labelled c needs c+k or c-k as its new label; if 0 < c < d both c+1 and c-1 are labels
+    but only one bracket of length 1 exists); by Rule C take the centre at 0 (the complement of a product
+    is the product of the complement with the mirrored design, and conditions (1), (2) are
+    unchanged), so l(v) = v.  The
+    centre owns no block.  Band d-1 can only be v = d, j = 0 (v - j - 1 = d-1), since j - v = d-1 has
+    no solution with v >= 1.  Band d-2: v - j - 1 = d-2 means (v, j) = (d, 1) or (d-1, 0), but leaf d
+    and block 0 are taken; j - v = d-2 with v >= 1 means v = 1, j = d-1, and condition (2) asks
+    d-2 < l(1) = 1.  So d <= 2.  QED
+    By Lemma B1 the same statement for t = 2 reads: for d >= 3 the tree "d hubs with one leaf each"
+    (the spider S(2^d)) has no growth placement with centre and hubs on the even labels.
+
+(d) Rule B on anything small.  Observation (bscan.py; p <= 8 and t = 2..5; for p <= 7 also t = 6, 7):
+    among ALL Rule B products -- every growth placement of every tree on p <= 8 vertices, every one
+    of the 507,272 valid designs -- there is NO equal-branch tree with k >= 3 branches.  (By Lemma B1,
+    for t = 2 this says: no equal-branch tree on 2p-1 <= 15 vertices has a growth placement with all
+    odd labels on leaves.)  In particular (symdesign.py, d <= 5): the spider S(2^d), d = 3, 4, 5, has
+    no growth placement with a valid design in which every middle vertex owns two blocks, or every
+    middle vertex and every tip one block, or every tip two blocks.  I have no proof of the general
+    statement; the mechanism in the small cases is that of Lemma S: the largest bands can only be
+    owned by vertices with labels near 0 or near p-1, which breaks the symmetry between branches.
+
+(e) Rule D with the full window (the growth Delta-construction with a star).  It would give "T with
+    t-1 leaves on every vertex" (generalised coronas) for every T that has a growth placement
+    satisfying the mirror condition with w = p.  Observation (mirrorscan.py, p <= 12): such trees
+    are rare: 2, 2, 3, 4, 6, 8, 6, 13 of the 3, 6, 11, 23, 47, 106, 235, 551 trees on 5..12 vertices.
+    Among staircases (Observation, 3 <= m <= 12, logs/stairmirror.log) exactly two satisfy it: the
+    zigzag 0-m, 1-m, 1-(m-1), 2-(m-1), ..  (a path; here l(i) equals the bound for every i) and the
+    zigzag with its last step repeated (a path with two leaves at one end).  Their products are
+    caterpillars.  [A first hand derivation of mine allowed more staircases; the program corrected
+    it, and I state only what was computed.]
+
+(f) Theorem 13 + Rule P.  In the placement of Theorem 13 the tree S occupies the labels 1..m with
+    the lengths 1..m, i.e. the free set at time m is one run next to the root.  Rule P then lets S
+    be replaced by any growth placement on m+1 vertices glued at 0 -- which is Theorem 13 again with
+    another S -- or glued at the vertex labelled m+1 (one particular copy of the vertex of T
+    labelled 1), which is new but lopsided.  S cannot be removed: taking S to be j copies of T
+    gives j(2e+1)+1 copies for e = number of edges of T, the "towers" already in README section 15.
+
+What the rules DO give, honestly stated.
+  * Each (T, valid design) is an infinite family indexed by t (Rule B, Proved); 2,897 such families
+    for p = 7.  These are one-parameter families found by a finite search, not a recipe that takes
+    a tree and returns a labelling.
+  * A scaling law (Lemma B1, Proved): a growth placement of a tree in which all odd labels are
+    leaves multiplies -- every bunch of lambda odd leaves on a vertex may be replaced by (t-1)*lambda
+    leaves.
+  * For stars (centre at 0) the possible ways to hand out blocks were enumerated for d <= 9
+    (starprofiles.py, logs/starprofiles.log; Observation).  The closest to "equal hubs" is: d-r leaves
+    own one block each, the centre owns r blocks; that is the tree "k = d-r hubs with a = t-1 leaves
+    each, plus r(a+1) leaves on the centre" for every a >= 1.  The least r is 1, 1, 1, 2, 1, 2, 2 for
+    d = 3..9 (never 0, by Lemma S).  I found no formula for the design as a function of d, and did
+    not check these trees against the diameter-4 results of src/attack/gamestrategy and
+    src/attack2/comb, which treat the same trees with other tools; no novelty is claimed.
+
+So: no combination of T, P, N, B, D that I tried gives a recipe for equal-branch trees, and for the
+most direct attempts there is a proved or exhaustively observed reason.
+
+
+7. DEAD ENDS (kept)
+-------------------
+  * Equal hubs from a star by Rule B: impossible for d >= 3 (Lemma S).
+  * Equal branches from any Rule B product with p <= 8: none (Observation, 6(d)).
+  * Copies of a non-star piece nested side by side at the root by Rule N: only the first (6(b)).
+  * Full-window Rule D: applies to 13 of 551 trees at p = 12 (6(e)).
+  * Removing S from Theorem 13 by Rule P or Lemma 8: S can be exchanged, not removed (6(f)).
+  * A uniform design for the star with "all but r leaves own one block": least r is not monotone
+    (1, 1, 1, 2, 1, 2, 2 for d = 3..9); no pattern found.
+  * n = 20 for the C T B closure: not finished (stopped at the time limit); nothing is claimed for it.
+
+
+8. COMMANDS  (all in src/attack2/comprules; logs in logs/)
+---------------------------------------------------------
+  python3 check_TPN.py 7          Rules T, P, N on <= 7 vertices (2 s);   8: about 1 min
+  python3 check_BD.py 7 5         Rules B, D, F3, Propositions 1, 2 (20 s)
+  g++ -O2 -o rootsolve rootsolve.cpp && python3 check_F12.py 7       F1, F2 (1 s)
+  python3 check_misc.py 7         Lemma B1, Lemma N1, side claims of Rule N (about 1 min)
+  python3 check_traces.py         the two printed derivations and the examples
+  python3 famcount.py 7           census of Rule B families
+  g++ -O2 -o clos clos.cpp        ./clos NMAX P NEST BLK T [L6]
+      ./clos 14 1 0 0 1   C P T          ./clos 14 1 0 1 0   C P D        ./clos 14 1 0 2 0   C P B
+      ./clos 14 0 1 0 0   C + Lemma 8    ./clos 14 0 2 0 0   C N          ./clos 14 1 1 0 0   C P + Lemma 8
+      ./clos 14 0 0 1 1   C T D          ./clos 16 0 0 2 1   C T B (19 s) ./clos 14 0 1 0 1   C T + Lemma 8
+      ./clos 14 0 1 2 1   C T + Lemma 8 + B                 ./clos 14 0 0 0 2   all growth placements
+      ./clos 11 0 0 2 3   C T B with the naive Rule T (cross-check; minutes)
+      DUMP=logs/x_ ./clos ...     also writes the trees reached, one parenthesis word per line
+  g++ -O2 -o clos2 clos2.cpp
+      ./clos2 19 0 2      C T B to n = 19  (n = 17 after 2 min, n = 18 after 8 min, n = 19 after about 20 min; 700 MB)
+      ./clos2 16 1 0      C T + Lemma 8 to n = 16 (2 min)
+  python3 bscan.py 8 2,3,4,5      equal-branch trees among Rule B products (several minutes)
+  python3 symdesign.py 5 ; python3 starprofiles.py 9 ; python3 mirrorscan.py 12 ; python3 stardesign.py 11
+Binaries are deleted; sources and logs are kept.
+
+
+9. WHAT A REFEREE SHOULD LOOK AT FIRST
+--------------------------------------
+  * Rule T, the case split "a in Free_k(h) or a touched" -- it is the whole proof.
+  * Rule N, the sentence "the non-jumping brackets of f ... exactly as in f".
+  * Rule B, the inequality t*l(v) > beta*t + t - 1  <=>  l(v) >= beta + 1.
+  * Theorem G, the notion of a good arrow and case (d).  The numbers do not depend on it alone:
+    the naive engine agrees for n <= 11, and the source's independent program agrees at n = 14..16.
+  * The C T D entry at n = 10 (5.3): run the source's own closure.cpp.
+  * Lemma S and Lemma N1 are a few lines each.
+
+Who did what.  Rules T, P, N, B, D, Propositions 1 and 2, F1-F3 and the closure computation are from
+results/composition/REPORT.md (an earlier Claude session; the bracket picture and the direction are
+the repository author's).  This pass (Claude, second panel) re-derived every number with new
+programs, found the C T D discrepancy, and added Remark T1, Lemma N1, Lemma B1, Lemma S, Theorem G
+and the extension of the two Observations.  Classical ingredients: Rosa (caterpillars),
+Stanton-Zarnke and Koh-Rogers-Tan (Delta-construction).

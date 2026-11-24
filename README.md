@@ -107,6 +107,12 @@ Each of A and B implies GTC.
 slides.
 
 **Conjecture B (growth conjecture).** Every tree has a growth placement.
+*This is Horton's "edge search conjecture"* (M. Horton, *Graceful Trees:
+Statistics and Algorithms*, honours thesis, University of Tasmania, 2003,
+§4.5; restated as Conjecture 3 in Brankovic and Reynolds, *Computer search for
+graceful-like labelling: a survey*, 2022). Horton reports it verified for all
+trees on `n ≤ 29` vertices. It was reached here independently and is not this
+repository's conjecture (section 19).
 
 **Observation C.** For `n ≥ 3`, every tree placement admits at least one legal slide
 (checked `n ≤ 14`).
@@ -179,9 +185,15 @@ placement with the centre as anchor. So:
   (section 7: the middle of the path on 7 vertices is not an anchor), which
   matches Fang's remark that fixing the root at 0 "misses a lot of potential
   solutions".
-* What was not found: the growth property stated as a property of labelings
-  or as a conjecture; Theorem 7; clean cuts and gap splits; Theorem 9; the
-  `R`-run refinement and Conjecture B3.
+* **Correction (section 19).** An earlier version said the growth property
+  was not found in print as a property of labelings or as a conjecture. That
+  was wrong: Conjecture B is Horton's edge search conjecture (2003), verified
+  by Horton for `n ≤ 29`, which is beyond this repository's own exhaustive
+  range. Horton's condition on a labeling is equivalent to the growth
+  property.
+* What was not found (a web search only; paywalled sources and the review
+  databases were not checked): Theorem 7 as a stated theorem; clean cuts and
+  gap splits; Theorem 9; the `R`-run refinement and Conjecture B3.
 
 **Nearby notions.** Which vertex can carry label 0 ("0-rotatable",
 "0-centred", "0-ubiquitously graceful": Van Bussel 2004; Anick 2016; Luiz,
@@ -195,8 +207,11 @@ proved to succeed.
 **Classical results used.** Caterpillars: Rosa 1967 (Theorem 2 is that result
 in bracket language). Transfers: Hrnčiar and Haviar 2001, all trees of
 diameter ≤ 5 are graceful; here a transfer looks like a pair of brackets
-reflected together (an informal remark, not worked out). The composition
-behind the gluing statement of section 7: Stanton–Zarnke, Koh–Rogers–Tan†.
+reflected together (an informal remark, not worked out). The gluing
+statement of section 7 is, as a statement about graceful labelings, the
+amalgamation lemma of Huang, Kotzig and Rosa (1982), not Stanton–Zarnke or
+Koh–Rogers–Tan as an earlier version said; that it preserves the growth
+property was not found in print.
 
 **State of the conjecture (2026).** Open. Verified for `n ≤ 35` (Fang).
 Spiders: graceful with at most 5 legs (Huang–Kotzig–Rosa; Panpa et al.
@@ -1031,8 +1046,13 @@ Conjecture or Conjecture B.
 **Anchors.**
 
 * *Fails:* "every vertex of degree ≥ 4 is an anchor" (see section 7); by
-  search the same family gives non-anchors of every degree from 2 to 9.
-* *Proved: non-anchors are arithmetic.* For the tree "path `c₁ – v – c₂` with
+  search the same family gives non-anchors of every degree from 2 to 9
+  (superseded by a written argument for every degree, section 19).
+* *Proved here, but the non-anchor half is Classical: non-anchors are arithmetic.*
+  (The arithmetic is that of Van Bussel's criterion for 0-centred graceful
+  trees of diameter 4, *Discrete Math.* 277 (2004) 193–218, known here only
+  through a restatement; what is added is that the labelings can be growth
+  labelings.) For the tree "path `c₁ – v – c₂` with
   `p` leaves on `c₁` and `q` on `c₂`", `v` is an anchor exactly when a stated
   divisibility condition on `m = p + q + 2` holds; in particular, if `m` is
   prime and `p, q ≥ 1`, `v` is never an anchor. A similar exact rule holds for
@@ -1072,8 +1092,10 @@ Conjecture or Conjecture B.
 **One spare label.**
 
 * *Proved:* for every tree and every root there is a labeling with distinct
-  edge lengths decreasing away from the root that uses labels up to `2n − 2`.
-* *Observation (every tree with `n ≤ 18`, every vertex):* with just one spare
+  edge lengths decreasing away from the root that uses labels up to `2n − 2`. (Known and weaker than what is in print: Van Bussel's 2002
+  level labelling, in the form given by Okechukwu, arXiv:2611.01340, uses
+  fewer labels.)
+* *Observation (every tree with `n ≤ 23`, every vertex; extended from 18 in section 19):* with just one spare
   label (`n + 1` labels for `n` vertices) **every** vertex can be the root.
   The anchor obstructions of section 7 disappear completely with one extra
   label (`src/attack/asymptotic`).
@@ -1181,4 +1203,131 @@ brute-force check:
 * *Fails:* "identify (or join by an edge) an anchor of one tree with an
   anchor of another and the result is anchored there", smallest failure
   `n = 6`.
+
+## 19. Second panel: provenance corrections and new results
+
+Six further lines of work, each checked by two referees (one trying to break
+each claim by its own programs, one reading every proof), then a critic. The
+full statements and proofs are in `src/attack2/<line>/REPORT.txt`; the
+referees' programs are in `src/attack2/referee_*`. **Nothing here proves the
+Graceful Tree Conjecture or Conjecture B.**
+
+### What was already in print
+
+Found by a literature search (web only; several primary sources could not be
+opened and are marked in `src/attack2/literature/REPORT.txt`).
+
+* **Conjecture B is Horton's edge search conjecture (2003)**, verified by
+  Horton for `n ≤ 29`. Classical; see section 3.
+* The arithmetic rule for the middle vertex of a double hub (section 16) is
+  Van Bussel's 2004 criterion. Classical for the non-anchor half.
+* The `2n − 2` bound of section 16 is weaker than a known labelling.
+* The gluing statement of section 7 is Huang–Kotzig–Rosa 1982 as a statement
+  about graceful labelings.
+* Spiders: beyond the results cited in section 5 there is a non-refereed 2026
+  preprint on six legs. The published centre-0 spider labelings re-implemented
+  here are not deals (Observation).
+* *Observation:* an anchor is a stronger notion than "can carry label 0": the
+  three middle vertices of the path on 7 vertices can carry 0 in a graceful
+  labeling but are not anchors.
+* Not found in print by this search: slides and the slide graph, Conjecture
+  A, Theorems 9 and 13, the composition theorems, Conjecture B3, Lemmas 10–12,
+  the second arithmetic anchor rule, the one-spare observation, deals. "Not
+  found" is not a claim of novelty.
+* The published verification record for the Graceful Tree Conjecture is 35
+  vertices (Fang 2010). The conjecture is treated as open; one 2024 preprint
+  that claimed it as a consequence was withdrawn in September 2026.
+
+### One spare label (`src/attack2/spare`)
+
+`n + 1` labels for `n` vertices, lengths decreasing away from the root.
+
+* *Observation (all trees, `n ≤ 23`):* every vertex of every tree can be the
+  root; 341,045,702 (tree, vertex) pairs at `n = 23`. Independently re-run
+  only for `n ≤ 20`.
+* *Proved:* one spare label suffices for the middle vertex of every double
+  hub, for the second arithmetic family of section 16, and for the 24-vertex
+  tree of section 7 and its whole family. So every known arithmetic
+  obstruction to being an anchor disappears with one spare label. The
+  mechanism: with exact labels a chain of forced moves closes on itself, which
+  forces a divisibility; one spare cell cuts the chain.
+* *Proved:* every vertex of every path, except possibly when both arms have
+  length ≡ 3 (mod 4) and the shorter is at least 83 (*Observation* there for
+  `n ≤ 331`).
+* *Conjecture S1:* every vertex of every tree can be the root with one spare
+  label. Its relation to Rosa's "nearly graceful" labelings has not been
+  checked.
+* *No bridge to Conjecture B was found.* S1 gives no control over where the
+  spare cell falls. *Fails:* "every leaf can be the one hung by the length-1
+  bracket", smallest counterexample `S(2,2,1)` on 6 vertices.
+
+### Non-anchors of every degree (`src/attack2/lfamily`)
+
+`L(l; p, q)`: a vertex `v` with `l` leaf neighbours and one more neighbour
+`c`; `c` has two further neighbours carrying `p` and `q` leaves.
+
+* *Proved:* for `p` even, `q` odd, `p < q`: `v` is an anchor exactly when
+  `l ≥ p/2`. Hence there are non-anchors of every degree ≥ 2. The smallest
+  instance is `L(0; 2, 3)` on 9 vertices.
+* *Observation (`n ≤ 23`):* every vertex of degree ≥ 4 is an anchor, and every
+  tree has an anchor of maximum degree. At `n = 24` the only non-anchor of
+  degree ≥ 4 is `v` in `L(3; 8, 9)`.
+* *Dead end:* longest-first depth-first search is not a reliable decision
+  procedure on these trees at `n = 24`; a SAT formulation is.
+
+### Trees of diameter 4 (`src/attack2/comb`)
+
+* *Observation:* an all-up comb exists for every multiset of hub sizes
+  covering all diameter-4 trees with `n ≤ 44` (63,218 certificates, re-checked
+  by both referees with their own checkers).
+* *Proved:* explicit all-up combs for paired hubs, "caravans", and (using the
+  classical existence of Skolem and related sequences, taken from secondary
+  sources) for all hubs of size 1 and all hubs of size 2.
+* *Conjecture:* every tree of diameter 4 has an all-up comb. The smallest
+  diameter-4 trees covered by no closed-form rule here have 12 vertices.
+* *Fails:* mirror-symmetric combs are not universal; smallest counterexample
+  hub sizes `(1,1)`, 7 vertices.
+* The comparison with Hrnčiar–Haviar 2001 in that report rests on secondary
+  sources and should not be relied on.
+
+### Composition rules (`src/attack2/comprules`)
+
+The rules of `results/composition/REPORT.md` (section 18), now refereed.
+
+* *Proved:* rules T (transplant), P (run filling), N (nesting), B (block
+  designs), D (mirror windows), with the wording fixes listed in the report.
+* *Observation (`n ≤ 19`, extended from 16):* complement, transplant and block
+  designs, started from staircases, reach every tree. Referees re-ran only
+  `n ≤ 11`.
+* *Fails:* "complement, transplant and mirror windows reach every tree on
+  `n ≤ 12`" (stated in `results/composition/REPORT.md`): 105 of 106 at
+  `n = 10`.
+* *Observation, negative:* no combination of these rules with Theorem 13 was
+  found that gives a labelling recipe for trees made only of equal branches.
+
+### Folds: how irregular is a build? (`src/attack2/folds`)
+
+Call a step of a longest-first build *plain* if it is a staircase step (the
+bracket reaches across the unused run to its far end), and let the *tidiness*
+of a tree be the least number of non-plain steps over all its builds.
+
+* *Proved:* tidiness is 0 exactly for caterpillars.
+* *Proved (counting):* most trees on `n` vertices need at least about
+  `c·n / ln n` non-plain steps for a constant `c < 0.195`. So "a staircase
+  plus a bounded number of exceptions" cannot describe all trees.
+* *Observation (all trees, `n ≤ 18`):* the largest tidiness is
+  1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4 for `n = 7..18`; no simple invariant of
+  the tree tested (leaves, branch vertices, and others) predicts it.
+* *Conjecture F33 (checked for all trees `n ≤ 22`, re-run to 20):* every tree
+  has a build in which the unused cells are always one run plus single-cell
+  holes, and every step either places at an end of the run, skips one cell
+  from an end, or fills a hole: at most 12 choices per step. Twenty-four
+  large symmetric trees (53–57 vertices among them) hit the search cap and
+  are undecided; they are possible counterexamples.
+* *Fails:* tighter vocabularies, smallest counterexamples at `n = 10`
+  (`S(3,3,3)`), 14 and 18; details and the tie-break convention in the
+  report.
+* *Observation:* the figure "about 60% of steps are not plain", measured
+  earlier with `src/fold_stats.py` on a randomised solver's builds, was an
+  artefact of that solver.
 

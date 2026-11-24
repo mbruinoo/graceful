@@ -1,0 +1,339 @@
+LINE "spare": THE ONE-SPARE-LABEL OBSERVATION
+=========================================
+
+Nothing here proves the Graceful Tree Conjecture or Conjecture B.  Status words as in CLAUDE.md.  "Proved" below
+means: a complete argument is written in this file and the construction was machine-checked from the definition;
+none of it has been seen by a referee yet.
+
+CONVENTIONS
+  Labels are written 0..N-1 with the root at 0 (README labels are these plus 1).  n = number of vertices.
+  A relaxed growth labeling of (T,r) with range N: injective f: V -> {0..N-1}, f(r) = 0, pairwise distinct edge
+  lengths |f(u)-f(v)|, lengths strictly decreasing along every path away from r.  slack = N - n.
+  ONE-SPARE labeling = slack 1: labels 0..n, exactly one label and exactly one of the lengths 1..n stay unused.
+  slack 0 = "r is an anchor" (README Theorem 7).  Slack s implies slack s+1 (leave the top label unused).
+  CROSSING with threshold a: every edge joins a label <= a ("low") to a label > a ("high"); equivalently every
+  even-depth label is below every odd-depth label.
+
+SUMMARY
+  (1) Every requested test succeeds with ONE spare label; no vertex needing slack 2 was found anywhere.
+      - L(3;8,9), v (24 vertices): one-spare labeling found (no backtracking); also L(l;2l+2,2l+3), l = 1..8.
+      - DH(p,q), middle vertex, every prime m = p+q+2 <= 151, all p,q >= 1 (1,160 trees).
+      - H(1,1,k), every odd m = k+5 in [11,197] that rule H3 makes a non-anchor (26 trees, including
+        m = 13, 73, 133, 193 = 60i+13).
+      - Paths: EVERY vertex of P_n for 3 <= n <= 200 (10,098 rooted paths), plus all vertices whose two arms are
+        both = 3 (mod 4) and >= 15 for n <= 331 (1,482 rooted paths).
+      - S(L,L,L): every vertex (leaf included) for L <= 30 (n <= 91; 495 rooted spiders).
+      - All trees, all vertices: n <= 23 (section 1; n = 20..23 are new; 341,045,702 pairs at n = 23).
+      - Every centre-rooted tree of depth 2 with n <= 30 (23,023 rooted trees).
+  (2) The reason, for the arithmetic families, is now PROVED and is one picture (section 2): the exact rules H2/H3
+      come from a chain "this length can only go there, so the next one can only go there, ..." that must close up,
+      which forces a divisibility.  One spare label cuts the chain once.  Two hubs can then sit on NEIGHBOURING
+      labels and each take a block of consecutive lengths; the two blocks of leaf labels are offset by one cell;
+      the unused LENGTH is the seam between the blocks and the unused LABEL is the cell the offset block cannot
+      reach.  Theorems G, S, W, P below make this exact:
+        Theorem S (sidestep)  => every DH(p,q) and every L(l;h1,h2), all parameters.
+        Theorem W (window)    => every DH(p,q), every H(1,1,k), and every depth-2 root whose hub sizes satisfy (C).
+        Theorem P (paths)     => every vertex of every path, except possibly when both arms are = 3 (mod 4) and >= 19.
+  (3) Conjecture S1 (every vertex of every tree has a one-spare labeling) is formulated in section 3 with a
+      stronger leaf form S1+.  I found NO implication from S1 to Conjecture B and explain why (section 3).
+
+FILES (all in /home/user/graceful/src/attack2/spare/)
+  spare.cpp        the search (complete longest-first backtracking; every labeling re-checked from the definition)
+  verify.py        independent Python re-check of every labeling in a log
+  portfolio.sh     runs spare with several branching orders; CAP = undecided, NONE = exact
+  fam.py, spfam.py, d2fam.py, allroots.py   test-tree generators
+  check_thms.py    builds the labelings of Theorems S, W, P and checks them from the definition
+  armpieces.py     exhaustive enumeration of crossing path pieces (used to find Theorem P); armfast.py: same, pruned
+  extras.py        the two side tests E1, E2 of section 3
+  run_*.log        small logs (labelings found);  run_*.summary: status lines only, for the three largest runs
+  Build: g++ -O2 -o spare spare.cpp        (uses ../../treegen.h for "all")
+
+-----------------------------------------------------------------------------------------------------------------
+1. THE TESTS  (Observation; every number is from a command listed here)
+-----------------------------------------------------------------------------------------------------------------
+Search.  Any relaxed growth labeling can be built by taking its edges longest first, each new edge hanging a new
+vertex on a placed one; so "at each length either hang a pending child at that distance or leave the length
+unused (while enough lengths remain)" is a complete search.  Interchangeable children (same rooted-subtree code)
+are tried once.  A sound forward check is applied only when every unplaced vertex is a leaf.  FOUND labelings are
+re-verified in C++ and again by verify.py.  NONE means the search was exhausted (exact); CAP means the node cap was
+hit (undecided).  Cross-check of the program at slack 0: the numbers of non-anchor (tree, vertex) pairs for
+n = 6..18 are 1, 4, 6, 11, 19, 21, 37, 54, 84, 117, 154, 198, 264, the same as README section 7 and
+src/attack/anchors, src/attack/asymptotic (which used different programs).
+
+  ./spare all n 0 0 1      (n = 14..18)    -> none = 84, 117, 154, 198, 264
+  ./spare all n 1 part mod                  -> every (tree, vertex) pair has a one-spare labeling:
+        n = 19:    317,955 trees,   6,041,145 pairs, none = 0   (59 s)
+        n = 20:    823,065 trees,  16,461,300 pairs, none = 0   (3 min)
+        n = 21:  2,144,505 trees,  45,034,605 pairs, none = 0   (run_all_21_*.log)
+        n = 22:  5,623,756 trees, 123,722,632 pairs, none = 0   (run_all_22_*.log; 4 parts)
+        n = 23: 14,828,074 trees, 341,045,702 pairs, none = 0   (run_all_23_*.log; 4 parts, about 15 CPU-min each)
+  (n = 6..13 were also run pair by pair through allroots.py: 0 failures at slack 1.)
+
+Requested families (S = scratch files written by the generators):
+  python3 fam.py L | ./spare 1                       run_L.log      9/9 FOUND, 14..49 nodes each (no backtracking)
+        unused label / unused length:  L(3;8,9): 20 / 9;  L(l;2l+2,2l+3): 4l+8 / 2l+3   (labels 0..n)
+        At slack 0 the same program returns NONE for L(3;8,9) (7,355 nodes) and for l = 1..6: a third independent
+        confirmation of the 24-vertex non-anchor (l = 7, 8 hit a 2,000,000-node cap at slack 0: undecided here).
+  python3 fam.py DH 151 | ./spare 1                  run_DH.log     1,160/1,160 FOUND (all p,q >= 1, m prime <= 151)
+        (slack 0, m prime <= 31: 64/64 NONE, agreeing with rule H2)
+  python3 fam.py H3 200 | ./spare 1                  run_H3.log     26/26 FOUND (m = 13,17,29,...,197)
+        (slack 0, m = 13,17,29,37,41: NONE, agreeing with rule H3)
+  paths, every vertex:  run_Pall.log (n = 3..70, 1,258 rooted paths), run_Pbig.summary (n = 71..200, 8,840): all
+        FOUND.   run_P33.summary: arms (b,c), b = c = 3 mod 4, 15 <= b <= c, n <= 331: 1,482/1,482 FOUND (./portfolio.sh, cap 3e7).
+        In particular the three middle vertices of P_n for every n <= 200.
+  python3 spfam.py LLL 30 > LLL30.txt; ./portfolio.sh LLL30.txt 1 20000000 run_LLL30.log
+        S(L,L,L), root at every distance 0..L from the centre, L = 1..30: 495/495 FOUND.  (At slack 0 the leaf is a
+        non-anchor for L = 3, 6, 7, 8, 9, 10, 12, 13 and an anchor for L = 1, 2, 4, 5, 11, 14.)
+  python3 d2fam.py 3 30 > d2_30.txt; ./portfolio.sh d2_30.txt 1 100000 run_d2_30.log
+        every tree of depth <= 2 rooted at its centre, n <= 30 (23,023 rooted trees): 23,023/23,023 FOUND
+        (run_d2_30.summary; the plain order leaves 1,459 undecided at n = 25..30, the randomised restarts find all)
+  random trees (weak evidence, roots of random trees are nearly always anchors): run_random.log, n = 30, 40, 60, 80,
+        300 Pruefer trees x 5 random roots each: 6,000/6,000 FOUND at slack 1.
+  Logs kept with labelings: run_L, run_DH, run_H3, run_Pall, run_LLL30 (.log); for the three largest runs only the
+  status lines are kept (run_Pbig.summary, run_P33.summary, run_d2_30.summary) - they were verified by verify.py
+  before the labelings were dropped, and regenerate in a few minutes:
+        python3 fam.py Pall 71 200 > t; ./portfolio.sh t 1 200000000 out.log; python3 verify.py t out.log 1
+        python3 fam.py P33 331 > t;     ./portfolio.sh t 1 30000000 out.log;  python3 verify.py t out.log 1
+  All logs: python3 verify.py <treefile> <log> 1  -> 0 bad.
+  Memory note: "spare all" originally kept one subtree-code table for the whole run; at n = 22 it grew to 4 GB per
+  process and one of four parts was killed by the kernel.  The table is now cleared per rooted tree; the killed
+  part (2/4) was rerun with the fixed program.  Parts 0, 1, 3 of n = 22 and all of n <= 21 are from the earlier
+  build (same search); n = 23 is from the fixed one.
+
+Least slack: 1 in every case where slack 0 fails; slack 2 was never needed.
+
+-----------------------------------------------------------------------------------------------------------------
+2. THE REASON: FOUR THEOREMS  (Proved: full arguments here; machine-checked by check_thms.py; not yet refereed)
+-----------------------------------------------------------------------------------------------------------------
+
+THEOREM G (gluing keeps the spare).
+  Let (O,r) have a relaxed growth labeling g with labels in 0..R and slack s, crossing with threshold a.  Let y be
+  a vertex of O that is INNERMOST on its side: g(y) is the least used label > a (high case) or the greatest used
+  label <= a (low case).  Let T'' be a tree with q edges and a growth placement tau: V(T'') -> {0..q} with
+  tau(y'') = 0 (y'' is an anchor of T'').  Let T be O and T'' glued by identifying y with y''.
+  Then (T,r) has a relaxed growth labeling with labels in 0..R+q, i.e. with the same slack s.  Its unused lengths
+  are the unused lengths of g raised by q; its unused labels are those of g (low ones unchanged, high ones + q).
+  Proof.  Put f(z) = g(z) if g(z) <= a and f(z) = g(z)+q if g(z) > a, for z in O.  For z in T'' put
+  f(z) = g(y)+q-tau(z) in the high case and f(z) = g(y)+tau(z) in the low case; both agree with f(y).
+  Labels: T'' fills the block [g(y), g(y)+q] (q+1 consecutive cells).  High case: every other high label of O is
+  > g(y), so after the shift it is > g(y)+q; low labels are <= a < g(y).  Low case: every other low label is
+  < g(y); high labels are >= a+1+q > g(y)+q.  So f is injective, with values in 0..R+q.
+  Lengths: every edge of O crosses the threshold, so its length grows by exactly q: the O-lengths stay distinct,
+  keep their order, and are all >= q+1.  T'' uses the lengths 1..q once each.
+  Decrease: inside O nothing changed in the order; inside T'' lengths decrease away from y; a path from r that
+  enters T'' does so through y, and if y != r the edge above y is an O-edge, longer than q.
+  Count: |V(T)| = |V(O)|+q and the range grew by q, so the slack is s.  []
+  (For s = 0 this is the gluing statement of README section 7.  Picture: cut the number line between low and
+  high, pull the halves q cells apart, drop T'' into the gap with its anchor on the cell next to the cut.)
+
+THEOREM S (sidestep: the neighbour of the innermost vertex may carry leaves, at the price of one label).
+  Let (O,r) have a growth placement g: V(O) -> {0..R} (bijective, slack 0), crossing with threshold a.
+  Low version (a >= 1): x, y the vertices with g(x) = a-1, g(y) = a.
+  High version (a <= R-2): x, y the vertices with g(x) = a+2, g(y) = a+1.
+  Let T'' have q >= 0 edges and a growth placement tau with tau(y'') = 0, and let h >= 0.  Let T be O, with T''
+  glued at y = y'' and h new leaves attached to x.  (n = R+1+q+h vertices.)
+  Then (T,r) has a one-spare labeling.  With D = q+h+1:
+     O:      f = g on labels <= a,  f = g + D on labels > a;
+     T'':    f = a + tau                 (low)        f = a+1+D - tau              (high)
+     the i-th new leaf of x (i = 1..h) has length q+1+i:
+             f = (a-1) + (q+1+i) = a+q+i (low)        f = (a+2+D) - (q+1+i) = a+1+D-q-i   (high)
+     unused length: q+1.     unused label: a+D (low),  a+1 (high).
+  Proof (low version; the high one is its mirror image inside the gap).  Labels: O-low 0..a; T'' fills a..a+q
+  (sharing y at a); the new leaves fill a+q+1..a+q+h; a+q+h+1 = a+D is unused; O-high fills a+1+D..R+D = n.
+  Lengths: T'' uses 1..q; q+1 is unused; the new leaves use q+2..q+h+1 = D; the O-edges cross, so they use
+  D+1..D+R.  All distinct.  Decrease: O-edges keep their order; an edge of T'' or a new leaf edge has length <= D
+  and the edge above y resp. x (if y resp. x is not r) is an O-edge of length >= D+1; inside T'' lengths decrease
+  away from y.  n vertices on labels 0..n: slack 1.  []
+  Picture (low version):
+        0 ... a-1   a | a+1 ........ a+q | a+q+1 ..... a+q+h | a+D | a+D+1 ......... n
+        O low    x   y |   rest of T''    |  leaves of x      | --  |   O high (moved D cells right)
+  The hub x is one cell LEFT of where an exact hub would stand, so its fan of leaves (lengths q+2..D, consecutive)
+  ends one cell short of the high block: the cell a+D stays empty.  The length q+1 is the seam: from x it would
+  land on a+q, from y on a+q+1, both taken.
+  Which O exist: staircases (README Theorem 2) are crossing growth placements, so O may be any caterpillar in a
+  staircase, with x, y the two innermost labels of one side.
+  Machine check:  python3 check_thms.py S 9 6 6  -> 119,476 labelings (every staircase with R <= 9, both versions,
+  q <= 6 with T'' a star, a zigzag path or a broom, h <= 6) built and verified from the definition.
+
+  COROLLARY S1 (double hubs).  For all p, q >= 0 the middle vertex v of DH(p,q) has a one-spare labeling.
+   O = path c2 - v - c1 with g(v) = 0, g(c2) = 1, g(c1) = 2 (lengths 1, 2; threshold a = 0; high version:
+   y = c2, x = c1), T'' = star with q leaves centred at c2, h = p.  Explicitly, with m = p+q+2 and labels 0..m+1:
+        v = 0,  c1 = m+1,  c2 = m,  leaves of c2 at m-1, m-2, .., m-q (lengths 1..q),
+        leaves of c1 at m-q-1, .., 2 (lengths q+2..m-1);   unused label 1, unused length q+1.
+   So the divisibility rule H2 disappears completely with one spare label.
+  COROLLARY S2 (the family of the degree >= 4 counterexample).  For all l, h1, h2 >= 0 the vertex v of L(l;h1,h2)
+   has a one-spare labeling.  O = v with l leaves and the path v - c with children g1, g2 of c, as the staircase
+   g(v) = 0, g(g2) = 1, g(g1) = 2, g(c) = 3, root leaves 4..l+3 (lengths l+3,..,4 for the leaves, 3 for c, 2 for
+   g2, 1 for g1; threshold a = 2; low version: x = g2, y = g1), T'' = star with h1 leaves at g1, h = h2.
+   Explicitly, labels 0..n with n = l+h1+h2+4:
+        v = 0, g2 = 1, g1 = 2, leaves of g1 at 3..h1+2 (lengths 1..h1), leaves of g2 at h1+3..h1+h2+2
+        (lengths h1+2..h1+h2+1), c at h1+h2+4, root leaves above it;  unused label h1+h2+3, unused length h1+1.
+   For L(3;8,9): g2 = 1, g1 = 2, g1-leaves 3..10, g2-leaves 11..19, cell 20 empty, c = 21, root leaves 22,23,24;
+   length 9 unused.  This is exactly what the search returns (run_L.log).
+
+THEOREM W (window; roots of depth-2 trees).
+  Let the root v have r children x_0, .., x_{r-1}; x_j has a_j >= 0 leaf children and there are no other
+  vertices (a_j = 0: x_j is a leaf of the root).  Order them so that a_0 >= a_1 >= .. >= a_{r-1}.  Put
+  K = 1 + a_0 + .. + a_{r-1} and d = a_1 + 2 a_2 + .. + (r-1) a_{r-1}.  Suppose
+        (C)      a_2 + 2 a_3 + .. + (r-2) a_{r-1}  <=  a_0            (equivalently d <= K-1).
+  Then (T,v) has a one-spare labeling; moreover the unused length s may be ANY number in 1..K-d, and the unused
+  label is then K+1-s-d.
+  Construction (n = K+r vertices, labels 0..K+r).  f(v) = 0, f(x_j) = K+1+j: the hubs stand on the top r cells,
+  the biggest hub lowest.  Every leaf hangs DOWN from its hub.  Cut the lengths s+1..s+d (the window) into
+  consecutive blocks, a_j blocks of size j for each j >= 1.  In a block p+1..p+j the top length p+j goes to x_j
+  (leaf at K+1+j-(p+j) = K+1-p) and the j-1 lengths p+1..p+j-1 go to x_0 (leaf at K+1-w).  Every length w
+  outside the window except s goes to x_0 (leaf at K+1-w).  Length s is unused.
+  Proof.  Write a leaf label as K+1-t.  A length w given to x_0 has t = w; the top of a block has t = p.  So a
+  block p+1..p+j is mapped onto the t-values p, p+1, .., p+j-1 bijectively (top to bottom, the rest fixed), the
+  window s+1..s+d is mapped bijectively onto s..s+d-1, and the lengths outside the window keep t = w.  Hence
+  the lengths 1..K except s are mapped bijectively onto the t-values 1..K except s+d: the leaf labels are
+  distinct, lie in 1..K (below all hubs), and miss exactly K+1-s-d.  Counts: x_j (j >= 1) gets one length per
+  block of size j, a_j in all; x_0 gets the remaining K-1-(a_1+..+a_{r-1}) = a_0.  The window fits because
+  s+d <= K.  Lengths: hubs use K+1..K+r, leaves use 1..K except s, so all are distinct and each leaf edge is
+  shorter than the edge above its hub.  n = K+r vertices on labels 0..K+r.  []
+  Picture: with exact labels the leaf labels K+1-w would simply mirror the lengths (all leaves on x_0).  Each
+  leaf moved to the hub j cells higher has to use a length j larger to reach the same row of cells; inside the
+  window every such jump "t = w - j" is paid for by j-1 untouched cells it leaps over, and the whole window
+  slides down by one cell.  The cell it vacates at the top (t = s+d) is the unused label; the length it never
+  uses at the bottom (s) is the unused length.
+  Machine check:  python3 check_thms.py W 30 6  -> all 10,707 hub-size vectors with <= 6 children, <= 30 leaves
+  satisfying (C), every admissible s: 100,007 labelings verified from the definition.
+  COROLLARY W1.  DH(p,q) again (r = 2: (C) is empty).  H(1,1,k) for EVERY k >= 1: (a_0,a_1,a_2) = (k,1,1), (C)
+   reads 1 <= k, and s may be anything in 1..k.  Explicitly for s = 1 (labels 0..k+6, K = k+3, d = 3):
+        v = 0;  big hub at k+4, small hubs at k+5 and k+6;  leaf of k+5 at k+3 (length 2), leaf of k+6 at k+2
+        (length 4, the block {3,4}), big-hub leaves at k+1 (length 3) and at k+4-w for w = 5..k+3;
+        unused length 1, unused label k.
+   So rule H3 (3 | m or 5 | m or m = 3 mod 4) also disappears with one spare label, for every k and not only for
+   m = 60i+13.  More generally any number of root leaves can be added for free (a_j = 0 costs nothing in (C)),
+   and for sizes a_0 >= a_1 >= a_2 followed by zeros (C) reads a_2 <= a_0, which always holds: EVERY root with
+   at most three non-leaf children in a depth-2 tree has a one-spare labeling.
+  Not covered by W: e.g. four hubs of sizes (3,3,3,3).  Of the 23,023 centre-rooted depth-2 trees with n <= 30,
+  10,932 satisfy (C); the others were settled by search (section 1).
+  REMARK (why (C) is exactly the limit of THIS shape; argument sketched, not refereed).  If the hubs stand on the
+  top r cells, a leaf cannot hang upward, so every leaf has t = w - j with j >= 0, where j is the rank of its hub
+  from the bottom.  Comparing sums, (unused label's t) - (unused length) = sum of all j; lengths below s are
+  forced to t = w, lengths above the hole too, and the window in between has d elements with total shift d.
+  So the number of j = 0 leaves inside the window is sum (j-1) c_j, which needs (C) for some ordering of the
+  hubs.  Other hub positions are needed for the remaining trees.
+
+THEOREM P (paths).
+  Let the root of a path have arms of b and c edges (b + c + 1 = n vertices).  It has a one-spare labeling
+  unless possibly  b = c = 3 (mod 4) and min(b,c) >= 19.   (So: every vertex of P_n when n is not 3 mod 4 or
+  n < 39; the vertex at distance 2 from an end for every n; the three middle vertices of P_n for every n, except
+  the exact middle (arms (c,c)) when c = 3 mod 4 and c >= 19, i.e. n = 8u+7 with u >= 4.)
+  Proof.  b = 0 or c = 0: zigzag 0, n-1, 1, n-2, .. (slack 0).  b = 1: put the leaf at n-1 and run the zigzag
+  0, n-2, 1, n-3, .. along the other arm: lengths n-1; n-2, n-3, .., 1 (slack 0).
+  Otherwise use a PIECE: a crossing one-spare labeling of the path with arms (b, j), j in {1,2,3,7}, in which the
+  tip y of the j-arm is innermost on its side; Theorem G with T'' = zigzag path with q edges anchored at its end
+  then gives arms (b, j+q) for every q >= 0.  Pieces (A = labels along the b-arm from the root, B = along the
+  j-arm; R = top label = b+j+1; "zigzag" = alternately the next unused high cell and the next unused low cell):
+   P2  b = 4t+2, t >= 0, j = 1, R = 4t+4.   A: zigzag 0, R, 1, R-1, .., for 2t+2 edges (lengths R, .., 2t+3; it
+       stands on the low cell t+1; highs used R..3t+4).  SKIP the high cell 3t+3.  Continue the zigzag for 2t
+       edges: 3t+2, t+2, 3t+1, t+3, .., (lengths 2t+1, .., 2; highs 3t+2..2t+3, lows t+2..2t+1).
+       B: 0 -> y = 2t+2 (length 2t+2, exactly the length the skipped step would have used).
+       Lows 0..2t+1, y = 2t+2 is the least high label; unused label 3t+3, unused length 1.
+   P1  b = 4t+1, t >= 1, j = 1, R = 4t+3.   A: zigzag for 2t+2 edges (lengths R, .., 2t+2; on low cell t+1;
+       highs R..3t+3).  SKIP the high cell 3t+2.  Continue for 2t-1 edges: 3t+1, t+2, 3t, .., (lengths 2t, .., 2;
+       highs 3t+1..2t+2, lows t+2..2t).   B: 0 -> y = 2t+1 (length 2t+1).
+       Lows 0..2t, y least high; unused label 3t+2, unused length 1.
+   P3  b = 4t, t >= 1, j = 2, R = 4t+3.     B: 0 -> R -> y = 2t+2 (lengths R and 2t+1).
+       A: zigzag 0, R-1, 1, R-2, .. for 2t+1 edges (lengths R-1, .., 2t+2; on the high cell 3t+2; lows used
+       1..t).  SKIP the low cell t+1.  Continue for 2t-1 edges: t+2, 3t+1, t+3, .., (lengths 2t, .., 2; lows
+       t+2..2t+1, highs 3t+1..2t+3).   y = 2t+2 is the greatest low label; unused label t+1, unused length 1.
+   In each case the lengths along A are R (or R-1), R-1, .. down to the skip, then continue one lower than they
+   would have, because after skipping a cell the zigzag is one cell shorter: the missing length (2t+2, 2t+1,
+   2t+1 respectively) is the one given to y.  Checking the three cases is the arithmetic in brackets: each step
+   of a zigzag joins the current cell to the far end of the remaining interval, so consecutive lengths drop by
+   one; all low cells are below all high cells; A decreases; B decreases (R > 2t+1 in P3).
+   Sporadic pieces (found by armpieces.py / armfast.py, verified by check_thms.py):
+       b = 3,  j = 3:  A = 0,7,1,6                      B = 0,4,2,3
+       b = 7,  j = 3:  A = 0,11,1,10,2,9,4,8            B = 0,6,3,5
+       b = 11, j = 7:  A = 0,19,1,18,2,17,4,16,6,15,8,12   B = 0,14,3,11,5,10,7,9
+       b = 15, j = 3:  A = 0,19,1,18,2,17,3,16,5,15,6,13,7,11,8,10   B = 0,12,4,9
+  Coverage.  If b = 1 or 2 (mod 4), or b = 0 (mod 4) and c >= 2, the piece for b works; likewise with b and c
+  exchanged; b = 0 mod 4 with c = 1 is covered by c.  That leaves b = c = 3 (mod 4): b = 3 (c >= 3), b = 7
+  (c >= 3), b = 11 (c >= 7; c = 3 is the case b = 3) and b = 15 (c >= 3) are covered by the sporadic pieces.  []
+  Machine check:  python3 check_thms.py P 80 80 -> 5,103 labelings (every piece with b <= 80, q <= 80) built and
+  verified from the definition; the 136 arm pairs 2 <= b <= c <= 80 it does not produce are exactly those with
+  b = c = 3 (mod 4), b >= 19.
+  What is NOT proved: arms both = 3 (mod 4) and >= 19.  Exhaustive enumeration (armpieces.py, armfast.py) finds NO
+  crossing piece with j = 1 for b = 0 or 3 (mod 4), 4 <= b <= 12; none with j <= 6 for b = 11; none with j <= 6
+  for b = 19 and none with j = 3 for b = 23 (j = 7 for b = 19 was not completed).  The pieces for b = 3 (mod 4)
+  that do exist (b = 3, 7, 15 with j = 3; b = 11 with j = 7) show no uniform pattern, so this case needs longer
+  second arms or a non-crossing construction.  Observation: all arm pairs b = c = 3 (mod 4), 15 <= b <= c, with
+  n <= 331 have one-spare labelings (run_P33.summary).
+  Picture of P2 with t = 1 (b = 6, R = 8), then glued:
+        cells   0   1   2   3 | 4 | 5   6   7   8
+        A       0 ->8 ->1 ->7 ->2 ->5 ->3            (lengths 8,7,6,5,3,2; cell 6 skipped)
+        B       0 ->4                                (length 4)
+     to lengthen the 1-arm by q edges, pull cells 4..8 q places to the right and zigzag y's arm in the gap.
+
+-----------------------------------------------------------------------------------------------------------------
+3. THE CONJECTURE, AND WHAT IT WOULD (NOT) SAY ABOUT CONJECTURE B
+-----------------------------------------------------------------------------------------------------------------
+CONJECTURE S1 (one spare label, every root).  For every tree T on n vertices and every vertex r there is an
+  injective labeling of V(T) by 1..n+1 with r at 1, pairwise distinct edge lengths, and lengths strictly
+  decreasing along every path away from r.
+  Evidence: all trees with n <= 23, all vertices (section 1); the families of section 1; Proved for the middle
+  vertex of every DH(p,q), for v in every L(l;h1,h2), for every depth-2 root satisfying (C) (in particular
+  H(1,1,k) and every root with at most three non-leaf children in a depth-2 tree), and for path vertices as in
+  Theorem P.  It is closed under the two standard growth operations (both Proved, trivial):
+   (a) adding a leaf at the root (give it the new top label; README Lemma 6 with a spare);
+   (b) Theorem G gluing (crossing pieces).
+  Also: if l is a leaf with neighbour v and (T - l, v) has a one-spare labeling, so has (T, l) (put l at 0, v at
+  the top, the rest reflected below it).  So S1 for internal vertices implies S1 for leaves.
+
+OBSERVATION S1+ (leaf form; all trees with n <= 15).  For every non-anchor pair (T,r) there is a vertex w such
+  that r is an anchor of T + (one new leaf at w).  [python3 extras.py E1 n, n = 6..15: non-anchor pairs
+  1, 4, 6, 11, 19, 21, 37, 54, 84, 117; in every case some w works.  w = r itself works in 1, 4, 5, 10, 16, 21,
+  37, 50, 82, 116 of them, so "add the leaf at r" FAILS first at n = 8 (i.e. on a 9-vertex tree), as the
+  asymptotic line already noted.]
+  S1+ implies S1 (delete the new leaf: one label and one length become unused) and says more: the unused label u
+  and unused length k can be chosen so that u = f(w) +- k with k shorter than the edge above w - the spare cell
+  is a socket into which a real leaf fits.  For Theorem S the socket exists when h >= q+1 (the leaf of x with
+  length h+1 sits at a+h = (a+D) - (q+1)).
+
+DOES S1 SAY ANYTHING ABOUT CONJECTURE B?  I found no implication in either direction, and here is what blocks it.
+  * B for T needs an EXACT placement.  The only exact statement obtainable from a one-spare labeling is by filling
+    the hole: a one-spare labeling of (T', r) with unused label u and unused length k extends to a growth
+    placement of T' + leaf at w exactly when w sits at u +- k and k is shorter than the edge above w (or w = r
+    and u = k).  S1 gives no control over (u, k); S1+ gives some w, not a prescribed one.
+  * Bridge (Proved, trivial).  T has a growth placement in which the bracket of length 1 hangs the leaf x on y
+    if and only if T - x has a one-spare labeling (some root) whose unused length is 1 and whose unused label is
+    f(y) +- 1.  (Delete or re-insert x; a bracket of length 1 is always last.)  So Conjecture B for T is the
+    statement "for SOME leaf x the hole can be steered next to x's neighbour with the seam at length 1".
+  * FAILS (smallest counterexample n = 6): "for EVERY leaf x there is a growth placement whose length-1 bracket
+    hangs x".  In S(2,2,1) no growth placement puts length 1 on the short leg (all 12 growth placements put it
+    at the end of a long leg; brute force over 720 labelings, and extras.py E2 6).  Counts of failing (tree,
+    leaf) pairs for n = 4..10: 0, 0, 1, 2, 3, 4, 11.  So the natural uniform strengthening that WOULD make S1-type
+    statements talk to B is false, and an induction "delete a leaf, apply S1, put it back" has no handle on which
+    leaf.
+  * What S1+ would give is only: every tree is one leaf away from a tree with a growth placement anchored at any
+    prescribed vertex.  That is an embedding statement, not B.
+  * In the other direction B (some anchor) says nothing about every root.
+  * S1 would imply the much weaker classical-type statement "every tree has an injective labeling in 0..n with
+    distinct edge lengths" (a range-relaxed graceful labeling with one spare label).  I have NOT checked the
+    literature for the status of that statement (Van Bussel 2002 on relaxed graceful labelings is the place to
+    look); no novelty is claimed for S1 or for Theorems G, S, W, P.
+  Honest summary: S1 explains why anchors fail (exactness forces closed chains, hence arithmetic) and shows the
+  obstruction is exactly one cell wide in every case examined, but it does not reduce Conjecture B.
+
+-----------------------------------------------------------------------------------------------------------------
+4. DEAD ENDS AND CAVEATS
+-----------------------------------------------------------------------------------------------------------------
+ 1. A bug worth recording: my first search restored its "active parent" list with pop_back after recursion,
+    which is wrong when deeper calls reorder the list; it reported false NONE for path middles from n = 10.
+    Fixed (the list is restored from a snapshot); the slack-0 counts then reproduce the known non-anchor counts
+    for n = 6..18, and every FOUND is checked twice from the definition.  NONE at slack 1 never occurs anywhere.
+ 2. Paths with both arms = 3 (mod 4): no crossing piece with a short second arm exists for b = 11 below j = 7
+    or for b = 19 below j = 7 (exhaustive), and I found no uniform family; arms both >= 19 are open (Observation
+    to n = 331 only).  A general proof for paths probably needs the two arms treated together, not piece + zigzag.
+ 3. Theorem W does not cover all depth-2 roots (four equal hubs of size 3 already violate (C)); hubs must then
+    leave the top cells.  No general depth-2 theorem was obtained.
+ 4. The plain longest-first search stalls on centre-rooted depth-2 trees with many small hubs for n >= 25 (e.g.
+    twelve hubs with one leaf each); randomised parent order with restarts (portfolio.sh) settles them.
+ 5. I looked for a way to make two spare cells cancel (glue two one-spare pieces so that each fills the other's
+    hole).  Theorem G only ADDS slacks; a cancelling composition would need the O-part to supply a vertex in the
+    hole of T'' joined by an edge of exactly the missing length, and I found no general way to arrange that.
+ 6. No single position of the unused label or length works across families: in Theorem S the unused length is
+    q+1 (the seam), in Theorem W it can be anything in 1..K-d, in the path pieces it is 1 before gluing.
