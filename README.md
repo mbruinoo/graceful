@@ -1321,9 +1321,16 @@ of a tree be the least number of non-plain steps over all its builds.
 * *Conjecture F33 (checked for all trees `n ≤ 22`, re-run to 20):* every tree
   has a build in which the unused cells are always one run plus single-cell
   holes, and every step either places at an end of the run, skips one cell
-  from an end, or fills a hole: at most 12 choices per step. Twenty-four
-  large symmetric trees (53–57 vertices among them) hit the search cap and
-  are undecided; they are possible counterexamples.
+  from an end, or fills a hole: at most 12 choices per step. Twenty
+  large symmetric trees (66–99 vertices: stems ending in hubs, and the
+  spherically symmetric trees (4,4,4) and (9,9)) hit the search cap and are
+  undecided; they are possible counterexamples. Three smaller ones that the
+  referee's search had left undecided — spherically symmetric (4,12), (6,8)
+  and (4,13), on 53, 55 and 57 vertices — do have such a build: a SAT search
+  (`src/attack2/f33sat/f33sat.py sph 4 12`, etc.; one to two hours each)
+  found one, and each was re-checked by the folds line's own rule checker.
+  The same search did not finish on the 66-vertex tree (5 stems of length 2
+  ending in hubs of 11) in two hours.
 * *Fails:* tighter vocabularies, smallest counterexamples at `n = 10`
   (`S(3,3,3)`), 14 and 18; details and the tie-break convention in the
   report.
